@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # startapp으로 앱 설치 시 아래에 추가 필수!
+    'main',
+    'community',
+    'accounts',
+    'mypage',
 ]
 
 MIDDLEWARE = [
