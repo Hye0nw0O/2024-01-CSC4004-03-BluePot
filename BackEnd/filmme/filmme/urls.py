@@ -22,10 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     # api 통신 시 편리함을 위해 시작점을 api로 통일
-    # 상세 url은 각 앱에서 다룸
+    # 상세 url은 각 앱에서 다룸 !!
     path('api/',include('main.urls')),
     path('api/', include('accounts.urls')),
     path('api/', include('mypage.urls')),
     path('api/', include('community.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
