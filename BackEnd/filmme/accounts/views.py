@@ -13,7 +13,7 @@ SOCIAL_AUTH_KAKAO_SECRET = '9vuPMBan66cByGSk2n7SgjkpLJp9zbpy'
 
 def kakao_login(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
-    return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
+    return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
 
 def kakao_callback(request):
 
@@ -22,7 +22,7 @@ def kakao_callback(request):
     code=request.GET.get("code")
     redirect_uri = 'http://127.0.0.1:8000/api/accounts/kakao/callback'
 
-    token_request = requests.get(f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}")
+    token_request = requests.get(f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}")
     token_response_json = token_request.json()
     
     access_token = token_response_json.get("access_token")
