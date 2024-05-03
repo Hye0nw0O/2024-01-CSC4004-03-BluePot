@@ -16,7 +16,7 @@ def kakao_login(request):
     return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
 
 def kakao_callback(request):
-
+ 
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     client_secret = SOCIAL_AUTH_KAKAO_SECRET
     code=request.GET.get("code")
