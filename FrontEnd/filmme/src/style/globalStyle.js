@@ -2,6 +2,7 @@
 import { createGlobalStyle } from 'styled-components';
 import Pretendard_Medium from '../assets/fonts/Pretendard-Medium.woff';
 import Pretendard_Bold from '../assets/fonts/Pretendard-Bold.woff';
+import Jalnan from '../assets/fonts/Jalnan.woff';
 
 export const GlobalStyle = createGlobalStyle`html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -27,6 +28,12 @@ time, mark, audio, video {
     font-family: 'Pretendard-Bold';
     src: url(${Pretendard_Bold}) format('woff');
     font-weight: 700;
+}
+
+@font-face {
+	font-family: 'Jalnan';
+	src: url(${Jalnan}) format('woff');
+	font-weight: 1000;
 }
 
 
