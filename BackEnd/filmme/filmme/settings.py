@@ -37,17 +37,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # drf, cors 관련
+    'corsheaders',
+    'rest_framework',
+    # startapp으로 앱 설치 시 아래에 추가 필수!
+    'main',
+    'community',
+    'accounts',
+    'mypage',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # cors 관련 추가
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#CORS
+# CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'filmme.urls'
 
