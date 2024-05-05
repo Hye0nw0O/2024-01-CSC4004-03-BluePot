@@ -2,6 +2,14 @@
 import { createGlobalStyle } from 'styled-components';
 import Pretendard_Medium from '../assets/fonts/Pretendard-Medium.woff';
 import Pretendard_Bold from '../assets/fonts/Pretendard-Bold.woff';
+import Pretendard_Black from '../assets/fonts/Pretendard-Black.woff';
+import Pretendard_ExtraBold from '../assets/fonts/Pretendard-ExtraBold.woff';
+import Pretendard_ExtraLight from '../assets/fonts/Pretendard-ExtraLight.woff';
+import Pretendard_Light from '../assets/fonts/Pretendard-Light.woff';
+import Pretendard_Regular from '../assets/fonts/Pretendard-Regular.woff';
+import Pretendard_SemiBold from '../assets/fonts/Pretendard-SemiBold.woff';
+import Pretendard_Thin from '../assets/fonts/Pretendard-Thin.woff';
+import Jalnan from '../assets/fonts/Jalnan.woff';
 
 export const GlobalStyle = createGlobalStyle`html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -29,6 +37,11 @@ time, mark, audio, video {
     font-weight: 700;
 }
 
+@font-face {
+	font-family: 'Jalnan';
+	src: url(${Jalnan}) format('woff');
+	font-weight: 1000;
+}
 
 	margin: 0;
 	padding: 0;
