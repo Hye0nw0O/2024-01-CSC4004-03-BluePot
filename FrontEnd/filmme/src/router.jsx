@@ -7,6 +7,10 @@ import Auths from './pages/auths/Auths';
 import Mypage from './pages/mypage/Mypage';
 import Landing from './pages/landing/Landing';
 
+// 커뮤니티 관련
+import DetailPage from "./pages/community/communityDetail/DetailPage";
+// import CommunityCreatPost from "./pages/community/communityCreatePost/CommunityCreatePost";
+
 const router = createBrowserRouter([
     {
     path: '/',
@@ -36,6 +40,14 @@ const router = createBrowserRouter([
             path: '/landing',
             element: <Landing />,
         },
+        {
+            path: "community/:type/:id",
+            element: <DetailPage />
+        },
+        // {
+        //     path: "community/create",
+        //     element: <CommunityCreatPost />
+        // },
         ],
     },
 ]);
