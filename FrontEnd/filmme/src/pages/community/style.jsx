@@ -2,13 +2,13 @@ import styled from "styled-components";
 
 export const CommunityWrapper = styled.div`
     display: flex;
-    margin-right: 60vw;
     flex-direction: column;
 `;
 
 export const CommunityHeaderWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    margin-right: 60vw;
     gap: 21px;
 `;
 
