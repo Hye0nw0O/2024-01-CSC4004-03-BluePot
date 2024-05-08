@@ -24,7 +24,7 @@ function Main() {
         <S.MainWrapper>
             <S.TitleWrapper>
                 <S.Title>FILM'E</S.Title>
-                <S.subTitle>전국의 독립예술영화관 모아보기</S.subTitle>
+                <S.subTitle>전국의 독립예술영화관 모아보기 </S.subTitle>
             </S.TitleWrapper>
             <div className="search">
                 <S.searchBox></S.searchBox>

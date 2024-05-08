@@ -6,7 +6,6 @@ export const MainWrapper = styled.div `
     gap: 21px;
 `;
 
-//Title
 export const TitleWrapper = styled.div`
     display: flex;
     margin-right: 70vw;
