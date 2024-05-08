@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@uiw/react-md-editor": "^4.0.4",
-    "react-file-drop": "^3.1.6",
-    "react-icons": "^5.2.1",
-    "recoil": "^0.7.7",
-    "recoil-persist": "^5.1.0"
-  }
-}
