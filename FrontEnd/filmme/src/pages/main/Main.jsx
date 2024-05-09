@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as S from "./style.jsx";
+import Card from '../../components/card/Card.jsx'
 import searchImage from "../../assets/images/Main/searchImage.png";
+import theater from "../../data/theater.js";
+import AOS from 'aos';
 
 function Main() {
     const [clickedRegion, setClickedRegion] = useState(null);
@@ -19,6 +22,20 @@ function Main() {
         ));
     }
 
+    const ViewTheater = () => {
+        return theater.map(theater => (
+            <Card
+                id={theater.id}
+                name={theater.name}
+                region={theater.region}
+                star={theater.star}
+                score={theater.score}
+                like={theater.like}
+                img={theater.img}
+        />
+        ))
+    }
+
     return (
         <>
         <S.MainWrapper>
@@ -26,18 +43,20 @@ function Main() {
                 <S.Title>FILM'E</S.Title>
                 <S.subTitle>전국의 독립예술영화관 모아보기 </S.subTitle>
             </S.TitleWrapper>
-            <div className="search">
+            <div className="Search">
                 <S.searchBox></S.searchBox>
                 <S.search>검색어를 입력하세요.</S.search>
                 <S.searchImage src={searchImage} alt="searchImage"/>
             </div>
-            <div className="region">
+            <div className="Region">
                 <S.regionContainer>
                     {renderRegions()}    
                 </S.regionContainer>  
             </div>
             <div className="Theater">
-                    <S.TheaterBox></S.TheaterBox>
+                <S.TheaterContainer data-aos="fade-down">
+                    {ViewTheater()}
+                </S.TheaterContainer>
             </div>
         </S.MainWrapper>
         </>
