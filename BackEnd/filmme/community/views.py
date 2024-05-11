@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import render
 
 # Create your views here.
@@ -24,3 +25,5 @@ class BoardDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BoardDetailSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsOwnerOrReadOnly]
+
+'''

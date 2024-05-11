@@ -18,7 +18,6 @@ KAKAO_CALLBACK_URI = BASE_URL + 'api/accounts/kakao/callback'
 SOCIAL_AUTH_KAKAO_CLIENT_ID = '541a5b90d0456e285e4d4868e1d7e7be'
 SOCIAL_AUTH_KAKAO_SECRET = '9vuPMBan66cByGSk2n7SgjkpLJp9zbpy'
 
-
 def kakao_login(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
@@ -95,19 +94,18 @@ def kakao_callback(request):
                        secure=True, samesite="None",httponly=True)
         return res
 
+
+KAKAO_LOGOUT_URL="http://127.0.0.1:8000/api/accounts/kakao/logout_callback"
+def kakao_logout(request):
+    return redirect(f"https://kauth.kakao.com/oauth/logout?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&logout_redirect_uri={KAKAO_LOGOUT_URL}")
+
 @api_view(['GET'])
-def kakao_logout(self):
-    response = Response(
-        {
-            "message":"Logout success"
-        }, status = status.HTTP_202_ACCEPTED
-    )
-    response.delete_cookie('accessToken')
-    response.delete_cookie('refreshToken')
+def kakao_logout_callback(request):
+    #쿠키에 access token이랑 refresh token이 남아있을거같은데.. 무튼 로그아웃은 됩니다.
+    #일단은 로그인화면으로 다시 보내는데, 메인 페이지로 보내줄지는 의논
+    return redirect("http://127.0.0.1:8000/api/accounts/kakao/login")        
 
-    return response
-
-
+'''
 @api_view(['GET'])
 def kakao_withdraw(request):
     access = request.COOKIES['access']
@@ -125,7 +123,7 @@ def kakao_withdraw(request):
         )
     
     return res
-
+'''
 
 #필요한지는 잘 모르겠는데 일단 token기반으로 profile 받아오는거 메소드 구현
 '''
