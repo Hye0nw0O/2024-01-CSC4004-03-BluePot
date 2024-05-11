@@ -1,9 +1,17 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
+from .serializers import UserSerializer
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .models import *
+from filmme import settings
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 import requests
 import os
 import json
+import jwt
+
 
 BASE_URL = 'http://127.0.0.1:8000/'
 KAKAO_CALLBACK_URI = BASE_URL + 'api/accounts/kakao/callback'
@@ -15,8 +23,9 @@ def kakao_login(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
 
+@api_view(['GET'])
 def kakao_callback(request):
- 
+
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     client_secret = SOCIAL_AUTH_KAKAO_SECRET
     code=request.GET.get("code")
@@ -26,61 +35,122 @@ def kakao_callback(request):
     token_response_json = token_request.json()
     
     access_token = token_response_json.get("access_token")
-
-    profile_request = requests.post(
+    refresh_token = token_response_json.get("refresh_token")
+    
+    kakao_profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
         headers={"Authorization":f"Bearer {access_token}"},
     )
-    profile_json = profile_request.json()
+    kakao_profile_json = kakao_profile_request.json()
 
-    kakao_account = profile_json.get("kakao_account")
+    kakao_account = kakao_profile_json.get("kakao_account")
     email = kakao_account.get("email", None)
-
-    '''
+    
     if email is None:
-        return JsonResponse({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)        
     
     try:
+        # 로그인 시도
         # 전달받은 이메일로 등록된 유저가 있는지 탐색
         user = User.objects.get(email=email)
-
-        # FK로 연결되어 있는 socialaccount 테이블에서 해당 이메일의 유저가 있는지 확인
-        social_user = SocialAccount.objects.get(user=user)
-
-        # 있는데 카카오계정이 아니어도 에러
-        if social_user.provider != 'kakao':
-            return JsonResponse({'err_msg': 'no matching social type'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # 이미 kakao로 제대로 가입된 유저 => 로그인 & 해당 우저의 jwt 발급
-        data = {'access_token': access_token, 'code': code, 'id_token':id_token}
-        accept = requests.post('http://127.0.0.1:8000/api/accounts/kakao/login/finish', data=data)
-        accept_status = accept.status_code
-
-        # 뭔가 중간에 문제가 생기면 에러
-        if accept_status != 200:
-            return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
-        
-        accept_json = accept.json()
-        accept_json.pop('user', None)
-        return JsonResponse(accept_json)
-
+        user_serializer = UserSerializer(user).data
+        res = Response(
+            {
+                "message" : "login success",
+                "user" : user_serializer,
+                "email":email,
+                "token" : {
+                    "access":access_token,
+                    "refresh":refresh_token,
+                },
+            },
+            status = status.HTTP_200_OK,
+        )
+        res.set_cookie("accessToken", value=access_token, max_age=None, expires=None, 
+                       secure=True, samesite="None", httponly=True)
+        res.set_cookie("refreshToken", value=refresh_token, max_age=None, expires=None, 
+                       secure=True, samesite="None",httponly=True)
+        return res
     except User.DoesNotExist:
-        # 전달받은 이메일로 기존에 가입된 유저가 아예 없으면 => 새로 회원가입 & 해당 유저의 jwt 발급
-        data = {'access_token': access_token, 'code': code, 'id_token':id_token}
-        accept = requests.post('http://127.0.0.1:8000/api/accounts/kakao/login/finish', data=data)
-        accept_status = accept.status_code
+        user = User.objects.create_user(email=email)
+        user.user_email = email
+        user.user_nickname = None
+        user.save()
+        user_serializer = UserSerializer(user).data        
+        res = Response(
+            {
+                "message" : "register success",
+                "user" : user_serializer,
+                "email":email,
+                "token" : {
+                    "access":access_token,
+                    "refresh":refresh_token,
+                },
+            },
+            status = status.HTTP_200_OK,
+        )
+        res.set_cookie("accessToken", value=access_token, max_age=None, expires=None, 
+                       secure=True, samesite="None", httponly=True)
+        res.set_cookie("refreshToken", value=refresh_token, max_age=None, expires=None, 
+                       secure=True, samesite="None",httponly=True)
+        return res
 
-        # 뭔가 중간에 문제가 생기면 에러
-        if accept_status == 200:
-            return JsonResponse({'err_msg': 'failed to signup'}, status=accept_id)
+@api_view(['GET'])
+def kakao_logout(self):
+    response = Response(
+        {
+            "message":"Logout success"
+        }, status = status.HTTP_202_ACCEPTED
+    )
+    response.delete_cookie('accessToken')
+    response.delete_cookie('refreshToken')
 
-        accept_json = accept.json()
-        accept_json.pop('user', None)
-        return JsonResponse(accept_json)
-        
-    except SocialAccount.DoesNotExist:
-    	# User는 있는데 SocialAccount가 없을 때 (=일반회원으로 가입된 이메일일때)
-        return JsonResponse({'err_msg': 'email exists but not social user'}, status=status.HTTP_400_BAD_REQUEST)
-    '''
+    return response
 
-    return JsonResponse(profile_json)
+
+@api_view(['GET'])
+def kakao_withdraw(request):
+    access = request.COOKIES['access']
+    payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
+    email = payload.get('email')
+    user = get_object_or_404(User, email=email)
+    userManager = UserManager()
+    userManager.delete(email=email)
+    
+    res = Response(
+            {
+                "message" : "withdraw success",
+            },
+            status = status.HTTP_200_OK,
+        )
+    
+    return res
+
+
+#필요한지는 잘 모르겠는데 일단 token기반으로 profile 받아오는거 메소드 구현
+'''
+def user_profile(request):
+    try:
+        access = request.COOKIES['access']
+        payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
+        email = payload.get('email')
+        user = get_object_or_404(User, email=email)
+        serializer = UserSerializer(instance=user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except(jwt.exceptions.ExpiredSignatureError):
+        data = {'refresh':request.COOKIES.get('refresh',None)}
+        serializer = TokenRefreshSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            access = serializer.data.get('access',None)
+            refresh = serializer.data.get('refresh', None)
+            payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
+            email = payload.get('email')
+            user = get_object_or_404(User, email=email)
+            serializer = UserSerializer(instance=user)
+            res=Response(serializer.data, status=status.HTTP_200_OK)
+            res.set_cookie('access',access)
+            res.set_cookie('refresh', refresh)
+            return res
+
+'''
