@@ -93,7 +93,7 @@ def kakao_callback(request):
         res.set_cookie("refreshToken", value=refresh_token, max_age=None, expires=None, 
                        secure=True, samesite="None",httponly=True)
         return res
-
+ 
 
 KAKAO_LOGOUT_URL="http://127.0.0.1:8000/api/accounts/kakao/logout_callback"
 def kakao_logout(request):
