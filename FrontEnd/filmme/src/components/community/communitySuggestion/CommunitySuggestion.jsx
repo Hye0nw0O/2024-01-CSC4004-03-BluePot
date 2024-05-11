@@ -65,106 +65,93 @@ function CommunitySuggestion() {
         {
             id: 1,
             title: "가짜데이터",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 2,
             title: "이게 진짜 데이터 같냐?",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 1
         },
         {
             id: 3,
             title: "아니걸랑용~",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 4,
             title: "모라하더라 가짜데이터를",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 5,
             title: "무튼 가짜데이터임 아직",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 1
         },
         {
             id: 6,
             title: "하아아아아",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 7,
             title: "왜 안 될까 ㅠ",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 8,
             title: "되면 좋겠다 ...",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 9,
             title: "아 더미데이터!! 라 한다 !!",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 10,
             title: "후후",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 11,
             title: "지금 십센치 노래 듣는 중",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 12,
             title: "곧 잔나비 거 들어야지",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         },
         {
             id: 13,
             title: "그러고 자야지..",
-            name: "에무시네마",
-            date: "2024/10/24 23:00",
-            like: 17,
-            comment_cnt: 5
+            cinema: "에무시네마",
+            created_at: "2024/10/24 23:00",
+            reflected_status: 0
         }
 
         // 추가.....
