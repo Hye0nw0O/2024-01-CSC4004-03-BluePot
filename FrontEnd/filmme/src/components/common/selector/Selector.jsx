@@ -1,13 +1,14 @@
 import React from "react";
 import * as S from "./style";
+import OptionArrow from "../../../assets/images/Common/option_arrow.svg"
 
 function Selector({ options, getCurrentOption }) {
-  const onChagne = e => {
+  const onChange = e => {
     getCurrentOption(e.target.value);
   };
   return (
     <>
-      <S.SelectorSelect onChange={onChagne}>
+      <S.SelectorSelect onChange={onChange}>
         {options.map((option, idx) => (
           <S.SelectorOption value={option.value} key={idx}>
             {option.title}
