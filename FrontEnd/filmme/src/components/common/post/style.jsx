@@ -16,12 +16,13 @@ const fadeInAnimation = keyframes`
 `;
 
 export const PostListWrap = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   animation: ${fadeInAnimation} 0.5s ease-in-out;
+  position: relative; 
 `;
 
 // 헤더 (글쓰기, 정렬순)
@@ -32,7 +33,8 @@ export const PostListHeaderWrapper = styled.div`
 export const PostListHeader = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
   width: 100%;
 `;
 
@@ -56,6 +58,10 @@ export const PostListHeaderWriteContent = styled.div`
   align-items: center;
 
   cursor: pointer;
+
+  position: absolute;
+  bottom: -5rem;
+  right: 0;
 
   :hover {
     color: white;
