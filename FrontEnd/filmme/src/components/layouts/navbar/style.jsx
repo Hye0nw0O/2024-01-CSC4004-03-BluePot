@@ -54,7 +54,7 @@ export const NavTabWrapper = styled.div`
 
 export const NavTab = styled(NavLink)`
     display: flex;
-    font-size: ${({ isOpen }) => (isOpen ? '16px' : '20px')};
+    font-size: ${({ isOpen }) => (isOpen ? '16px' : '16px')};
     flex-direction: column;
     justify-content: center;
     align-items: center;
