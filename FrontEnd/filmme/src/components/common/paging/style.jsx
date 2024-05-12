@@ -15,7 +15,6 @@ export const PagingNoPage = styled.div`
 `;
 
 export const Nav = styled.nav`
-    position: absolute;
     bottom: -1.5rem;
     width: 100%;
     display: flex;
