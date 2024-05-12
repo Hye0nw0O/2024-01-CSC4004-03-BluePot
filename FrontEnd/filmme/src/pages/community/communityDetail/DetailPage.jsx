@@ -33,8 +33,8 @@ function DetailPage() {
 
     // 댓글 더미 데이터
     const dummyComments = [
-      { id: 1, text: "첫 번째 댓글입니다!" },
-      { id: 2, text: "두 번째 댓글입니다!" }
+      { id: 1, text: "첫 번째 댓글입니다!", writer: "홍길동", created_at: "2023-05-12" },
+      { id: 2, text: "두 번째 댓글입니다!", writer: "이순신", created_at: "2023-05-12" }
     ];
 
     useEffect(() => {
@@ -52,10 +52,25 @@ function DetailPage() {
       }); // 상세 정보 초기화
     }, []);
 
+
+    const addComment = (text) => {
+      const newComment = {
+          id: Math.random(), // 임시 ID 생성
+          text: text,
+          writer: "익명", // 작성자 정보 (임시로 설정)
+          created_at: new Date().toISOString()
+      };
+      setComments(prevComments => [...prevComments, newComment]);
+    };
+
+    const deleteComment = (id) => {
+        setComments(prevComments => prevComments.filter(comment => comment.id !== id));
+    };
+
     // 댓글 렌더링
     const renderComment = () => {
       return comments.length === 0 ? (
-        <>작성된 답변이 없습니다.</>
+        <>작성된 댓글이 없습니다.</>
       ) : (
         <>
           <CommunityCommentList
@@ -100,9 +115,9 @@ function DetailPage() {
           <S.DetailViewText>조회수 {detail.view_cnt}</S.DetailViewText>
 
           {/* 댓글 입력 */}
-          <S.DetailCommentHeader>답변 {detail.comments_cnt}</S.DetailCommentHeader>
+          <S.DetailCommentHeader>댓글 {detail.comments_cnt}</S.DetailCommentHeader>
           <CommentWrite
-            id={detail.id}
+            addComment={addComment}
           />
           {renderComment()}
         </S.DetailContentWrapper>
