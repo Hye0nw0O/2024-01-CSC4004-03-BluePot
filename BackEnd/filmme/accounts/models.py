@@ -24,7 +24,6 @@ class UserManager(BaseUserManager):
         superuser.save(using=self._db)
         return superuser
 
-
 # AbstractBaseUser를 상속해서 유저 커스텀
 class User(AbstractBaseUser, PermissionsMixin):
     
