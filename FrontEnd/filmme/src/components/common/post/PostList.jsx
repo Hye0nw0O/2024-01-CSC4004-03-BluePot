@@ -3,6 +3,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import * as S from "./style";
 
+import Likes from '../../../assets/images/Community/thumb.svg';
+import Comments from '../../../assets/images/Community/comment.svg';
+
 // 컴포넌트
 import Selector from "../selector/Selector";
 import Paging from "../paging/Paging";
@@ -29,10 +32,11 @@ const PostList = ({
   let thList = [];
   switch (use) {
     case "communityCommon":
-      thList = ["번호", "제목", "등록일시", "좋아요", "조회수"];
+      // 조회수 추가해야 함
+      thList = ["번호", "제목", "등록일시", "좋아요", "댓글수"];
       break;
     case "communityReviews":
-      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "조회수"];
+      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "댓글수"];
       break;
     case "communitySuggestions":
       thList = ["번호", "제목", "등록일시", "답변 여부"];
@@ -86,6 +90,17 @@ const PostList = ({
     <>
       <S.PostListWrap>
         <S.PostListHeader>
+          {/* 금주의 인기글 표시 */}
+          <S.PopularPostsSection>
+          {use === "communityCommon" || use === "communityReviews" ? (
+              <S.PopularPostsHeader>
+                🍿 금주의 인기글
+                <S.PopularPostsList>
+                  이거다
+                </S.PopularPostsList>
+              </S.PopularPostsHeader>
+          ) : null}
+          </S.PopularPostsSection>
           <S.PostListHeaderWrapper>
             {cinemaOption != "" ? (
               <S.Select
@@ -116,8 +131,10 @@ const PostList = ({
             <></>
           )}
         </S.PostListHeader>
+        
 
         {/* */}
+
         <S.PostListTable>
             <S.PostListTableThead>
                 <S.PostListTableTr>
@@ -163,11 +180,11 @@ const PostList = ({
                         ) : null}
 
                         {ifThListContain("좋아요") ? (
-                            <S.PostListTableTd>{data.likes_cnt}</S.PostListTableTd>
+                            <S.PostListTableTd><img src={Likes} alt="좋아요수" />{data.likes_cnt}</S.PostListTableTd>
                         ) : null}
 
-                        {ifThListContain("조회수") ? (
-                            <S.PostListTableTd>{data.view_cnt}</S.PostListTableTd>
+                        {ifThListContain("댓글수") ? (
+                            <S.PostListTableTd><img src={Comments} alt="댓글수" />{data.view_cnt}</S.PostListTableTd>
                         ) : null}
 
                         {ifThListContain("답변 여부") ? (

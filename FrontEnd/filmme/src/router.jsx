@@ -10,6 +10,10 @@ import Landing from './pages/landing/Landing';
 // 커뮤니티 관련
 import DetailPage from "./pages/community/communityDetail/DetailPage";
 import CommunityCreatPost from "./pages/community/communityCreatePost/CommunityCreatePost";
+import CommunityEdit from "./pages/community/communityEdit/CommunityEdit";
+import CommunitySearch from './components/community/communitySearch/CommunitySearch';
+import CommunitySearchDetail from './pages/community/communitySearchDetail/CommunitySearchDetail';
+
 
 const router = createBrowserRouter([
     {
@@ -47,6 +51,14 @@ const router = createBrowserRouter([
         {
             path: "community/create",
             element: <CommunityCreatPost />
+        },
+        {
+            path: "community/edit/:id",
+            element: <CommunityEdit />
+        },
+        {
+            path: "community-search",
+            element: <CommunitySearchDetail />
         },
         ],
     },

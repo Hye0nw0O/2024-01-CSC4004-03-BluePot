@@ -25,18 +25,20 @@ export const PostListWrap = styled.div`
   position: relative; 
 `;
 
-// 헤더 (글쓰기, 정렬순)
+export const PostListHeader = styled.div`
+  display: flex;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  flex-direction: column;
+
+`;
+
 export const PostListHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-export const PostListHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  width: 100%;
-`;
+
 
 export const PostListHeaderWrite = styled.div`
   :hover {
@@ -76,9 +78,12 @@ export const StyledPencilIcon = styled(BiSolidPencil)`
 
 export const PostListHeaderSort = styled.div`
   display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 1rem;
 `;
 
-// 이용꿀팁 목록
+
 export const PostListTable = styled.table`
   margin: 0 auto;
   width: 100%;
@@ -93,14 +98,14 @@ export const PostListTableTr = styled.tr``;
 export const PostListTableTh = styled.th`
   font-family: 'Pretendard-Medium';
   padding: 2rem;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   border-bottom: 2px solid #f0f0f0;
 `;
 
 export const PostListTableTd = styled.td`
   font-family: 'Pretendard-Medium';
   padding: 2rem;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   border-bottom: 2px solid #f0f0f0;
   text-align: center;
 `;
@@ -108,12 +113,12 @@ export const PostListTableTd = styled.td`
 export const StatusText = styled.p`
   font-family: 'Pretendard-Medium';
   color: ${props => props.color};
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 `;
 
 export const PostListTableTdTitle = styled.td`
   padding: 2rem;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   border-bottom: 2px solid #f0f0f0;
   text-align: flex-start;
 `;
@@ -230,4 +235,30 @@ export const PostListMobileContent = styled.div`
   font-size: 1.5rem;
   margin-right: 1rem;
   color: gray;
+`;
+
+
+// 금주의 인기글
+// style.js
+
+export const PopularPostsSection = styled.div`
+display: flex;
+align-items: center;
+`;
+
+export const PopularPostsHeader = styled.div`
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+`;
+
+export const ControlSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const PopularPostsList = styled.div `
+  margin-top: 2rem;
 `;
