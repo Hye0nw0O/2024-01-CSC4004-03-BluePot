@@ -5,16 +5,25 @@ import { useNavigate } from "react-router-dom";
 // import { useRecoilState } from "recoil";
 // import axios from "../../../api/axios";
 
-function CommentWrite({ isUser, id, fetchDetail, fetchComments }) {
+function CommentWrite({ isUser, id, fetchDetail, fetchComments, addComment }) {
     // const [userInfo, setUserInfo] = useRecoilState(userState);
     // const navigate = useNavigate();
     const [content, setContent] = useState("");
 
-    const sumbitComment = async e => {
-        if (content === "") {
-        alert("댓글을 입력해주세요.");
-        return;
-        }
+    const sumbitComment = e => {
+        // if (content === "") {
+        // alert("댓글을 입력해주세요.");
+        // return;
+        // }
+            e.preventDefault();
+            if (content.trim() === "") {
+                alert("댓글을 입력해주세요.");
+                return;
+            }
+            addComment(content);  // 부모 컴포넌트에서 전달받은 함수를 사용
+            setContent("");       // 입력 필드 초기화
+            alert("댓글이 등록되었습니다.");
+        };
 
         // 댓글 등록
         // try {
@@ -42,10 +51,11 @@ function CommentWrite({ isUser, id, fetchDetail, fetchComments }) {
     // };
 
         // 댓글 등록 로컬용
-        console.log("댓글 등록: ", content);
-        setContent("");
-        alert("댓글이 등록되었습니다.");
-    };
+        // console.log("댓글 등록: ", content);
+        // setContent("");
+        // alert("댓글이 등록되었습니다.");
+        // fetchComments();  // 댓글 목록 갱신을 위해 fetchComments 호출
+
 
     // return !userInfo ? (
     //     <>
@@ -66,7 +76,7 @@ function CommentWrite({ isUser, id, fetchDetail, fetchComments }) {
         <>
         <S.DetailCommentInputWrapper>
             <S.DetailCommentInput
-            placeholder="답변을 작성해보세요."
+            placeholder="댓글을 작성해보세요!"
             onChange={e => setContent(e.target.value)}
             required
             value={content}
