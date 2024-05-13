@@ -27,3 +27,38 @@ class CommunityOrderingFilter(filters.OrderingFilter):
             # 기본은 최신순으로 설정
             return queryset.order_by('-created_at')
         
+# 게시물 작성 & 수정
+class CommunityPostViewSet(viewsets.GenericViewSet,
+                            mixins.CreateModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin
+                            ):
+    serializer_class = CommunityCreateUpdateSerializer
+
+    queryset = Community.objects.all()
+
+    # def get_permissions(self):
+    #     if self.action in ['create']:
+    #         return [IsAuthenticated()]
+    #     else:
+    #         return [IsOwnerOrReadOnly()]
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data
+        
+        if 'title' in data or 'content' in data:
+            instance.title = data.get('title', instance.title)
+            instance.content = data.get('content', instance.content)
+            instance.updated_at = timezone.now()
+            instance.save()
+            
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.view_cnt += 1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
