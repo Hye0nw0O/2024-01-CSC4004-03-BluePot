@@ -15,3 +15,15 @@ class Star_Cinema_List(APIView): # star - desc
         cinemas = Cinema.objects.all().order_by('-star')
         serializer = Cinema_Serializer(cinemas, many = True)
         return Response(serializer.data)
+    
+class Name_Cinema_List(APIView): # abcd... - asc
+    def get(self, request):
+        cinemas = Cinema.objects.all().order_by('name')
+        serializer = Cinema_Serializer(cinemas, many = True)
+        return Response(serializer.data)
+    
+class Like_Cinema_List(APIView): # like - asc
+    def get(self, request):
+        cinemas = Cinema.objects.all().order_by('-like')
+        serializer = Cinema_Serializer(cinemas, many = True)
+        return Response(serializer.data)

@@ -14,4 +14,5 @@ class Cinema(models.Model):
     # pictuer -> 오류
     cite_URl = models.URLField(max_length=200)
     star = models.DecimalField(max_digits=2, decimal_places=1)
+    like = models.IntegerField(default=0)
     # movie_list -> ?
