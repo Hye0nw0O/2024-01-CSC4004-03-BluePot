@@ -1,6 +1,12 @@
 import styled, { css } from "styled-components";
 
-export const MainWrapper = styled.div`
+export const MainWrapper = styled.div `
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+`;
+
+export const TitleWrapper = styled.div`
     display: flex;
     margin-right: 70vw;
 `;
@@ -27,10 +33,11 @@ export const subTitle = styled.div `
     font-style: normal;
 `;
 
+//검색창
 export const searchBox= styled.div `
-    position: absolute;
-    left: 20.5%;
-    top: 46%;
+    display: flex;
+    margin-left: 20rem;
+    margin-top: 6rem;
     width: 908px;
     height: 59px;
     background-color: #fff;
@@ -40,12 +47,12 @@ export const searchBox= styled.div `
 `;
 
 export const search = styled.div `
-    position: absolute;
+    display: flex;
     font-family: Pretendard-Medium;
     color: #161835;
     transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
+    margin-left: 66rem;
+    margin-top: -3rem;
     width: 230px;
     height: 24px;
     font-size: 20px;
@@ -55,252 +62,62 @@ export const search = styled.div `
 `;
 
 export const searchImage = styled.img `
-    position: absolute;
+    display: flex;
     transform: translateY(-50%);
-    left: 24%;
-    right: 92.56%;
-    top: 50%;
+    margin-left: 22rem;
+    margin-top: -2rem;
     width: 24px;
     height: 24px;
 `;
 
+//지역 선택
 export const regionContainer = styled.div`
-    position: absolute;
-    left: 0;
-    top: 94px;
-    width: 833px;
+    display: flex;
+    margin-left: 20rem;
+    width: 950px;
     height: 94px;
     display: flex;
-`;
-
-export const regionBackground1 = styled.div`
-    position: absolute;
-    left: 37.5%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #161835;
-    color: #fff;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground2 = styled.div`
-    position: absolute;
-    left: 50%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground3 = styled.div`
-    position: absolute;
-    left: 62.5%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground4 = styled.div`
-    position: absolute;
-    left: 75%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground5 = styled.div`
-    position: absolute;
-    left: 87.5%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground6 = styled.div`
-    position: absolute;
-    left: 100%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground7 = styled.div`
-    position: absolute;
-    left: 112.5%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground8 = styled.div`
-    position: absolute;
-    left: 125%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground9 = styled.div`
-    position: absolute;
-    left: 137.5%;
-    top: 350%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground10 = styled.div`
-    position: absolute;
-    left: 37.5%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground11 = styled.div`
-    position: absolute;
-    left: 50%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground12 = styled.div`
-    position: absolute;
-    left: 62.5%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground13 = styled.div`
-    position: absolute;
-    left: 75%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground14 = styled.div`
-    position: absolute;
-    left: 87.5%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground15 = styled.div`
-    position: absolute;
-    left: 100%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground16 = styled.div`
-    position: absolute;
-    left: 112.5%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground17 = styled.div`
-    position: absolute;
-    left: 125%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
-`;
-
-export const regionBackground18 = styled.div`
-    position: absolute;
-    left: 137.5%;
-    top: 410%;
-    width: 75px;
-    height: 39px;
-    background-color: #fff;
-    color: #161835;
-    border: 1px solid #161835;
-    border-radius: 9px;
+    flex-wrap: wrap;
 `;
 
 export const region = styled.div`
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    width: 47px;
-    height: 33px;
+    display: flex;
+    margin-right: 3rem;
+    margin-top: 1rem;
+    width: 75px;
+    height: 39px;
+    background-color: #fff;
+    color: #161835;
+    border: 1px solid #161835;
+    border-radius: 9px;
     font-size: 14px;
     font-family: 'Pretendard';
     font-weight: 600;
     text-align: center;
-    display: flex;
     flex-direction: column;
     justify-content: center;
+
+    &:hover {
+        background-color: #161835;
+        color: #fff;
+    }
+    ${props =>
+        props.isActive &&
+        css`
+            background-color: #161835;
+            color: #fff;
+        `}
+`;
+
+//영화관 선택
+export const TheaterBox = styled.div `
+    display: flex;
+    margin-left: 20rem;
+    margin-top: 10rem;
+    width: 286px;
+    height: 361px;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    margin-bottom: 2rem;
 `;
