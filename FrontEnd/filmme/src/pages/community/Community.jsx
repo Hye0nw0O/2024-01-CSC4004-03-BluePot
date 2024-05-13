@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import * as S from "./style.jsx";
 
+import CommunitySearch from "../../components/community/communitySearch/CommunitySearch";
+
 import CommunitySuggestion from "../../components/community/communitySuggestion/CommunitySuggestion";
 import CommunityCommon from "../../components/community/communityCommon/CommunityCommon";
 import CommunityReview from "../../components/community/communityReview/CommunityReview";
@@ -25,6 +27,8 @@ function Community() {
                 <S.CommunityTitle>Community</S.CommunityTitle>
                 <S.CommunitySubTitle>어쩌구 커뮤니티에 관한 설명 어쩌구</S.CommunitySubTitle>
             </S.CommunityHeaderWrapper>
+
+            <CommunitySearch/>
 
             <S.CommunityContentWrapper>
                 <S.CommunityContentCategory>
