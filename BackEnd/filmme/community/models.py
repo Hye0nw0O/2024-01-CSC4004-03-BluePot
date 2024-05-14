@@ -8,7 +8,7 @@ def community_image_upload_path(instance, filename):
 
 class Community(models.Model):
     id = models.AutoField(primary_key=True)
-    # cinema = models.ForeignKey(Cinema, blank=False, null=True, on_delete=models.CASCADE, related_name='community_cinema')
+    cinema = models.ForeignKey(Cinema, blank=False, null=True, on_delete=models.CASCADE, related_name='community_cinema')
     CATEGORY_LIST = (
         ('common', 'common'),
         ('cinema_tip', 'cinema_tip'),
