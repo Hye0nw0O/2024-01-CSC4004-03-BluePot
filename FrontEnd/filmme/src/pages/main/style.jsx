@@ -48,26 +48,29 @@ export const searchBox= styled.div `
     opacity: 0.4;
 `;
 
-export const search = styled.div `
+export const Input = styled.input `
     display: flex;
     font-family: Pretendard-Medium;
-    color: #161835;
     transform: translate(-50%, -50%);
-    margin-left: 80rem;
-    margin-top: -3rem;
+    margin-left: 45rem;
+    margin-top: 2.8rem;
     width: 230px;
     height: 24px;
     font-size: 20px;
     line-height: 24px;
     font-weight: 500;
     text-align: center;
+
+    &::placeholder {
+        color: black;
+    }
 `;
 
 export const searchImage = styled.img `
     display: flex;
     transform: translateY(-50%);
     margin-left: 32rem;
-    margin-top: -2rem;
+    margin-top: -2.8rem;
     width: 24px;
     height: 24px;
 `;
