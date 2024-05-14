@@ -11,10 +11,10 @@ class UserManager(BaseUserManager):
         )
         user.save(using=self._db)
         return user
-
-    def create_superuser(self, email=None):
+    
+    def create_superuser(self, email):
         superuser = self.create_user(
-            email=email,
+            email=email
         )
         
         superuser.is_staff = True
@@ -24,6 +24,12 @@ class UserManager(BaseUserManager):
         superuser.save(using=self._db)
         return superuser
 
+    def delete(self, email):
+        user = self.get(email=email)
+        user.delete()
+        return True
+        
+    
 
 # AbstractBaseUser를 상속해서 유저 커스텀
 class User(AbstractBaseUser, PermissionsMixin):
