@@ -3,20 +3,18 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # 헬퍼 클래스
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, **kwargs):
+    def create_user(self, email):
         if not email:
             raise ValueError('Users must have an email address')
         user = self.model(
-            email=email,
+            email=email
         )
-        user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email=None, password=None, **extra_fields):
+    def create_superuser(self, email=None):
         superuser = self.create_user(
             email=email,
-            password=password,
         )
         
         superuser.is_staff = True
@@ -26,13 +24,19 @@ class UserManager(BaseUserManager):
         superuser.save(using=self._db)
         return superuser
 
+
 # AbstractBaseUser를 상속해서 유저 커스텀
 class User(AbstractBaseUser, PermissionsMixin):
     
-    email = models.EmailField(max_length=30, unique=True, null=False, blank=False)
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(max_length=50, unique=True, null=False, blank=False)
+    nickName = models.CharField(max_length=10, default=None, null=True, blank=True)
+    posts = models.TextField(null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
+    likePosts = models.TextField(null=True, blank=True)
+    #필요한 데이터필드 추가
+
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

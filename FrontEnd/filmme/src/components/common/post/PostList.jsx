@@ -3,9 +3,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import * as S from "./style";
 
+import Likes from '../../../assets/images/Community/thumb.svg';
+import Comments from '../../../assets/images/Community/comment.svg';
+
 // 컴포넌트
 import Selector from "../selector/Selector";
-// import Paging from "../paging/Paging";
+import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
 // import NoPage from "../../community/noPage/NoPage";
@@ -29,10 +32,11 @@ const PostList = ({
   let thList = [];
   switch (use) {
     case "communityCommon":
-      thList = ["번호", "제목", "등록일시", "좋아요", "조회수"];
+      // 조회수 추가해야 함
+      thList = ["번호", "제목", "등록일시", "좋아요", "댓글수"];
       break;
     case "communityReviews":
-      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "조회수"];
+      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "댓글수"];
       break;
     case "communitySuggestions":
       thList = ["번호", "제목", "등록일시", "답변 여부"];
@@ -48,20 +52,20 @@ const PostList = ({
   // // 한 페이지당 보여줄 게시글 수
   const itemsPerPage = 10;
 
-  // // 페이지 변경 핸들러
-  // const handlePageChange = pageNumber => {
-  //   setCurrentPage(pageNumber);
-  // };
+  // 페이지 변경 핸들러
+  const handlePageChange = pageNumber => {
+    setCurrentPage(pageNumber);
+  };
 
-  // const [isMobile, setisMobile] = useState(false);
+  const [isMobile, setisMobile] = useState(false);
 
-  // const resizingHandler = () => {
-  //   if (window.innerWidth < 550) {
-  //     setisMobile(true);
-  //   } else {
-  //     setisMobile(false);
-  //   }
-  // };
+  const resizingHandler = () => {
+    if (window.innerWidth < 550) {
+      setisMobile(true);
+    } else {
+      setisMobile(false);
+    }
+  };
 
   const ifThListContain = thTitle => {
     if (thList.includes(thTitle)) {
@@ -71,21 +75,32 @@ const PostList = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (window.innerWidth <= 550) {
-  //     setisMobile(true);
-  //   }
-  //   window.addEventListener("resize", resizingHandler);
+  useEffect(() => {
+    if (window.innerWidth <= 550) {
+      setisMobile(true);
+    }
+    window.addEventListener("resize", resizingHandler);
 
-  //   return () => {
-  //     window.removeEventListener("resize", resizingHandler);
-  //   };
-  // });
+    return () => {
+      window.removeEventListener("resize", resizingHandler);
+    };
+  });
 
   return (
     <>
       <S.PostListWrap>
         <S.PostListHeader>
+          {/* 금주의 인기글 표시 */}
+          <S.PopularPostsSection>
+          {use === "communityCommon" || use === "communityReviews" ? (
+              <S.PopularPostsHeader>
+                🍿 금주의 인기글
+                <S.PopularPostsList>
+                  이거다
+                </S.PopularPostsList>
+              </S.PopularPostsHeader>
+          ) : null}
+          </S.PopularPostsSection>
           <S.PostListHeaderWrapper>
             {cinemaOption != "" ? (
               <S.Select
@@ -103,23 +118,6 @@ const PostList = ({
             ) : (
               <></>
             )}
-            {/* 글 작성 버튼 */}
-            {use != "notice" ? (
-              <S.PostListHeaderWrite>
-                {/* 로그인하지 않은 경우 로그인 페이지로 이동하기 */}
-                <S.PostListHeaderWriteContent
-                  onClick={() => {navigate(writeUrl, {
-                          state: { category: category, cinema: currentCinemaOption }
-                        });
-                  }}
-                >
-                  <S.StyledPencilIcon />
-                  글쓰기
-                </S.PostListHeaderWriteContent>
-              </S.PostListHeaderWrite>
-            ) : (
-              <></>
-            )}
           </S.PostListHeaderWrapper>
 
           {currentOption != "" ? (
@@ -133,8 +131,10 @@ const PostList = ({
             <></>
           )}
         </S.PostListHeader>
+        
 
         {/* */}
+
         <S.PostListTable>
             <S.PostListTableThead>
                 <S.PostListTableTr>
@@ -151,9 +151,10 @@ const PostList = ({
                     >
                         {ifThListContain("번호") ? (
                             <S.PostListTableTd>
-                                {currentOption === "popular" || currentOption === "like"
+                                {/* {currentOption === "popular" || currentOption === "like"
                                     ? idx + 1 + (currentPage - 1) * itemsPerPage
-                                    : count - idx - (currentPage - 1) * itemsPerPage}
+                                    : count - idx - (currentPage - 1) * itemsPerPage} */}
+                                    {data.id}
                             </S.PostListTableTd>
                         ) : null}
 
@@ -162,7 +163,7 @@ const PostList = ({
                                 {data.title}
                                 {data.comments_cnt != undefined ? (
                                     <strong
-                                        style={{ fontSize: "1.6rem", color: "#4285F4" }}
+                                        style={{ fontSize: "1.6rem", color: "#161835" }}
                                     >
                                         [{data.comments_cnt}]
                                     </strong>
@@ -179,14 +180,14 @@ const PostList = ({
                         ) : null}
 
                         {ifThListContain("좋아요") ? (
-                            <S.PostListTableTd>{data.likes_cnt}</S.PostListTableTd>
+                            <S.PostListTableTd><img src={Likes} alt="좋아요수" />{data.likes_cnt}</S.PostListTableTd>
                         ) : null}
 
-                        {ifThListContain("조회수") ? (
-                            <S.PostListTableTd>{data.view_cnt}</S.PostListTableTd>
+                        {ifThListContain("댓글수") ? (
+                            <S.PostListTableTd><img src={Comments} alt="댓글수" />{data.view_cnt}</S.PostListTableTd>
                         ) : null}
 
-                        {ifThListContain("반영여부") ? (
+                        {ifThListContain("답변 여부") ? (
                             <S.PostListTableTd>
                                 {data.reflected_status === 0 ? (
                                     <S.StatusText color="#0057FF">답변 완료</S.StatusText>
@@ -198,14 +199,32 @@ const PostList = ({
                     </S.PostListTableTrContent>
                 ))}
             </S.PostListTableTbody>
+
         </S.PostListTable>
+                {/* 글 작성 버튼 */}
+                {use != "notice" ? (
+        <S.PostListHeaderWrite>
+          {/* 로그인하지 않은 경우 로그인 페이지로 이동하기 */}
+          <S.PostListHeaderWriteContent
+            onClick={() => {navigate(writeUrl, {
+              state: { category: category, cinema: currentCinemaOption }
+              });
+          }}
+          >
+          <S.StyledPencilIcon />
+            글쓰기
+          </S.PostListHeaderWriteContent>
+          </S.PostListHeaderWrite>
+          ) : (
+          <></>
+        )}
         {/* 페이지네이션 컴포넌트 사용 */}
-          {/* <Paging
+          <Paging
             page={currentPage}
             count={count}
             postPerPage={itemsPerPage}
             setPage={handlePageChange}
-          /> */}
+          />
       </S.PostListWrap>
     </>
   );

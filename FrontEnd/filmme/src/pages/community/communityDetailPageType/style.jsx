@@ -7,7 +7,6 @@ export const DetailPageType = styled.div`
     flex-direction: row;
     align-items: center;
     margin-bottom: 1rem;
-    color: ${props => props.theme.colors.primary1};
 `;
 
 export const RightArrowBlueIcon = styled.img`

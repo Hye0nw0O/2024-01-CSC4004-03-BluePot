@@ -6,9 +6,11 @@ export const MainWrapper = styled.div `
     gap: 21px;
 `;
 
+//Title
 export const TitleWrapper = styled.div`
     display: flex;
     margin-right: 70vw;
+    margin-left: 15rem;
 `;
 
 export const Title = styled.div `
@@ -28,7 +30,7 @@ export const subTitle = styled.div `
     width: 140%;
     margin-top: 10.5vw;
     font-size: 13px;
-    margin-left: -8.8vw;
+    margin-left: -15vw;
     text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
     font-style: normal;
 `;
@@ -36,7 +38,7 @@ export const subTitle = styled.div `
 //검색창
 export const searchBox= styled.div `
     display: flex;
-    margin-left: 20rem;
+    margin-left: 30rem;
     margin-top: 6rem;
     width: 908px;
     height: 59px;
@@ -46,26 +48,29 @@ export const searchBox= styled.div `
     opacity: 0.4;
 `;
 
-export const search = styled.div `
+export const Input = styled.input `
     display: flex;
     font-family: Pretendard-Medium;
-    color: #161835;
     transform: translate(-50%, -50%);
-    margin-left: 66rem;
-    margin-top: -3rem;
+    margin-left: 45rem;
+    margin-top: 2.8rem;
     width: 230px;
     height: 24px;
     font-size: 20px;
     line-height: 24px;
     font-weight: 500;
     text-align: center;
+
+    &::placeholder {
+        color: black;
+    }
 `;
 
 export const searchImage = styled.img `
     display: flex;
     transform: translateY(-50%);
-    margin-left: 22rem;
-    margin-top: -2rem;
+    margin-left: 32rem;
+    margin-top: -2.8rem;
     width: 24px;
     height: 24px;
 `;
@@ -73,7 +78,7 @@ export const searchImage = styled.img `
 //지역 선택
 export const regionContainer = styled.div`
     display: flex;
-    margin-left: 20rem;
+    margin-left: 30rem;
     width: 950px;
     height: 94px;
     display: flex;
@@ -110,14 +115,9 @@ export const region = styled.div`
 `;
 
 //영화관 선택
-export const TheaterBox = styled.div `
-    display: flex;
-    margin-left: 20rem;
-    margin-top: 10rem;
-    width: 286px;
-    height: 361px;
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    border-radius: 10px;
-    margin-bottom: 2rem;
+export const TheaterContainer = styled.div `
+    display: flex;    
+    flex-wrap: wrap;
+    width: 1400px;
+    margin-left: 15rem;
 `;
