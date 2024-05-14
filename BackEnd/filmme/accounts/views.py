@@ -24,7 +24,6 @@ def kakao_login(request):
 
 @api_view(['GET'])
 def kakao_callback(request):
-
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     client_secret = SOCIAL_AUTH_KAKAO_SECRET
     code=request.GET.get("code")
@@ -103,27 +102,38 @@ def kakao_logout(request):
 def kakao_logout_callback(request):
     #쿠키에 access token이랑 refresh token이 남아있을거같은데.. 무튼 로그아웃은 됩니다.
     #일단은 로그인화면으로 다시 보내는데, 메인 페이지로 보내줄지는 의논
-    return redirect("http://127.0.0.1:8000/api/accounts/kakao/login")        
+    return redirect("http://127.0.0.1:8000/api")        
 
-'''
+
 @api_view(['GET'])
-def kakao_withdraw(request):
-    access = request.COOKIES['access']
-    payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
-    email = payload.get('email')
-    user = get_object_or_404(User, email=email)
-    userManager = UserManager()
-    userManager.delete(email=email)
+def kakao_delete(request):
+    access = request.COOKIES['accessToken']
+    kakao_profile_request = requests.post(
+        "https://kapi.kakao.com/v2/user/me",
+        headers={"Authorization":f"Bearer {access}"},
+    )
+    kakao_profile_json = kakao_profile_request.json()
+
+    kakao_account = kakao_profile_json.get("kakao_account")
+    email = kakao_account.get("email", None)
     
-    res = Response(
-            {
-                "message" : "withdraw success",
-            },
-            status = status.HTTP_200_OK,
-        )
-    
-    return res
-'''
+    user = User.objects.get(email=email)
+    if(User.objects.delete(email) == True):
+        res = Response(
+                {
+                    "message" : "delete success",
+                },
+                status = status.HTTP_200_OK,
+            )
+        return res
+    else:
+        res = Response(
+                {
+                    "message" : "user dose not exist",
+                },
+                status = status.HTTP_404_NOT_FOUND,
+            )
+        return res
 
 #필요한지는 잘 모르겠는데 일단 token기반으로 profile 받아오는거 메소드 구현
 '''
