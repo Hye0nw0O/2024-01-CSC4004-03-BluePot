@@ -18,7 +18,7 @@ export const CardWrapper = styled(Link)`
 `;
 
 export const CardImg = styled.img`
-  width: 286px;
+  width: 285px;
   height: 258px;
   border-radius: 10px 10px 0px 0px;
 `;
