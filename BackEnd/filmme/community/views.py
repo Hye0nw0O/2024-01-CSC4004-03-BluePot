@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins, filters, status
+from rest_framework import viewsets, mixins, filters, status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
@@ -15,6 +15,10 @@ from .paginations import CommunityCommentPagination, CommunityPagination
 from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
+#리스트 생성
+class CommunityListCreate(generics.ListCreateAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunityCreateUpdateSerializer
 # 정렬 기능
 class CommunityOrderingFilter(filters.OrderingFilter):
     def filter_queryset(self, request, queryset, view):
