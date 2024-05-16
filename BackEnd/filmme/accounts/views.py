@@ -43,7 +43,7 @@ def kakao_callback(request):
 
     kakao_account = kakao_profile_json.get("kakao_account")
     email = kakao_account.get("email", None)
-    
+    nickName = email.split('@')[0]
     if email is None:
         return JsonResponse({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)        
     
@@ -70,9 +70,7 @@ def kakao_callback(request):
                        secure=True, samesite="None",httponly=True)
         return res
     except User.DoesNotExist:
-        user = User.objects.create_user(email=email)
-        user.user_email = email
-        user.user_nickname = None
+        user = User.objects.create_user(email=email,nickName = nickName)
         user.save()
         user_serializer = UserSerializer(user).data        
         res = Response(
