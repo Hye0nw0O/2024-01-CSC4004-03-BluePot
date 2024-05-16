@@ -11,6 +11,7 @@ function Main() {
     const [filteredTheaters, setFilteredTheaters] = useState([]);
     const [isPlaceholderHidden, setIsPlaceholderHidden] = useState(false);
     const [sortBy, setSortBy] = useState("latest");
+    const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
     const sortOptions = [
@@ -42,7 +43,6 @@ function Main() {
 
     // 지역 선택
     const renderRegions = () => {
-        const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
         return regionNames.map((regionName, index) => (
             <S.region
@@ -81,7 +81,13 @@ function Main() {
 
     // 영화관 리스트
     const ViewTheater = () => {
-        return filteredTheaters.map(theater => (
+        let theatersToDisplay = filteredTheaters;
+
+        if (clickedRegion !== 0) {
+            theatersToDisplay = filteredTheaters.filter(theater => theater.region === regionNames[clickedRegion]);
+        }
+
+        return theatersToDisplay.map(theater => (
             <Card
                 key={theater.id}
                 id={theater.id}

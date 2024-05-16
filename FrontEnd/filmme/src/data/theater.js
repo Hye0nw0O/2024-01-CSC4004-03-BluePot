@@ -16,7 +16,7 @@ const theater = [
     {
         id: 2,
         name: '라이카시네마',
-        region: '서울',
+        region: '인천',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
         like: 102,
@@ -26,7 +26,7 @@ const theater = [
     {
         id: 3,
         name: '인디스페이스',
-        region: '서울',
+        region: '경기',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
         like: 101,
@@ -36,7 +36,7 @@ const theater = [
     {
         id: 4,
         name: '하하하',
-        region: '서울',
+        region: '강원',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
         like: 100,
@@ -46,7 +46,7 @@ const theater = [
     {
         id: 5,
         name: '이것도',
-        region: '서울',
+        region: '대전',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
         like: 110,
@@ -56,7 +56,7 @@ const theater = [
     {
         id: 6,
         name: '머지할것이다!!!',
-        region: '서울',
+        region: '세종',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
         like: 112,
