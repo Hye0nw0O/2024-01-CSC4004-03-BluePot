@@ -39,7 +39,7 @@ export const subTitle = styled.div `
 export const searchBox= styled.div `
     display: flex;
     margin-left: 30rem;
-    margin-top: 6rem;
+    margin-top: 4rem;
     width: 908px;
     height: 59px;
     background-color: #fff;
@@ -120,4 +120,21 @@ export const TheaterContainer = styled.div `
     flex-wrap: wrap;
     width: 1400px;
     margin-left: 15rem;
+`;
+
+//정렬버튼
+export const SortContainer = styled.div `
+    display: flex;
+    margin-left: 130rem;
+    
+
+    select {
+        color: #AEAFB9;
+        border-radius: 7px;
+        padding: 0.4rem;
+
+        border: 1px solid #AEAFB9;
+        background: #FFF;
+        box-shadow: 0px 2.776px 2.776px 0px rgba(0, 0, 0, 0.25);
+    }
 `;

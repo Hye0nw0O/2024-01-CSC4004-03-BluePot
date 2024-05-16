@@ -9,7 +9,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 99,
         img: theater1,
     },
 
@@ -19,7 +19,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 102,
         img: theater2,
     },
 
@@ -29,7 +29,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 101,
         img: theater3,
     },
 
@@ -39,7 +39,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 100,
         img: theater3,
     },
 
@@ -49,7 +49,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 110,
         img: theater1,
     },
 
@@ -59,7 +59,7 @@ const theater = [
         region: '서울',
         star: '⭐⭐⭐⭐⭐',
         score: '(42)',
-        like: '102',
+        like: 112,
         img: theater2,
     },
 ];

@@ -8,7 +8,7 @@ export const CardWrapper = styled(Link)`
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 10px;
-  margin: 8rem 10rem 3rem 6rem;
+  margin: 4rem 10rem 3rem 6rem;
   box-shadow: 0px 10px 5px -2px rgba(0, 0, 0, 0.25);
   flex-direction: column;
 
