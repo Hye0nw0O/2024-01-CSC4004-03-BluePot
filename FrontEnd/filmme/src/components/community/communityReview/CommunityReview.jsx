@@ -156,7 +156,7 @@ function CommunityReview() {
             id: 11,
             title: "지금 십센치 노래 듣는 중",
             cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
+            created_at: "2024/05/16 11:00",
             likes_cnt: 17,
             view_cnt: 10,
             comment_cnt: 5

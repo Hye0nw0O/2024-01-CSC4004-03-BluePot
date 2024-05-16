@@ -248,7 +248,7 @@ align-items: center;
 
 export const PopularPostsHeader = styled.div`
   padding-left: 20px;
-  font-size: 16px;
+  font-size: 2.0rem;
   font-weight: bold;
   text-align: left;
 `;
@@ -261,4 +261,5 @@ export const ControlSection = styled.div`
 
 export const PopularPostsList = styled.div `
   margin-top: 2rem;
+  font-size: 1.3rem;
 `;
