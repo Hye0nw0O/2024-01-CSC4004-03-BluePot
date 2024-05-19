@@ -29,7 +29,7 @@ class Detail_Info_Cinema(generics.RetrieveAPIView): # cinema detail info
     queryset = Cinema.objects.all()
     serializer_class = Cinema_Detail
 
-class Like_Cinema(APIView): # like 증가
+class Like_Cinema(APIView): # like 증가. runserver 하고 우하단 POST 버튼 누르면 like 1씩 증가.
     def post(self, request, pk):
         try:
             cinema = Cinema.objects.get(pk=pk)
