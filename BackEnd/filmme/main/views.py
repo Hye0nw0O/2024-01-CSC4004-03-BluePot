@@ -24,6 +24,6 @@ class Like_Cinema_List(APIView): # like - asc
         serializer = Cinema_Serializer(cinemas, many = True)
         return Response(serializer.data)
     
-class Detail_Info_Cinema(generics.RetrieveAPIView):
+class Detail_Info_Cinema(generics.RetrieveAPIView): # cinema detail info
     queryset = Cinema.objects.all()
     serializer_class = Cinema_Detail
