@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import status
 from .models import *
 from .serializers import *
 
@@ -24,6 +25,16 @@ class Like_Cinema_List(APIView): # like - asc
         serializer = Cinema_Serializer(cinemas, many = True)
         return Response(serializer.data)
     
-class Detail_Info_Cinema(generics.RetrieveAPIView):
+class Detail_Info_Cinema(generics.RetrieveAPIView): # cinema detail info
     queryset = Cinema.objects.all()
     serializer_class = Cinema_Detail
+
+class Like_Cinema(APIView): # like 증가. runserver 하고 우하단 POST 버튼 누르면 like 1씩 증가.
+    def post(self, request, pk):
+        try:
+            cinema = Cinema.objects.get(pk=pk)
+            cinema.like += 1
+            cinema.save()
+            return Response({'status' : 'success', 'like' : cinema.like}, status=status.HTTP_200_OK)
+        except Cinema.DoesNotExist:
+            return RecursionError({'error': 'Cinema not found'}, status=status.HTTP_404_NOT_FOUND)
