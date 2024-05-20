@@ -4,4 +4,9 @@ from .models import *
 class Cinema_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Cinema
-        fields = ['name', 'cite_URl', 'star', 'like']
+        fields = ['id', 'name', 'cite_URl', 'star', 'like']
+
+class Cinema_Detail(serializers.ModelSerializer):
+    class Meta:
+        model = Cinema
+        fields = ['name', 'cite_URl', 'star', 'like', 'discription']
