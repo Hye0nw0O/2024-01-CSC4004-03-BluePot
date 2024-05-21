@@ -8,7 +8,7 @@ export const CardWrapper = styled(Link)`
   background-color: #fff;
   border: 1px solid #d9d9d9;
   border-radius: 10px;
-  margin: 8rem 10rem 3rem 6rem;
+  margin: 4rem 10rem 3rem 6rem;
   box-shadow: 0px 10px 5px -2px rgba(0, 0, 0, 0.25);
   flex-direction: column;
 
@@ -49,7 +49,46 @@ export const CardContentName = styled.div`
 export const CardContentRegion = styled.div`
   display: flex;    
   margin-left: 1.3rem;
-  background-color: #AEAFB9;
+  background-color: ${({ region }) => {
+    switch (region) {
+      case '서울':
+        return '#AEAFB9';
+      case '인천':
+        return 'red';
+      case '경기':
+        return 'orange';
+      case '강원':
+        return 'yellow';
+      case '대전':
+        return 'green';
+      case '세종':
+        return 'blue';
+      case '충남':
+        return 'purple';
+      case '충북':
+        return 'red';
+      case '광주':
+        return 'orange';
+      case '전남':
+        return 'yellow';
+      case '전북':
+        return 'green';
+      case '경남':
+        return 'blue';
+      case '경북':
+        return 'purple';
+      case '대구':
+        return 'red';
+      case '부산':
+        return 'orange';
+      case '울산':
+        return 'yellow';
+      case '제주':
+        return 'green';
+      default:
+        return '#AEAFB9'; // 기본 색상
+    }
+  }};
   color: #fff;
   padding: 0px 17px;
   border-radius: 3.28px;

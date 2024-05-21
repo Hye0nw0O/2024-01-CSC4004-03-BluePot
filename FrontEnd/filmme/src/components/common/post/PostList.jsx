@@ -45,7 +45,6 @@ const PostList = ({
 
   // 회원 정보
   const [userInfo, setUserInfo] = useRecoilState(userState);
-
   const navigate = useNavigate();
 
   // //Paging
@@ -56,6 +55,9 @@ const PostList = ({
   const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber);
   };
+
+  // 인기 게시물
+  const [popularPost, setPopularPost] = useState(null);
 
   const [isMobile, setisMobile] = useState(false);
 
@@ -76,6 +78,23 @@ const PostList = ({
   };
 
   useEffect(() => {
+    // 인기 게시물 관련 기능
+      const today = new Date();
+      const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+  
+      if (data && data.length > 0) {
+        const filteredData = data.filter(post => {
+          const postDate = new Date(post.created_at);
+          return postDate >= lastWeek && postDate <= today;
+        });
+  
+        if (filteredData.length > 0) {
+          const highestLikes = filteredData.reduce((prev, current) => {
+            return (prev.likes_cnt > current.likes_cnt) ? prev : current;
+          });
+          setPopularPost(highestLikes);
+        }
+      }
     if (window.innerWidth <= 550) {
       setisMobile(true);
     }
@@ -95,9 +114,16 @@ const PostList = ({
           {use === "communityCommon" || use === "communityReviews" ? (
               <S.PopularPostsHeader>
                 🍿 금주의 인기글
-                <S.PopularPostsList>
-                  이거다
-                </S.PopularPostsList>
+                  {popularPost && (
+                    <S.PopularPostsList>
+                      {popularPost.title}
+                      <br />
+                      {typeof popularPost.content === 'string'
+                        ? popularPost.content.slice(0, 20) + (popularPost.content.length > 20 ? "..." : "")
+                        : "내용이 문자열이 아닙니다."
+                      }
+                    </S.PopularPostsList>
+                  )}
               </S.PopularPostsHeader>
           ) : null}
           </S.PopularPostsSection>

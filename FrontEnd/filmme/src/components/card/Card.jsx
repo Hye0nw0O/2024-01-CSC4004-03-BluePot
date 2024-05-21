@@ -20,7 +20,7 @@ function Card(props) {
         <S.CardContent>
           <S.CardContentInfo>
             <S.CardContentName>{props.name}</S.CardContentName>
-            <S.CardContentRegion>{props.region}</S.CardContentRegion>
+            <S.CardContentRegion region={props.region}>{props.region}</S.CardContentRegion>
           </S.CardContentInfo>
           <S.CardContentInfo>
             <S.CardContentStar>{props.star}</S.CardContentStar>

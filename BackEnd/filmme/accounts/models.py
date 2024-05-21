@@ -3,18 +3,19 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # 헬퍼 클래스
 class UserManager(BaseUserManager):
-    def create_user(self, email):
+    def create_user(self, email, nickName):
         if not email:
             raise ValueError('Users must have an email address')
         user = self.model(
-            email=email
+            email=email,
+            nickName = nickName
         )
         user.save(using=self._db)
         return user
-
-    def create_superuser(self, email=None):
+    
+    def create_superuser(self, email):
         superuser = self.create_user(
-            email=email,
+            email=email
         )
         
         superuser.is_staff = True
@@ -24,13 +25,19 @@ class UserManager(BaseUserManager):
         superuser.save(using=self._db)
         return superuser
 
+    def delete(self, email):
+        user = self.get(email=email)
+        user.delete()
+        return True
+        
+    
 
 # AbstractBaseUser를 상속해서 유저 커스텀
 class User(AbstractBaseUser, PermissionsMixin):
     
     id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=50, unique=True, null=False, blank=False)
-    nickName = models.CharField(max_length=10, default=None, null=True, blank=True)
+    nickName = models.CharField(max_length=20, default=" ", null = False, blank=False)
     posts = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     likePosts = models.TextField(null=True, blank=True)
