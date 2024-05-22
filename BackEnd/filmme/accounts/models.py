@@ -29,7 +29,26 @@ class UserManager(BaseUserManager):
         user = self.get(email=email)
         user.delete()
         return True
+    
+    def update_user(self, email, **kwargs):
+        """
+        email을 기반으로 사용자를 검색하고 제공된 키워드 인자들로 사용자의 정보를 업데이트합니다.
         
+        Args:
+        - email (str): 업데이트할 사용자의 이메일 주소.
+        - kwargs (dict): 업데이트할 사용자 정보 키워드 인자들.
+        
+        Returns:
+        - user: 업데이트된 사용자 객체.
+        """
+        try:
+            user = self.get(email=email)
+            for key, value in kwargs.items():
+                setattr(user, key, value)
+            user.save(using=self._db)
+            return user
+        except self.model.DoesNotExist:
+            raise ValueError("User with the given email does not exist")   
     
 
 # AbstractBaseUser를 상속해서 유저 커스텀
@@ -41,6 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     posts = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     likePosts = models.TextField(null=True, blank=True)
+    
     #필요한 데이터필드 추가
 
     is_superuser = models.BooleanField(default=False)
