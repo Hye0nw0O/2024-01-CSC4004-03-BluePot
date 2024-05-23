@@ -68,7 +68,7 @@ def kakao_callback(request):
                        secure=True, samesite="None", httponly=True)
         res.set_cookie("refreshToken", value=refresh_token, max_age=None, expires=None, 
                        secure=True, samesite="None",httponly=True)
-        return res
+        return redirect('http://localhost:5173/')
     except User.DoesNotExist:
         user = User.objects.create_user(email=email,nickName = nickName)
         user.save()
@@ -78,7 +78,7 @@ def kakao_callback(request):
                 "message" : "register success",
                 "user" : user_serializer,
                 "email":email,
-                "token" : {
+                "token" : { 
                     "access":access_token,
                     "refresh":refresh_token,
                 },
