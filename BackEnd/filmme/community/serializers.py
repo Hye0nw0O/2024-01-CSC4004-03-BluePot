@@ -36,10 +36,270 @@ class CommunityCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # 커뮤니티 리스트 - 자유, 영화관 후기, 건의사항 세 개 다르게 시리얼라이저 구현해야 함
+#커뮤니티 리스트 - cinema_tip
+class TipListSerializer(serializers.ModelSerializer):
+    # writer = serializers.CharField(source='writer.nickname', read_only=True)
+    # is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField(read_only=True) 
+    cinema = serializers.SerializerMethodField(read_only=True)
 
+    def get_cinema(self, instance):
+        cinema_instance = instance.cinema
+        if cinema_instance is not None:
+            return cinema_instance.title
+        else:
+            return None
+        
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    class Meta:
+        model = Community
+        fields = [
+            "id",
+            "cinema",
+            "category",
+            "title",
+            "comments_cnt",
+            "view_cnt",
+            "likes_cnt",
+            "created_at"
+        ]
+# 커뮤니티 리스트 - common
+class CommonListSerializer(serializers.ModelSerializer):
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField(read_only=True)
+    ai = serializers.SerializerMethodField(read_only=True)
+
+    def get_cinema(self, instance):
+        cinema_instance = instance.cinema
+        if cinema_instance is not None:
+            return cinema_instance.title
+        else:
+            return None
+    
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    
+    def get_is_liked(self, instance):
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        if user is not None:
+            return CommunityLike.objects.filter(community=instance,user=user).exists()
+        else:
+            return False
+    class Meta:
+        model = Community
+        fields = [
+            "id",
+            "cinema",
+            "category",
+            "title",
+            "comments_cnt",
+            "view_cnt",
+            "is_liked",
+            "likes_cnt",
+            "created_at"
+        ]
+# 커뮤니티 리스트 - suggestion
+class suggestionListSerializer(serializers.ModelSerializer):
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField(read_only=True)
+    cinema = serializers.SerializerMethodField(read_only=True)
+
+    def get_cinema(self, instance):
+        cinema_instance = instance.cinema
+        if cinema_instance is not None:
+            return cinema_instance.title
+        else:
+            return None
+        
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    
+    def get_is_liked(self, instance):
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        if user is not None:
+            return CommunityLike.objects.filter(community=instance,user=user).exists()
+        else:
+            return False
+    class Meta:
+        model = Community
+        fields = [
+            "id",
+            "cinema",
+            "category",
+            "title",
+            "comments_cnt",
+            "view_cnt",
+            "is_liked",
+            "likes_cnt",
+            "created_at"
+        ]
 
 # 커뮤니티 디테일 - 세 개 다르게
+# 커뮤니티 디테일 - 자유게시판
+class CommonDetailSerializer(serializers.ModelSerializer):
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
+    images = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()    
 
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_updated_at(self, instance):
+        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    
+    def get_is_liked(self, instance):
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        if user is not None:
+            return CommunityLike.objects.filter(community=instance,user=user).exists()
+        else:
+            return False
+    
+     # 등록된 이미지들 가져오기
+    def get_images(self, obj):
+        image = obj.images_community.all()
+        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
+
+    class Meta:
+        model = Community
+        fields = [
+            'id', 
+            'category',
+            'writer', 
+            'title', 
+            'content', 
+            'is_liked', 
+            'view_cnt',
+            'comments_cnt',
+            'likes_cnt', 
+            'images', 
+            'created_at', 
+            'updated_at'
+        ]
+
+# 커뮤니티 디테일 - cinema_tip
+class cinema_tipDetailSerializer(serializers.ModelSerializer):
+    cinema = serializers.CharField(source='cinema.title', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
+    images = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()    
+
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_updated_at(self, instance):
+        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    
+    def get_is_liked(self, instance):
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        if user is not None:
+            return CommunityLike.objects.filter(community=instance,user=user).exists()
+        else:
+            return False
+    # 등록된 이미지들 가져오기
+    def get_images(self, obj):
+        image = obj.images_community.all()
+        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
+
+    class Meta:
+        model = Community
+        fields = [
+            'id', 
+            'category',
+            'writer', 
+            'title', 
+            'content', 
+            'is_liked', 
+            'view_cnt',
+            'comments_cnt',
+            'likes_cnt', 
+            'images', 
+            'created_at', 
+            'updated_at'
+        ]
+        
+# 커뮤니티 디테일 - suggestion
+class suggestionDetailSerializer(serializers.ModelSerializer):
+    cinema = serializers.CharField(source='cinema.title', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
+    images = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    likes_cnt = serializers.IntegerField(read_only=True)
+    comments_cnt = serializers.SerializerMethodField(read_only=True)
+    created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()    
+
+    def get_created_at(self, instance):
+        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_updated_at(self, instance):
+        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
+
+    def get_comments_cnt(self, instance):
+        return instance.comments_community.count()
+    
+    def get_is_liked(self, instance):
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        if user is not None:
+            return CommunityLike.objects.filter(community=instance,user=user).exists()
+        else:
+            return False
+    # 등록된 이미지들 가져오기
+    def get_images(self, obj):
+        image = obj.images_community.all()
+        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
+
+    class Meta:
+        model = Community
+        fields = [
+            'id', 
+            'category',
+            'writer', 
+            'title', 
+            'content', 
+            'is_liked', 
+            'view_cnt',
+            'comments_cnt',
+            'likes_cnt', 
+            'images', 
+            'created_at', 
+            'updated_at'
+        ]
+    
 # 게시물 작성 & 수정
 class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
     writer = serializers.CharField(source='writer.nickname', read_only=True)
@@ -105,237 +365,20 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
         model = Community
         fields = ['id', 'cinema', 'writer', 'category', 'title', 'content', 'images', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
+    #이미지 삭제    
+        def clear_existing_images(self, instance):
+            instance.images.all().delete()    
+    # 게시물 삭제 함수
+    def delete(self, instance):
+        cinema_title = validated_data.get('cinema')
 
-#커뮤니티 리스트 - cinema_tip
-class TipListSerializer(serializers.ModelSerializer):
-    # writer = serializers.CharField(source='writer.nickname', read_only=True)
-    # is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField(read_only=True) 
-    
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
+        cinema_instance = None
+        if cinema_title:
+            try:
+                cinema_instance = Cinema.objects.get(title=cinema_title)
+            except Cinema.DoesNotExist:
+                raise serializers.ValidationError("존재하지 않는 영화관입니다.")
 
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    class Meta:
-        model = Community
-        fields = [
-            "id",
-            "category",
-            "title",
-            "comments_cnt",
-            "view_cnt",
-            "likes_cnt",
-            "created_at"
-        ]
-# 커뮤니티 리스트 - common
-class CommonListSerializer(serializers.ModelSerializer):
-    is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField(read_only=True)
-
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    
-    def get_is_liked(self, instance):
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
-        if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
-        else:
-            return False
-    class Meta:
-        model = Community
-        fields = [
-            "id",
-            "category",
-            "title",
-            "comments_cnt",
-            "view_cnt",
-            "is_liked",
-            "likes_cnt",
-            "created_at"
-        ]
-# 커뮤니티 리스트 - suggestion
-class suggestionListSerializer(serializers.ModelSerializer):
-    is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField(read_only=True)
-
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    
-    def get_is_liked(self, instance):
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
-        if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
-        else:
-            return False
-    class Meta:
-        model = Community
-        fields = [
-            "id",
-            "category",
-            "title",
-            "comments_cnt",
-            "view_cnt",
-            "is_liked",
-            "likes_cnt",
-            "created_at"
-        ]
-# 커뮤니티 디테일 - 자유게시판
-class CommonDetailSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickname', read_only=True)
-    images = serializers.SerializerMethodField()
-    is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()    
-
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_updated_at(self, instance):
-        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    
-    def get_is_liked(self, instance):
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
-        if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
-        else:
-            return False
-    
-     # 등록된 이미지들 가져오기
-    def get_images(self, obj):
-        image = obj.images_community.all()
-        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
-
-    class Meta:
-        model = Community
-        fields = [
-            'id', 
-            'category',
-            'writer', 
-            'title', 
-            'content', 
-            'is_liked', 
-            'view_cnt',
-            'comments_cnt',
-            'likes_cnt', 
-            'images', 
-            'created_at', 
-            'updated_at'
-        ]
-
-# 커뮤니티 디테일 - cinema_tip
-class cinema_tipDetailSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickname', read_only=True)
-    images = serializers.SerializerMethodField()
-    is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()    
-
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_updated_at(self, instance):
-        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    
-    def get_is_liked(self, instance):
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
-        if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
-        else:
-            return False
-    # 등록된 이미지들 가져오기
-    def get_images(self, obj):
-        image = obj.images_community.all()
-        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
-
-    class Meta:
-        model = Community
-        fields = [
-            'id', 
-            'category',
-            'writer', 
-            'title', 
-            'content', 
-            'is_liked', 
-            'view_cnt',
-            'comments_cnt',
-            'likes_cnt', 
-            'images', 
-            'created_at', 
-            'updated_at'
-        ]
+        instance.images.all().delete()
         
-# 커뮤니티 디테일 - suggestion
-class suggestionDetailSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickname', read_only=True)
-    images = serializers.SerializerMethodField()
-    is_liked = serializers.SerializerMethodField(read_only=True)
-    likes_cnt = serializers.IntegerField(read_only=True)
-    comments_cnt = serializers.SerializerMethodField(read_only=True)
-    created_at = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()    
-
-    def get_created_at(self, instance):
-        return instance.created_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_updated_at(self, instance):
-        return instance.updated_at.strftime("%Y/%m/%d %H:%M")
-
-    def get_comments_cnt(self, instance):
-        return instance.comments_community.count()
-    
-    def get_is_liked(self, instance):
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
-        if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
-        else:
-            return False
-    # 등록된 이미지들 가져오기
-    def get_images(self, obj):
-        image = obj.images_community.all()
-        return CommunityImageSerializer(instance=image, many=True, context=self.context).data
-
-    class Meta:
-        model = Community
-        fields = [
-            'id', 
-            'category',
-            'writer', 
-            'title', 
-            'content', 
-            'is_liked', 
-            'view_cnt',
-            'comments_cnt',
-            'likes_cnt', 
-            'images', 
-            'created_at', 
-            'updated_at'
-        ]
-    
+        instance.delete()
