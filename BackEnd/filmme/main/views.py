@@ -21,7 +21,7 @@ class Name_Cinema_List(APIView): # abcd... - asc
     
 class Like_Cinema_List(APIView): # like - asc
     def get(self, request):
-        cinemas = Cinema.objects.all().order_by('-like')
+        cinemas = Cinema.objects.all().order_by('-like_cnt')
         serializer = Cinema_Serializer(cinemas, many = True)
         return Response(serializer.data)
     
@@ -33,8 +33,20 @@ class Like_Cinema(APIView): # like 증가. runserver 하고 우하단 POST 버�
     def post(self, request, pk):
         try:
             cinema = Cinema.objects.get(pk=pk)
-            cinema.like += 1
+            cinema.like_cnt += 1
             cinema.save()
-            return Response({'status' : 'success', 'like' : cinema.like}, status=status.HTTP_200_OK)
+            return Response({'status' : 'success', 'like' : cinema.like_cnt}, status=status.HTTP_200_OK)
         except Cinema.DoesNotExist:
             return RecursionError({'error': 'Cinema not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+class Location_Cinema_List(APIView):
+    def get(self, request, location_name):
+        cinemas = Cinema.objects.filter(location = location_name)
+        serializers = Cinema_Serializer(cinemas, many = True)
+        return Response(serializers.data)
+    
+class Seoul_Cinema_List(APIView): # 이렇게 하면 모든 지역구 views 만들어야 함. 근데 뭐 만드는건 쉬우니까
+    def get(self, request):
+        cinemas = Cinema.objects.filter(location = "서울")
+        serializers = Cinema_Serializer(cinemas, many = True)
+        return Response(serializers.data)
