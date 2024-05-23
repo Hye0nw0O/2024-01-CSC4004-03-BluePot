@@ -28,7 +28,9 @@ const PostList = ({
   currentPage,
   setCurrentPage,
   count
+
 }) => {
+  
   let thList = [];
   switch (use) {
     case "communityCommon":
@@ -103,7 +105,7 @@ const PostList = ({
     return () => {
       window.removeEventListener("resize", resizingHandler);
     };
-  });
+  }, [data]);
 
   return (
     <>
