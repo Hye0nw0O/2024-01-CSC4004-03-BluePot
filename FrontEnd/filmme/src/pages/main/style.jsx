@@ -10,7 +10,7 @@ export const MainWrapper = styled.div `
 export const TitleWrapper = styled.div`
     display: flex;
     margin-right: 70vw;
-    margin-left: 15rem;
+    margin-left: 20rem;
 `;
 
 export const Title = styled.div `
@@ -30,7 +30,7 @@ export const subTitle = styled.div `
     width: 140%;
     margin-top: 10.5vw;
     font-size: 13px;
-    margin-left: -15vw;
+    margin-left: -13vw;
     text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
     font-style: normal;
 `;
