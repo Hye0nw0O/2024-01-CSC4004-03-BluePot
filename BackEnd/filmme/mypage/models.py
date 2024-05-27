@@ -1,18 +1,15 @@
 from django.db import models
 from accounts.models import User, UserManager
-from django.contrib.auth import get_user_model
 
-
-'''
-def mypage_image_upload_path(user, filename):
-    return f'mypage/{user.id}/{filename}'
-
-User = get_user_model()
+def mypage_image_upload_path(instance, filename):
+    return f'mypage/{instance.id}/{filename}'
 
 class MovieHistory(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=30, null=True, default="")
-    image = models.ImageField(upload_to=mypage_image_upload_path)
+    content = models.TextField(null=True, blank=True)
+    poster = models.ImageField(upload_to=mypage_image_upload_path, null=True)
 
     year = models.IntegerField()
     month = models.IntegerField()
@@ -20,5 +17,3 @@ class MovieHistory(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-'''

@@ -18,12 +18,11 @@ KAKAO_CALLBACK_URI = BASE_URL + 'api/accounts/kakao/callback'
 SOCIAL_AUTH_KAKAO_CLIENT_ID = '541a5b90d0456e285e4d4868e1d7e7be'
 SOCIAL_AUTH_KAKAO_SECRET = '9vuPMBan66cByGSk2n7SgjkpLJp9zbpy'
 
-@api_view(['POST'])
 def kakao_login(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
 
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_callback(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     client_secret = SOCIAL_AUTH_KAKAO_SECRET
@@ -55,7 +54,6 @@ def kakao_callback(request):
         res = Response(
             {
                 "message" : "login success",
-                "email":email,
                 "token" : {
                     "access":access_token,
                     "refresh":refresh_token,
@@ -74,7 +72,6 @@ def kakao_callback(request):
         res = Response(
             {
                 "message" : "register success",
-                "email":email,
                 "token" : {
                     "access":access_token,
                     "refresh":refresh_token,
@@ -90,11 +87,11 @@ def kakao_callback(request):
  
 
 KAKAO_LOGOUT_URL="http://127.0.0.1:8000/api/accounts/kakao/logout_callback"
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_logout(request):
     return redirect(f"https://kauth.kakao.com/oauth/logout?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&logout_redirect_uri={KAKAO_LOGOUT_URL}")
 
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_logout_callback(request):
     return redirect("http://127.0.0.1:8000/api")        
 
