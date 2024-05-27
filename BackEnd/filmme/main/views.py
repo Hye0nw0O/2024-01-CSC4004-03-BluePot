@@ -45,7 +45,7 @@ class Location_Cinema_List(APIView):
         serializers = Cinema_Serializer(cinemas, many = True)
         return Response(serializers.data)
     
-class Seoul_Cinema_List(APIView): # 이렇게 하면 모든 지역구 views 만들어야 함. 근데 뭐 만드는건 쉬우니까
+class Seoul_Cinema_List(APIView): # 이렇게 하면 모든 지역구 views 만들어야 함. 근데 뭐 만드는건 쉬우니까 -> 프론트에서 해버림;;
     def get(self, request):
         cinemas = Cinema.objects.filter(location = "서울")
         serializers = Cinema_Serializer(cinemas, many = True)
