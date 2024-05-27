@@ -35,7 +35,7 @@ class CommunityViewSet(viewsets.GenericViewSet,
                     mixins.ListModelMixin
                 ):
     filter_backends = [CommunityOrderingFilter, SearchFilter]
-    search_fields = ['ai__title'] 
+    search_fields = ['cinema__title'] 
     pagination_class = CommunityPagination
 
     def get_serializer_class(self):
@@ -110,6 +110,15 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
     
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        serializer = self.get_serializer(instance)
+        serializer.delete(instance)
+    
 # 커뮤니티 디테일
 class CommunityDetailViewSet(viewsets.GenericViewSet,
                             mixins.RetrieveModelMixin,
@@ -164,3 +173,89 @@ class CommunityDetailViewSet(viewsets.GenericViewSet,
         elif request.method == 'DELETE':
             community_like.delete()
             return Response({"detail": "좋아요를 취소하였습니다."})
+# 커뮤니티 댓글 목록, 작성
+class CommunityCommentViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
+    serializer_class = CommunityCommentSerializer
+    pagination_class = CommunityCommentPagination
+    filter_backends = [CommunityOrderingFilter]
+
+    def get_permissions(self):
+        if self.action in ['list']:
+            return [AllowAny()]
+        elif self.action in ['like','create']:
+            return [IsAuthenticated()]
+        return []
+
+    def get_queryset(self):
+        community_id = self.kwargs.get("community_id")
+        community = get_object_or_404(Community, id=community_id)
+        return CommunityComment.objects.filter(community=community)
+
+    def create(self, request, *args, **kwargs):
+        community_id = self.kwargs.get("community_id")
+        community = get_object_or_404(Community, id=community_id)
+        
+        comment = CommunityComment.objects.create(
+            community=community,
+            content=request.data['content'],
+            writer=request.user  # 로그인한 사용자를 작성자로 저장
+        )
+
+        serializer = CommunityCommentSerializer(comment)
+        return Response(serializer.data)
+
+# 커뮤니티 댓글
+class CommentViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    queryset = CommunityComment.objects.all()
+    serializer_class=CommunityCommentSerializer
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def get_permissions(self):
+        if self.action in ['retrieve','update','partial_update','destroy']:
+            return [IsOwnerOrReadOnly()]
+        return[]
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data
+        
+        if 'content' in data:
+            instance.content = data.get('content', instance.content)
+            instance.updated_at = timezone.now()
+            instance.save()
+            
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response({"detail": "댓글이 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
+    
+#검색 기능
+
+from django.contrib import messages
+from django.db.models import Q
+
+def get_queryset(self):
+    search_keyword = self.request.GET.get('q', '')
+    search_type = self.request.GET.get('type', '')
+    notice_list = Notice.objects.order_by('-id') 
+    
+    if search_keyword :
+        if len(search_keyword) > 1 :
+            if search_type == 'all':
+                search_notice_list = notice_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword) | Q (writer__user_id__icontains=search_keyword))
+            elif search_type == 'title_content':
+                search_notice_list = notice_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
+            elif search_type == 'title':
+                search_notice_list = notice_list.filter(title__icontains=search_keyword)    
+            elif search_type == 'content':
+                search_notice_list = notice_list.filter(content__icontains=search_keyword)    
+            elif search_type == 'writer':
+                search_notice_list = notice_list.filter(writer__user_id__icontains=search_keyword)
+
+            return search_notice_list
+        else:
+            messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
+    return notice_list
