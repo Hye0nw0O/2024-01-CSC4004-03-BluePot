@@ -34,8 +34,9 @@ class CommunityOrderingFilter(filters.OrderingFilter):
 class CommunityViewSet(viewsets.GenericViewSet,
                     mixins.ListModelMixin
                 ):
+    queryset = Community.objects.all()
     filter_backends = [CommunityOrderingFilter, SearchFilter]
-    search_fields = ['cinema__title'] 
+    search_fields = ['title', 'content', 'writer','cinema__title'] 
     pagination_class = CommunityPagination
 
     def get_serializer_class(self):
@@ -232,30 +233,3 @@ class CommentViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.
         instance.delete()
         return Response({"detail": "댓글이 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
     
-#검색 기능
-
-from django.contrib import messages
-from django.db.models import Q
-
-def get_queryset(self):
-    search_keyword = self.request.GET.get('q', '')
-    search_type = self.request.GET.get('type', '')
-    notice_list = Notice.objects.order_by('-id') 
-    
-    if search_keyword :
-        if len(search_keyword) > 1 :
-            if search_type == 'all':
-                search_notice_list = notice_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword) | Q (writer__user_id__icontains=search_keyword))
-            elif search_type == 'title_content':
-                search_notice_list = notice_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
-            elif search_type == 'title':
-                search_notice_list = notice_list.filter(title__icontains=search_keyword)    
-            elif search_type == 'content':
-                search_notice_list = notice_list.filter(content__icontains=search_keyword)    
-            elif search_type == 'writer':
-                search_notice_list = notice_list.filter(writer__user_id__icontains=search_keyword)
-
-            return search_notice_list
-        else:
-            messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
-    return notice_list
