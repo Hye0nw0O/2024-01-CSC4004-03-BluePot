@@ -1,10 +1,12 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
 from .models import *
 from .serializers import *
+from django.shortcuts import render, get_object_or_404
+from .models import Cinema
+from rest_framework.renderers import TemplateHTMLRenderer
 
 # Create your views here.
 class Star_Cinema_List(APIView): # stagr - desc
@@ -45,8 +47,12 @@ class Location_Cinema_List(APIView):
         serializers = Cinema_Serializer(cinemas, many = True)
         return Response(serializers.data)
     
-class Seoul_Cinema_List(APIView): # 이렇게 하면 모든 지역구 views 만들어야 함. 근데 뭐 만드는건 쉬우니까 -> 프론트에서 해버림;;
+class Seoul_Cinema_List(APIView): # location 변경하여 다른 지역구 영화관 검색 가능
     def get(self, request):
         cinemas = Cinema.objects.filter(location = "서울")
         serializers = Cinema_Serializer(cinemas, many = True)
         return Response(serializers.data)
+
+def cinema_location_map(request, pk):
+    cinema = get_object_or_404(Cinema, pk=pk)
+    return render(request, 'main/map.html', {'cinema': cinema})
