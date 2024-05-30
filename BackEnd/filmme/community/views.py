@@ -85,11 +85,11 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
 
     queryset = Community.objects.all()
 
-    def get_permissions(self):
-        if self.action in ['create']:
-            return [IsAuthenticated()]
-        else:
-            return [IsOwnerOrReadOnly()]
+    # def get_permissions(self):
+    #     if self.action in ['create']:
+    #         return [IsAuthenticated()]
+    #     else:
+    #         return [IsOwnerOrReadOnly()]
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
