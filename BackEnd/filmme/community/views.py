@@ -95,7 +95,7 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
         data = request.data
         
         if 'title' in data or 'content' in data:
-            #instance.title = data.get('title', instance.title)
+            instance.title = data.get('title', instance.title)
             instance.content = data.get('content', instance.content)
             instance.updated_at = timezone.now()
             instance.save()
