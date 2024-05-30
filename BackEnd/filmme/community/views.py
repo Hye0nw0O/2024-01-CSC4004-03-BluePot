@@ -85,18 +85,18 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
 
     queryset = Community.objects.all()
 
-    def get_permissions(self):
-        if self.action in ['create']:
-            return [IsAuthenticated()]
-        else:
-            return [IsOwnerOrReadOnly()]
+    # def get_permissions(self):
+    #     if self.action in ['create']:
+    #         return [IsAuthenticated()]
+    #     else:
+    #         return [IsOwnerOrReadOnly()]
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data
         
         if 'title' in data or 'content' in data:
-            instance.title = data.get('title', instance.title)
+            #instance.title = data.get('title', instance.title)
             instance.content = data.get('content', instance.content)
             instance.updated_at = timezone.now()
             instance.save()
