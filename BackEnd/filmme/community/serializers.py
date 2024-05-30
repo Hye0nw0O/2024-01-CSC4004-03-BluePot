@@ -302,7 +302,7 @@ class suggestionDetailSerializer(serializers.ModelSerializer):
     
 # 게시물 작성 & 수정
 class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickname', read_only=True)
+    writer = serializers.CharField(source='writer.nickName', read_only=True)
     images = serializers.ListField(child=serializers.ImageField(), required=False)
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
@@ -324,13 +324,13 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
         category = validated_data.get('category')
         cinema_title = validated_data.get('cinema')
 
-        if category == 'tip' and (cinema_title is None or cinema_title == ""):
+        if category == 'cinema_tip' and (cinema_title is None or cinema_title == ""):
             raise serializers.ValidationError("영화관 후기 게시물을 작성할 때는 영화관을 선택(입력)해주세요.")
 
         cinema_instance = None
         if cinema_title:
             try:
-                cinema_instance = Cinema.objects.get(title=cinema_title)
+                cinema_instance = Cinema.objects.get(name=cinema_title)
             except Cinema.DoesNotExist:
                 raise serializers.ValidationError("존재하지 않는 영화관입니다.")
         
