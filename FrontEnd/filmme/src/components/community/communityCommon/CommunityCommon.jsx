@@ -14,12 +14,6 @@ function CommunityCommon() {
                 if (Array.isArray(data)) {
                     const transformedData = data.map(commonContent => ({
                         ...commonContent,
-                        img: commonContent.title,
-                        img: commonContent.commens_cnt,
-                        img: commonContent.views_cnt,
-                        img: commonContent.is_liked,
-                        img: commonContent.likes_cnt,
-                        img: commonContent.created_at,
                     }));
                     setCommonContent(transformedData);
                 } else {
@@ -65,7 +59,7 @@ function CommunityCommon() {
                 use={"communityCommon"}
                 category={"common"}
                 data={commonContent}
-                url={"/community/commons/"}
+                url={"/communities/commons/"}
                 writeUrl={"/community/create"}
                 currentOption={currentOption}
                 SelectorOption={SelectorOption}
