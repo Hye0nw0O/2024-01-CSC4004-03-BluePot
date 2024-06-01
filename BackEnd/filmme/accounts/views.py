@@ -51,12 +51,9 @@ def kakao_callback(request):
         # 로그인 시도
         # 전달받은 이메일로 등록된 유저가 있는지 탐색
         user = User.objects.get(email=email)
-        user_serializer = UserSerializer(user).data
         res = Response(
             {
                 "message" : "login success",
-                "user" : user_serializer,
-                "email":email,
                 "token" : {
                     "access":access_token,
                     "refresh":refresh_token,
@@ -70,15 +67,14 @@ def kakao_callback(request):
                        secure=True, samesite="None",httponly=True)
         return redirect('http://localhost:5173/')
     except User.DoesNotExist:
-        user = User.objects.create_user(email=email,nickName = nickName)
-        user.save()
-        user_serializer = UserSerializer(user).data        
+        user = User.objects.create_user(email=email, nickName = nickName)
+        user.save()    
         res = Response(
             {
                 "message" : "register success",
                 "user" : user_serializer,
                 "email":email,
-                "token" : { 
+                "token" : {
                     "access":access_token,
                     "refresh":refresh_token,
                 },
@@ -93,17 +89,16 @@ def kakao_callback(request):
  
 
 KAKAO_LOGOUT_URL="http://127.0.0.1:8000/api/accounts/kakao/logout_callback"
+@api_view(['GET'])
 def kakao_logout(request):
     return redirect(f"https://kauth.kakao.com/oauth/logout?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&logout_redirect_uri={KAKAO_LOGOUT_URL}")
 
 @api_view(['GET'])
 def kakao_logout_callback(request):
-    #쿠키에 access token이랑 refresh token이 남아있을거같은데.. 무튼 로그아웃은 됩니다.
-    #일단은 로그인화면으로 다시 보내는데, 메인 페이지로 보내줄지는 의논
     return redirect("http://127.0.0.1:8000/api")        
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def kakao_delete(request):
     access = request.COOKIES['accessToken']
     kakao_profile_request = requests.post(
@@ -132,31 +127,3 @@ def kakao_delete(request):
                 status = status.HTTP_404_NOT_FOUND,
             )
         return res
-
-#필요한지는 잘 모르겠는데 일단 token기반으로 profile 받아오는거 메소드 구현
-'''
-def user_profile(request):
-    try:
-        access = request.COOKIES['access']
-        payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
-        email = payload.get('email')
-        user = get_object_or_404(User, email=email)
-        serializer = UserSerializer(instance=user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    except(jwt.exceptions.ExpiredSignatureError):
-        data = {'refresh':request.COOKIES.get('refresh',None)}
-        serializer = TokenRefreshSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            access = serializer.data.get('access',None)
-            refresh = serializer.data.get('refresh', None)
-            payload = jwt.decode(access, settings.SECRET_KEY, algorithms=['HS256'])
-            email = payload.get('email')
-            user = get_object_or_404(User, email=email)
-            serializer = UserSerializer(instance=user)
-            res=Response(serializer.data, status=status.HTTP_200_OK)
-            res.set_cookie('access',access)
-            res.set_cookie('refresh', refresh)
-            return res
-
-'''
