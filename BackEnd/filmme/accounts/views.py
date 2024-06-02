@@ -18,6 +18,15 @@ KAKAO_CALLBACK_URI = BASE_URL + 'api/accounts/kakao/callback'
 SOCIAL_AUTH_KAKAO_CLIENT_ID = '541a5b90d0456e285e4d4868e1d7e7be'
 SOCIAL_AUTH_KAKAO_SECRET = '9vuPMBan66cByGSk2n7SgjkpLJp9zbpy'
 
+@api_view(['GET'])
+def auth(request):
+    try:
+        access = request.COOKIES['accessToken']
+        return Response({"message" : "Authorized"}, status=status.HTTP_200_OK)
+    except:
+        return Response({"message" : "UnAuthorized"}, status=status.HTTP_200_OK)
+    
+
 def kakao_login(request):
     client_id = os.environ.get("SOCIAL_AUTH_KAKAO_CLIENT_ID")
     return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={SOCIAL_AUTH_KAKAO_CLIENT_ID}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email")
@@ -93,8 +102,16 @@ def kakao_logout(request):
 
 @api_view(['GET'])
 def kakao_logout_callback(request):
-    return redirect("http://127.0.0.1:8000/api")        
 
+    res = Response(
+        {
+            "message" : "logout success"
+        },
+        status=status.HTTP_200_OK
+    )
+    res.delete_cookie("accessToken")
+    res.delete_cookie("refreshToken")
+    return res
 
 @api_view(['POST'])
 def kakao_delete(request):
@@ -125,3 +142,6 @@ def kakao_delete(request):
                 status = status.HTTP_404_NOT_FOUND,
             )
         return res
+
+
+
