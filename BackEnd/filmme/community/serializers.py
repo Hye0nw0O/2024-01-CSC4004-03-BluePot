@@ -2,8 +2,34 @@ from rest_framework import serializers
 from .models import Community, CommunityComment, CommunityImage, CommunityLike
 from django.contrib.auth import get_user_model
 from main.models import Cinema
-from mypage.views import get_user
+import requests
+
 # Django 모델 인스턴스나 쿼리셋과 같은 복잡한 데이터 유형을 JSON 형식으로 변환하는 역할
+
+def get_user(request):
+    access = request.COOKIES['accessToken']
+    kakao_profile_request = requests.post(
+        "https://kapi.kakao.com/v2/user/me",
+        headers={"Authorization":f"Bearer {access}"},
+    )
+    kakao_profile_json = kakao_profile_request.json()
+
+    kakao_account = kakao_profile_json.get("kakao_account")
+
+    email = kakao_account.get("email", None)
+    user = User.objects.get(email=email)
+    return user
+
+class CommunitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Community
+        fields = '__all__'
+
+class LikePostsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommunityLike
+        fields = '__all__'
+
 
 # 이미지
 class CommunityImageSerializer(serializers.ModelSerializer):
@@ -75,7 +101,6 @@ class CommonListSerializer(serializers.ModelSerializer):
     likes_cnt = serializers.IntegerField(read_only=True)
     comments_cnt = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField(read_only=True)
-    ai = serializers.SerializerMethodField(read_only=True)
 
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
@@ -114,6 +139,7 @@ class CommonListSerializer(serializers.ModelSerializer):
             "likes_cnt",
             "created_at"
         ]
+
 # 커뮤니티 리스트 - suggestion
 class suggestionListSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField(read_only=True)

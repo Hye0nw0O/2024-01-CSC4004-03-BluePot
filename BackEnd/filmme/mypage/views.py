@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from .models import MovieHistory
 from .serializers import MovieHistorySerializer
 from django.shortcuts import get_object_or_404
+from community.models import *
+from community.serializers import *
 
 #쿠키로 읽어오는 부분 request에 담겨진 json으로 읽도록 수정할예정
 def get_user(request):
@@ -35,12 +37,25 @@ def get_profile(request):
 
     user_serializer = UserSerializer(user).data
     movie_histories = MovieHistorySerializer.get_by_user(user=user)
-    serializer = MovieHistorySerializer(movie_histories, many=True)
+    movie_histories_serializer = MovieHistorySerializer(movie_histories, many=True)
+    
+    communities = Community.objects.filter(writer=user)
+    communities_serializer = CommunitySerializer(communities, many=True)
+
+    comments = CommunityComment.objects.filter(writer=user)
+    comments_serializer = CommunityCommentSerializer(comments, many=True)
+
+    likePosts = CommunityLike.objects.filter(writer=user)
+    likePosts_serializer =  LikePostsSerializer(likePosts, many=True)
+
     res = Response(
             {
                 "message" : "Getting Profile success",
                 "user" : user_serializer,
-                "movieHistory" : serializer.data,
+                "communities" : communities_serializer.data,
+                "comments" : comments_serializer.data,
+                "likePost" : likePosts_serializer.data,
+                "movieHistory" : movie_histories_serializer.data,
             },
             status = status.HTTP_200_OK,
         )
