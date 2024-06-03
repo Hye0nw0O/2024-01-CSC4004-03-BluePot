@@ -42,6 +42,7 @@ export const CardContentName = styled.div`
   font-weight: bold;
   line-height: 24px;
   white-space: nowrap;
+  width: 180px;
   text-overflow: ellipsis;
   overflow: hidden;
 `;
