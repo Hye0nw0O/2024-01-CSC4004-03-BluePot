@@ -24,7 +24,7 @@ function Card({ id, img, name, region, star, score, like }) {
           </S.CardContentInfo>
           <S.CardContentInfo>
             <S.CardContentStar>{star}</S.CardContentStar>
-            <S.CardContentScore>{score}</S.CardContentScore>
+            <S.CardContentScore>({score})</S.CardContentScore>
           </S.CardContentInfo>
           <S.CardContentInfo>
             <S.CardLikehart>♡</S.CardLikehart>
