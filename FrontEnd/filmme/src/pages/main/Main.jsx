@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import * as S from "./style.jsx";
 import Card from '../../components/card/Card.jsx'
 import searchImage from "../../assets/images/Main/searchImage.png";
-import theater from "../../data/theater.jsx";
+import theater from "../../data/theater.js";
 import AOS from 'aos';
-import axios from 'axios';
 
 function Main() {
-    const [theaters, setTheaters] = useState([]);
     const [clickedRegion, setClickedRegion] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredTheaters, setFilteredTheaters] = useState([]);
@@ -29,51 +27,13 @@ function Main() {
     }, []);
 
     // 영화관 검색 필터
-    /*useEffect(() => {
+    useEffect(() => {
         const filtered = theater.filter(theater =>
             theater.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
         const sortedTheaters = sortBy === "latest" ? filtered.reverse() : sortBy === "ascending" ? filtered.sort((a, b) => a.name.localeCompare(b.name)) : filtered;
         setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy]);*/
-
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
-            .then(response => {
-                console.log(response.data);  // 반환된 데이터 확인
-                setTheaters(response.data);
-                setFilteredTheaters(response.data);
-            })
-            .catch(error => {
-                console.error("영화관 정보를 가져오는 중 오류가 발생했습니다!", error);
-            });
-    }, []);
-
-    /*//useEffect(() => {
-        const filtered = theaters.filter(theater =>
-            theater.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const sortedTheaters = sortBy === "latest"
-            ? filtered.reverse()
-            : sortBy === "ascending"
-                ? filtered.sort((a, b) => a.name.localeCompare(b.name))
-                : filtered;
-
-        setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy, theaters]);//*/
-
-    useEffect(() => {
-        filterAndSortTheaters();
-      }, [searchQuery, sortBy, theaters]);
-    
-      const filterAndSortTheaters = () => {
-        let filtered = theaters.filter(theater => theater.name.toLowerCase().includes(searchQuery.toLowerCase()));
-        if (clickedRegion !== 0) {
-          filtered = filtered.filter(theater => theater.region === regionNames[clickedRegion]);
-        }
-        filtered = sortTheaters(filtered);
-        setFilteredTheaters(filtered);
-      };
+    }, [searchQuery, sortBy]);
 
     // 검색어 입력 시 placeholder 가리기
     const handleSearchInputChange = (e) => {
@@ -96,20 +56,20 @@ function Main() {
     }
 
     //정렬 기능
-    const sortTheaters = (theaters) => {
-        switch (sortBy) {
+    const sortTheaters = (option) => {
+        switch (option) {
             case "latest":
-                return theaters.reverse();
+                return filteredTheaters.reverse();
             case "ascending":
-                return theaters.sort((a, b) => a.name.localeCompare(b.name));
+                return filteredTheaters.sort((a, b) => a.name.localeCompare(b.name));
             case "descending":
-                return theaters.sort((a, b) => b.name.localeCompare(a.name));
+                return filteredTheaters.sort((a, b) => b.name.localeCompare(a.name));
             case "rating":
-                return theaters.sort((a, b) => b.score - a.score);
+                return filteredTheaters.sort((a, b) => b.score - a.score);
             case "likes":
-                return theaters.sort((a, b) => b.like - a.like);
+                return filteredTheaters.sort((a, b) => b.like - a.like);
             default:
-                return theaters;
+                return filteredTheaters;
         }
     }
 
