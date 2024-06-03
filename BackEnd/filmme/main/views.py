@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
+from rest_framework import serializers
 from .models import *
 from .serializers import *
 from django.shortcuts import render, get_object_or_404
@@ -9,6 +10,11 @@ from .models import Cinema
 from rest_framework.renderers import TemplateHTMLRenderer
 
 # Create your views here.
+class Cinema_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cinema
+        fields = '__all__'
+
 class Star_Cinema_List(APIView): # stagr - desc
     def get(self, request):
         cinemas = Cinema.objects.all().order_by('-star')
@@ -26,7 +32,11 @@ class Like_Cinema_List(APIView): # like - asc
         cinemas = Cinema.objects.all().order_by('-like_cnt')
         serializer = Cinema_Serializer(cinemas, many = True)
         return Response(serializer.data)
-    
+
+class Cinema_List(generics.ListAPIView):        # 영화관 리스트 가져오기
+    queryset = Cinema.objects.all()
+    serializer_class = Cinema_Serializer
+
 class Detail_Info_Cinema(generics.RetrieveAPIView): # cinema detail info
     queryset = Cinema.objects.all()
     serializer_class = Cinema_Detail
