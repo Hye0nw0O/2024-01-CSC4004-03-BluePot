@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Community, CommunityComment, CommunityImage, CommunityLike
+
 from django.contrib.auth import get_user_model
 from main.models import Cinema
 import requests
+
+from accounts.models import User
 
 # Django 모델 인스턴스나 쿼리셋과 같은 복잡한 데이터 유형을 JSON 형식으로 변환하는 역할
 
@@ -62,7 +65,7 @@ class CommunityCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # 커뮤니티 리스트 - 자유, 영화관 후기, 건의사항 세 개 다르게 시리얼라이저 구현해야 함
-#커뮤니티 리스트 - cinema_tip
+# 커뮤니티 리스트 - tips
 class TipListSerializer(serializers.ModelSerializer):
     # writer = serializers.CharField(source='writer.nickname', read_only=True)
     # is_liked = serializers.SerializerMethodField(read_only=True)
@@ -74,7 +77,7 @@ class TipListSerializer(serializers.ModelSerializer):
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
         if cinema_instance is not None:
-            return cinema_instance.title
+            return cinema_instance.name
         else:
             return None
         
@@ -95,7 +98,7 @@ class TipListSerializer(serializers.ModelSerializer):
             "likes_cnt",
             "created_at"
         ]
-# 커뮤니티 리스트 - common
+# 커뮤니티 리스트 - commons
 class CommonListSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
@@ -105,7 +108,7 @@ class CommonListSerializer(serializers.ModelSerializer):
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
         if cinema_instance is not None:
-            return cinema_instance.title
+            return cinema_instance.name
         else:
             return None
     
@@ -117,11 +120,10 @@ class CommonListSerializer(serializers.ModelSerializer):
     
     def get_is_liked(self, instance):
 
-        user = get_user(self.context['request'])
-        # User = get_user_model()
-        # user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        # user = get_user(self.context['request'])
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         
-        # 별 영향 없을듯..?
         if user is not None:
             return CommunityLike.objects.filter(community=instance,user=user).exists()
         else:
@@ -140,7 +142,7 @@ class CommonListSerializer(serializers.ModelSerializer):
             "created_at"
         ]
 
-# 커뮤니티 리스트 - suggestion
+# 커뮤니티 리스트 - suggestions
 class suggestionListSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
@@ -151,7 +153,7 @@ class suggestionListSerializer(serializers.ModelSerializer):
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
         if cinema_instance is not None:
-            return cinema_instance.title
+            return cinema_instance.name
         else:
             return None
         
@@ -162,9 +164,9 @@ class suggestionListSerializer(serializers.ModelSerializer):
         return instance.comments_community.count()
     
     def get_is_liked(self, instance):
-        user = get_user(self.context['request'])
-        # User = get_user_model()
-        # user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        # user = get_user(self.context['request'])
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         if user is not None:
             return CommunityLike.objects.filter(community=instance,user=user).exists()
         else:
@@ -205,15 +207,15 @@ class CommonDetailSerializer(serializers.ModelSerializer):
     
     def get_is_liked(self, instance):
         
-        user = get_user(self.context['request'])
-        # User = get_user_model()
-        # user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        # user = get_user(self.context['request'])
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         if user is not None:
             return CommunityLike.objects.filter(community=instance,user=user).exists()
         else:
             return False
     
-     # 등록된 이미지들 가져오기
+    # 등록된 이미지들 가져오기
     def get_images(self, obj):
         image = obj.images_community.all()
         return CommunityImageSerializer(instance=image, many=True, context=self.context).data
@@ -256,9 +258,9 @@ class cinema_tipDetailSerializer(serializers.ModelSerializer):
         return instance.comments_community.count()
     
     def get_is_liked(self, instance):
-        user = get_user(self.context['request'])
-        #User = get_user_model()
-        #user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        # user = get_user(self.context['request'])
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         if user is not None:
             return CommunityLike.objects.filter(community=instance,user=user).exists()
         else:
@@ -306,9 +308,9 @@ class suggestionDetailSerializer(serializers.ModelSerializer):
         return instance.comments_community.count()
     
     def get_is_liked(self, instance):
-        user = get_user(self.context['request'])
-        # User = get_user_model()
-        # user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        # user = get_user(self.context['request'])
+        User = get_user_model()
+        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         if user is not None:
             return CommunityLike.objects.filter(community=instance,user=user).exists()
         else:
