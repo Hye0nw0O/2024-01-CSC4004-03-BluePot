@@ -33,11 +33,11 @@ const PostList = ({
   
   let thList = [];
   switch (use) {
-    case "communityCommon":
+    case "communityCommons":
       // 조회수 추가해야 함
       thList = ["번호", "제목", "등록일시", "좋아요", "댓글수"];
       break;
-    case "communityReviews":
+    case "communityTips":
       thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "댓글수"];
       break;
     case "communitySuggestions":
@@ -117,7 +117,7 @@ const PostList = ({
         <S.PostListHeader>
           {/* 금주의 인기글 표시 */}
           <S.PopularPostsSection>
-          {use === "communityCommon" || use === "communityReviews" ? (
+          {use === "communityCommons" || use === "communityTips" ? (
               <S.PopularPostsHeader>
                 🍿 금주의 인기글
                   {popularPost && (
