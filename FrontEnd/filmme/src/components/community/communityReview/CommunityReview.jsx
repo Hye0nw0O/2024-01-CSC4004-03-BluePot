@@ -82,10 +82,10 @@ function CommunityReview() {
     return (
         <>
         <PostList
-            use={"communityReviews"}
-            category={"reviews"}
+            use={"communityTips"}
+            category={"tips"}
             data={reviewContent}
-            url={"/community/reviews/"}
+            url={"/community/tips/"}
             writeUrl={"/community/create"}
             currentOption={currentOption}
             currentCinemaOption={currentCinemaOption}
