@@ -307,7 +307,7 @@ class suggestionDetailSerializer(serializers.ModelSerializer):
     likes_cnt = serializers.IntegerField(read_only=True)
     comments_cnt = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()    
+    updated_at = serializers.SerializerMethodField()
 
     def get_created_at(self, instance):
         return instance.created_at.strftime("%Y/%m/%d %H:%M")
@@ -340,6 +340,7 @@ class suggestionDetailSerializer(serializers.ModelSerializer):
             'writer', 
             'title', 
             'content', 
+            'cinema',
             'is_liked', 
             'view_cnt',
             'comments_cnt',
