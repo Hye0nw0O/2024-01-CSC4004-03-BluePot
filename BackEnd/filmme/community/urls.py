@@ -32,14 +32,14 @@ urlpatterns = [
     path('', include(community_post_router.urls)),
 
     #게시글 리스트
-    path('communities/cinema_tip', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'cinema_tip'}, name='community-cinema_tip'),
-    path('communities/common', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'common'}, name='community-common'),
-    path('communities/suggestion', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'suggestion'}, name='community-suggestion'),
+    path('communities/tips', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'cinema_tip'}, name='community-cinema_tip'),
+    path('communities/commons', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'common'}, name='community-common'),
+    path('communities/suggestions', views.CommunityViewSet.as_view({'get': 'list'}), {'category': 'suggestion'}, name='community-suggestion'),
 
     # 디테일페이지 url
-    path('communities/cinema_tip/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'cinema_tip'}, name='community-cinema_tip-detail'),
-    path('communities/common/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'common'}, name='community-common-detail'),
-    path('communities/suggestion/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'suggestion'}, name='community-suggestion-detail'),
+    path('communities/tips/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'cinema_tip'}, name='community-cinema_tip-detail'),
+    path('communities/commons/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'common'}, name='community-common-detail'),
+    path('communities/suggestions/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'suggestion'}, name='community-suggestion-detail'),
 
     # 댓글
     # path('communities/posts/<int:community_id>/', views.CommentViewSet.as_view), include(community_comment_router.urls),

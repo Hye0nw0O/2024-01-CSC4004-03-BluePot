@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import PostList from "../../common/post/PostList";
 
-import { getCommunityCommon } from '../../../apis/api/getCommunityCommon';
+import { getCommunityCommon } from '../../../apis/api/community/getCommunityCommon';
 
 function CommunityCommon() {
     const [commonContent, setCommonContent] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCommonContent = async () => {
             try {
                 const data = await getCommunityCommon();
                 if (Array.isArray(data)) {
-                    const transformedData = data.map(commonContent => ({
-                        ...commonContent,
-                    }));
-                    setCommonContent(transformedData);
+                    console.log("Fetched Data:", data);
+                    setCommonContent(data);
                 } else {
                     console.error("Fetched data is not an array:", data);
                 }
@@ -25,6 +24,7 @@ function CommunityCommon() {
         };
         fetchCommonContent();
     }, []);
+    
 
     // 현재 페이지
     const [currentPage, setCurrentPage] = useState(1);
