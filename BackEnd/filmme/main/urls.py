@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
+    path('cinemas/', Cinema_List.as_view(), name='cinema_list'),  # 기본 영화관 리스트 엔드포인트
     path('cinemas_star/', Star_Cinema_List.as_view(), name = 'star_cinema'),
     path('cinemas_name/', Name_Cinema_List.as_view(), name = 'name_cinema'),
     path('cinemas_like/', Like_Cinema_List.as_view(), name = 'like_cinema'),
