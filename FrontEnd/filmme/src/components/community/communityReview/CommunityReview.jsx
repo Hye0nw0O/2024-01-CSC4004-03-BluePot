@@ -2,8 +2,27 @@ import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import PostList from "../../common/post/PostList";
 
+import { getCommunityReview } from '../../../apis/api/community/getCommunityReview';
+
 function CommunityReview() {
     const [reviewContent, setReviewContent] = useState([]);
+
+    useEffect(() => {
+        const fetchReviewContent = async () => {
+            try {
+                const data = await getCommunityReview();
+                if (Array.isArray(data)) {
+                    console.log("Fetched Data:", data);
+                    setReviewContent(data);
+                } else {
+                    console.error("Fetched data is not an array:", data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch promotions: ", error);
+            }
+        };
+        fetchReviewContent();
+    }, []);
 
     const [cinemaOption, setcinemaOption] = useState([]);
     const [currentCinemaOption, setCurrentCinemaOption] = useState("");
@@ -60,130 +79,6 @@ function CommunityReview() {
         fetchReviewContent();
         }, [currentPage]);
 
-    useEffect(() => {
-        const reviewData = [
-        {
-            id: 1,
-            title: "가짜데이터",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 2,
-            title: "이게 진짜 데이터 같냐?",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 3,
-            title: "아니걸랑용~",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 4,
-            title: "모라하더라 가짜데이터를",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 5,
-            title: "무튼 가짜데이터임 아직",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 6,
-            title: "하아아아아",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 7,
-            title: "왜 안 될까 ㅠ",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 8,
-            title: "되면 좋겠다 ...",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 9,
-            title: "아 더미데이터!! 라 한다 !!",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 10,
-            title: "후후",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 11,
-            title: "지금 십센치 노래 듣는 중",
-            cinema: "에무시네마",
-            created_at: "2024/05/16 11:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 12,
-            title: "곧 잔나비 거 들어야지",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        },
-        {
-            id: 13,
-            title: "그러고 자야지..",
-            cinema: "에무시네마",
-            created_at: "2024/10/24 23:00",
-            likes_cnt: 17,
-            view_cnt: 10,
-            comment_cnt: 5
-        }
-
-        // 추가.....
-        ];
-        setReviewContent(reviewData);
-    }, []);
     return (
         <>
         <PostList

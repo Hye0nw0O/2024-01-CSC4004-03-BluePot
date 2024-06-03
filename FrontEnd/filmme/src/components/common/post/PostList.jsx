@@ -107,6 +107,10 @@ const PostList = ({
     };
   }, [data]);
 
+  useEffect(() => {
+    console.log("PostList data:", data);
+  }, [data]);
+
   return (
     <>
       <S.PostListWrap>
