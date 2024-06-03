@@ -6,10 +6,10 @@ import router from './router';
 
   ReactDOM.createRoot(document.getElementById("root")).render(
     <RecoilRoot>
-      <React.StrictMode>
+      {/* <React.StrictMode> */}
         <RecoilRoot>
           <RouterProvider router={router} />
         </RecoilRoot>
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </RecoilRoot>
   );

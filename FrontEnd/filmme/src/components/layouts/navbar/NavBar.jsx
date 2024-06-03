@@ -1,7 +1,7 @@
 import * as S from './style';
 import Logo from '../../../../public/logo.svg';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function NavBar() {
@@ -25,7 +25,9 @@ function NavBar() {
     return (
     <S.Nav>
         <S.Logo>
-            <img src={Logo} alt="로고" />
+            <Link to="/">
+                <img src={Logo} alt="로고" />
+            </Link>
         </S.Logo>
 
         <S.NavTabWrapper isOpen={isOpen}>

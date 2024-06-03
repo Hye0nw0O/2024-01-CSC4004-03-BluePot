@@ -10,7 +10,7 @@ export const MainWrapper = styled.div `
 export const TitleWrapper = styled.div`
     display: flex;
     margin-right: 70vw;
-    margin-left: 15rem;
+    margin-left: 20rem;
 `;
 
 export const Title = styled.div `
@@ -30,7 +30,7 @@ export const subTitle = styled.div `
     width: 140%;
     margin-top: 10.5vw;
     font-size: 13px;
-    margin-left: -15vw;
+    margin-left: -13vw;
     text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
     font-style: normal;
 `;
@@ -38,7 +38,7 @@ export const subTitle = styled.div `
 //검색창
 export const searchBox= styled.div `
     display: flex;
-    margin-left: 30rem;
+    margin-left: 35rem;
     margin-top: 4rem;
     width: 908px;
     height: 59px;
@@ -69,7 +69,7 @@ export const Input = styled.input `
 export const searchImage = styled.img `
     display: flex;
     transform: translateY(-50%);
-    margin-left: 32rem;
+    margin-left: 37rem;
     margin-top: -2.8rem;
     width: 24px;
     height: 24px;
@@ -78,7 +78,7 @@ export const searchImage = styled.img `
 //지역 선택
 export const regionContainer = styled.div`
     display: flex;
-    margin-left: 30rem;
+    margin-left: 35rem;
     width: 950px;
     height: 94px;
     display: flex;

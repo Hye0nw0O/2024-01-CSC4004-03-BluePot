@@ -3,7 +3,7 @@ import * as S from './style';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-function Card(props) {
+function Card({ id, img, name, region, star, score, like }) {
 
   useEffect(() => {
     AOS.init({
@@ -14,21 +14,21 @@ function Card(props) {
   return (
     <>
       <S.CardWrapper data-aos="fade-up"
-        to={`/project/${props.id}`}
+        to={`/project/${id}`}
       >
-        <S.CardImg src={props.img} />
+        <S.CardImg src={img} />
         <S.CardContent>
           <S.CardContentInfo>
-            <S.CardContentName>{props.name}</S.CardContentName>
-            <S.CardContentRegion region={props.region}>{props.region}</S.CardContentRegion>
+            <S.CardContentName>{name}</S.CardContentName>
+            <S.CardContentRegion region={region}>{region}</S.CardContentRegion>
           </S.CardContentInfo>
           <S.CardContentInfo>
-            <S.CardContentStar>{props.star}</S.CardContentStar>
-            <S.CardContentScore>{props.score}</S.CardContentScore>
+            <S.CardContentStar>{star}</S.CardContentStar>
+            <S.CardContentScore>({score})</S.CardContentScore>
           </S.CardContentInfo>
           <S.CardContentInfo>
             <S.CardLikehart>♡</S.CardLikehart>
-            <S.CardContentLike>{props.like}</S.CardContentLike>
+            <S.CardContentLike>{like}</S.CardContentLike>
           </S.CardContentInfo>
         </S.CardContent>
       </S.CardWrapper>
