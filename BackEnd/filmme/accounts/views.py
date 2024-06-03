@@ -74,7 +74,7 @@ def kakao_callback(request):
                        secure=True, samesite="None", httponly=True)
         res.set_cookie("refreshToken", value=refresh_token, max_age=None, expires=None, 
                        secure=True, samesite="None",httponly=True)
-        return redirect('http://localhost:5173/')
+        return res
     except User.DoesNotExist:
         user = User.objects.create_user(email=email, nickName = nickName)
         user.save()    
