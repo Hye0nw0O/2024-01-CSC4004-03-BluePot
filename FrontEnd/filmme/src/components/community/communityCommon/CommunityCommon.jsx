@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import PostList from "../../common/post/PostList";
+import Loading from "../../common/loading/Loading";
 
 import { getCommunityCommon } from '../../../apis/api/community/getCommunityCommon';
 
@@ -53,23 +54,28 @@ function CommunityCommon() {
         setCommonContent();
         }, [currentPage]);
 
-    return (
-        <>
-            <PostList
-                use={"communityCommon"}
-                category={"common"}
-                data={commonContent}
-                url={"/communities/commons/"}
-                writeUrl={"/community/create"}
-                currentOption={currentOption}
-                SelectorOption={SelectorOption}
-                getCurrentOption={getCurrentOption}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                count={count}
-            />
-        </>
-    );
-}
+        return (
+            <>
+                {/* {loading ? (
+                    <Loading />
+                ) : ( */}
+                    <PostList
+                        use={"communityCommons"}
+                        category={"common"}
+                        data={commonContent}
+                        url={"/community/commons/"}
+                        writeUrl={"/community/create"}
+                        currentOption={currentOption}
+                        SelectorOption={SelectorOption}
+                        getCurrentOption={getCurrentOption}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        count={count}
+                    />
+                {/* )} */}
+            </>
+        );
+    }
+    
 
 export default CommunityCommon;

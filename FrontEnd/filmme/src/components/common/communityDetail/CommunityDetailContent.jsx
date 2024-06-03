@@ -2,12 +2,13 @@ import React from "react";
 import * as S from "./style"; // 해당 컴포넌트에 사용되는 스타일 파일 경로를 임포트해주세요.
 
 import EditDelete from "../editDelete/EditDelete";
-import axios from "../../../api/axios";
+import { API } from "../../../apis/utils/index";
 import { useNavigate } from "react-router-dom";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import ReactMarkdown from 'react-markdown';
 
-const CommunityDetailContent = ({ detail, isWriter, id, user, type }) => {
+
+const CommunityDetailContent = ({ detail, isWriter, id, writer, type }) => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
@@ -17,23 +18,23 @@ const CommunityDetailContent = ({ detail, isWriter, id, user, type }) => {
         const headers = {
           Authorization: `Bearer ${accessToken}` // Bearer Token 설정
         };
-        if (type == "suggestion") {
+        if (type == "suggestions") {
           // suggestions/{suggestion_id}
-          const response = await axios.delete(`suggestions/${id}`, {
+          const response = await API.delete(`suggestions/${id}`, {
             headers
           });
 
           if (response.status === 204) {
-            navigate("/suggestion");
+            navigate("/suggestions");
           }
         } else {
-          const response = await axios.delete(`communities/posts/${id}`, {
+          const response = await API.delete(`communities/posts/${id}`, {
             headers
           });
 
           if (response.status === 204) {
-            if (type == "suggestion") {
-              navigate("/suggestion");
+            if (type == "suggestions") {
+              navigate("/suggestions");
             }
             navigate("/community");
           }
