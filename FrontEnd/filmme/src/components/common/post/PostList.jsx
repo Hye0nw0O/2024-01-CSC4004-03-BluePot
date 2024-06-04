@@ -7,12 +7,13 @@ import Likes from '../../../assets/images/Community/thumb.svg';
 import Comments from '../../../assets/images/Community/comment.svg';
 import EyeOutlineIcon from '../../../assets/images/Community/eye_outline.png';
 
+import CommunitySearch from '../../community/communitySearch/CommunitySearch';
+
 // 컴포넌트
 import Selector from "../selector/Selector";
 import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
-// import NoPage from "../../community/noPage/NoPage";
 
 const PostList = ({
   use,
@@ -60,7 +61,6 @@ const PostList = ({
 
   // 인기 게시물
   const [popularPost, setPopularPost] = useState(null);
-
   const [isMobile, setisMobile] = useState(false);
   const [sortOption, setSortOption] = useState("latest");
 
@@ -74,6 +74,8 @@ const PostList = ({
           apiUrl += "&ordering=like";
         } else if (sortOption === "popular") {
           apiUrl += "&ordering=popular";
+        } else {
+          apiUrl += "&ordering=latest";
         }
 
         const response = await axios.get(apiUrl);
@@ -97,14 +99,6 @@ const PostList = ({
       setisMobile(false);
     }
   };
-
-  // const ifThListContain = thTitle => {
-  //   if (thList.includes(thTitle)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
 
   useEffect(() => {
     // 인기 게시물 관련 기능
@@ -159,6 +153,7 @@ const PostList = ({
                   )}
               </S.PopularPostsHeader>
           ) : null}
+                      <CommunitySearch/>
           </S.PopularPostsSection>
           <S.PostListHeaderWrapper>
             {cinemaOption != "" ? (
@@ -209,12 +204,9 @@ const PostList = ({
                         onClick={() => navigate(`${url}${data.id}`)}
                     >
                         {ifThListContain("번호") ? (
-                            <S.PostListTableTd>
-                                {/* {currentOption === "popular" || currentOption === "like"
-                                    ? idx + 1 + (currentPage - 1) * itemsPerPage
-                                    : count - idx - (currentPage - 1) * itemsPerPage} */}
-                                    {data.id}
-                            </S.PostListTableTd>
+                          <S.PostListTableTd>
+                            {idx + 1 + (currentPage - 1) * itemsPerPage}
+                          </S.PostListTableTd>
                         ) : null}
 
                         {ifThListContain("제목") ? (
@@ -230,7 +222,7 @@ const PostList = ({
                             </S.PostListTableTdTitle>
                         ) : null}
 
-                        {ifThListContain("서비스명") ? (
+                        {ifThListContain("영화관명") ? (
                             <S.PostListTableTd>{data.cinema}</S.PostListTableTd>
                         ) : null}
 
@@ -265,8 +257,8 @@ const PostList = ({
             </S.PostListTableTbody>
 
         </S.PostListTable>
-                {/* 글 작성 버튼 */}
-                {use != "notice" ? (
+        {/* 글 작성 버튼 */}
+        {use != "notice" ? (
         <S.PostListHeaderWrite>
           {/* 로그인하지 않은 경우 로그인 페이지로 이동하기 */}
           <S.PostListHeaderWriteContent

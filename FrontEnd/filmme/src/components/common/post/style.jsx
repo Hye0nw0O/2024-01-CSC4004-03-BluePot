@@ -31,6 +31,7 @@ export const PostListHeader = styled.div`
   margin-bottom: 1rem;
   width: 100%;
   flex-direction: column;
+  gap: 1rem;
 
 `;
 
