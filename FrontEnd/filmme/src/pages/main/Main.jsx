@@ -40,7 +40,6 @@ function Main() {
     useEffect(() => {
         axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
-                console.log(response.data);  // 반환된 데이터 확인
                 setTheaters(response.data);
                 setFilteredTheaters(response.data);
             })
@@ -69,11 +68,12 @@ function Main() {
       const filterAndSortTheaters = () => {
         let filtered = theaters.filter(theater => theater.name.toLowerCase().includes(searchQuery.toLowerCase()));
         if (clickedRegion !== 0) {
-          filtered = filtered.filter(theater => theater.region === regionNames[clickedRegion]);
+            filtered = filtered.filter(theater => theater.location === regionNames[clickedRegion]);
         }
         filtered = sortTheaters(filtered);
         setFilteredTheaters(filtered);
-      };
+    };
+    
 
     // 검색어 입력 시 placeholder 가리기
     const handleSearchInputChange = (e) => {
@@ -124,7 +124,7 @@ function Main() {
         let theatersToDisplay = filteredTheaters;
 
         if (clickedRegion !== 0) {
-            theatersToDisplay = filteredTheaters.filter(theater => theater.region === regionNames[clickedRegion]);
+            theatersToDisplay = filteredTheaters.filter(theater => theater.location === regionNames[clickedRegion]);
         }
 
         return theatersToDisplay.map(theater => (

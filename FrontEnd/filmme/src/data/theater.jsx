@@ -27,7 +27,7 @@ const Theater = () => {
               key={theater.id || ''}
               id={theater.id || ''}
               name={theater.name || 'Unknown'}
-              region={theater.region || 'Unknown'}
+              region={theater.location || 'Unknown'}
               star={theater.star || 'No Rating'}
               score={theater.score || 'No Score'}
               like={theater.like || 0}
