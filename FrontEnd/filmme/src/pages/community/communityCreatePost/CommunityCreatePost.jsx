@@ -38,7 +38,7 @@ function CommunityCreatePost() {
 
     const selectMenuHandler = index => {
         setCurrentTab(index);
-        setCategory(index === 0 ? "common" : index === 1 ? "review" : "suggestion");
+        setCategory(index === 0 ? "common" : index === 1 ? "tip" : "suggestion");
         const defaultText =
         index === 0
             ? "자유 게시판 내용을 입력해주세요."
