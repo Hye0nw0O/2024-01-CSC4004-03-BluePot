@@ -68,13 +68,13 @@ function CommunitySearchDetail() {
             />
         </S.SearchTitleWrapper>
 
-        {/* <PostList
-            // data={data}
-            // count={count}
+        <PostList
+            data={data}
+            count={count}
             currentPage={currentPage}
             getCurrentPage={getCurrentPage}
-            // searchTerm={searchTerm}
-        /> */}
+            searchTerm={searchTerm}
+        />
         </S.SearchWrapper>
     );
 }

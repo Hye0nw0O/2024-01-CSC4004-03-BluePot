@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 
 from .models import Community, CommunityComment, CommunityLike
 from .serializers import *
-from .paginations import CommunityCommentPagination, CommunityPagination
+from .paginations import CommunityPagination
 from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
@@ -180,7 +180,7 @@ class CommunityDetailViewSet(viewsets.GenericViewSet,
 # 커뮤니티 댓글 목록, 작성
 class CommunityCommentViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
     serializer_class = CommunityCommentSerializer
-    pagination_class = CommunityCommentPagination
+    # pagination_class = CommunityCommentPagination
     filter_backends = [CommunityOrderingFilter]
 
     def get_permissions(self):

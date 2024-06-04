@@ -4,13 +4,17 @@ import "./style.css";
 
 function Paging({ page, count, postPerPage, setPage }) {
     const pageRangeDisplayed = 5;
-    const numPages = Math.max(1, Math.ceil(count / postPerPage)); // 최소 1페이지는 보장
+    const numPages = Math.max(1, Math.ceil(count / postPerPage));
     const numPagesSection = Math.ceil(numPages / pageRangeDisplayed);
     const [currentPageSection, setCurrentPageSection] = useState(0);
 
     useEffect(() => {
-        setPage(currentPageSection * pageRangeDisplayed + 1);
-    }, [currentPageSection]);
+        if (page > numPages) {
+            setPage(numPages);
+        } else if (page < 1) {
+            setPage(1);
+        }
+    }, [numPages, page, setPage]);
 
     if (numPages === 0) return null;
 
