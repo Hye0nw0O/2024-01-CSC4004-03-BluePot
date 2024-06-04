@@ -5,6 +5,7 @@ import * as S from "./style";
 
 import Likes from '../../../assets/images/Community/thumb.svg';
 import Comments from '../../../assets/images/Community/comment.svg';
+import EyeOutlineIcon from '../../../assets/images/Community/eye_outline.png';
 
 // 컴포넌트
 import Selector from "../selector/Selector";
@@ -35,10 +36,10 @@ const PostList = ({
   switch (use) {
     case "communityCommons":
       // 조회수 추가해야 함
-      thList = ["번호", "제목", "등록일시", "좋아요", "댓글수"];
+      thList = ["번호", "제목", "등록일시", "좋아요", "조회수"];
       break;
     case "communityTips":
-      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "댓글수"];
+      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "조회수"];
       break;
     case "communitySuggestions":
       thList = ["번호", "제목", "등록일시", "답변 여부"];
@@ -49,8 +50,7 @@ const PostList = ({
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const navigate = useNavigate();
 
-  // //Paging
-  // // 한 페이지당 보여줄 게시글 수
+  // 한 페이지당 보여줄 게시글 수
   const itemsPerPage = 10;
 
   // 페이지 변경 핸들러
@@ -62,6 +62,33 @@ const PostList = ({
   const [popularPost, setPopularPost] = useState(null);
 
   const [isMobile, setisMobile] = useState(false);
+  const [sortOption, setSortOption] = useState("latest");
+
+  const ifThListContain = thTitle => thList.includes(thTitle);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = `/api/communities/${category}?page=${currentPage}`;
+        if (sortOption === "like") {
+          apiUrl += "&ordering=like";
+        } else if (sortOption === "popular") {
+          apiUrl += "&ordering=popular";
+        }
+
+        const response = await axios.get(apiUrl);
+        setData(response.data.results);
+        setCount(response.data.count);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    fetchData();
+  }, [category, currentPage, sortOption]);
+
+  useEffect(() => {
+    setCurrentPage(1); // 정렬 옵션이 변경될 때 페이지를 1로 초기화
+  }, [sortOption]);
 
   const resizingHandler = () => {
     if (window.innerWidth < 550) {
@@ -71,13 +98,13 @@ const PostList = ({
     }
   };
 
-  const ifThListContain = thTitle => {
-    if (thList.includes(thTitle)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const ifThListContain = thTitle => {
+  //   if (thList.includes(thTitle)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   useEffect(() => {
     // 인기 게시물 관련 기능
@@ -126,7 +153,7 @@ const PostList = ({
                       <br />
                       {typeof popularPost.content === 'string'
                         ? popularPost.content.slice(0, 20) + (popularPost.content.length > 20 ? "..." : "")
-                        : "내용이 문자열이 아닙니다."
+                        : ""
                       }
                     </S.PopularPostsList>
                   )}
@@ -156,7 +183,7 @@ const PostList = ({
             <S.PostListHeaderSort>
               <Selector
                 options={SelectorOption}
-                getCurrentOption={getCurrentOption}
+                getCurrentOption={setSortOption}
               />
             </S.PostListHeaderSort>
           ) : (
@@ -212,12 +239,17 @@ const PostList = ({
                         ) : null}
 
                         {ifThListContain("좋아요") ? (
-                            <S.PostListTableTd><img src={Likes} alt="좋아요수" />{data.likes_cnt}</S.PostListTableTd>
+                            <S.PostListTableTd>
+                                <img src={Likes} alt="좋아요수" style={{ width: '16px', height: '16px' }} />{data.likes_cnt}
+                            </S.PostListTableTd>
                         ) : null}
 
-                        {ifThListContain("댓글수") ? (
-                            <S.PostListTableTd><img src={Comments} alt="댓글수" />{data.view_cnt}</S.PostListTableTd>
+                        {ifThListContain("조회수") ? (
+                            <S.PostListTableTd>
+                                <img src={EyeOutlineIcon} alt="조회수" style={{ width: '16px', height: '16px' }} />{data.view_cnt}
+                            </S.PostListTableTd>
                         ) : null}
+
 
                         {ifThListContain("답변 여부") ? (
                             <S.PostListTableTd>
