@@ -12,6 +12,7 @@ import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailP
 import CommunityDetailContent from "../../../components/common/communityDetail/CommunityDetailContent";
 import Loading from "../../../components/common/loading/Loading";
 import { getDetail } from "../../../apis/api/community/getDetail";
+import { getComments, addComment as postComment, deleteComment as removeComment } from "../../../apis/api/community/community";
 
 
 function DetailPage() {
@@ -29,7 +30,6 @@ function DetailPage() {
     // 한 페이지당 보여줄 댓글 수
     const itemsPerPage = 10;
     const navigate = useNavigate();
-
     const { type, id } = useParams();
 
     // 현재 페이지
@@ -43,7 +43,9 @@ function DetailPage() {
       title: "",
       writer: "",
       created_at: "",
-      content: ""
+      content: "",
+      likes_cnt: 0,
+      comments: []
   });
 
   useEffect(() => {
@@ -61,7 +63,11 @@ function DetailPage() {
             }
 
             const data = await getDetail(category, id);
+            const commentsData = await getComments(id);
+
             setDetail(data);
+            setViewCnt(data.view_cnt);
+            setComments(commentsData);
         } catch (error) {
             console.error("Failed to fetch detail: ", error);
         } finally {
@@ -71,18 +77,30 @@ function DetailPage() {
     fetchDetail();
 }, [type, id]);
 
-    const addComment = (text) => {
-      const newComment = {
-          id: Math.random(), // 임시 ID 생성
-          text: text,
-          writer: "익명", // 작성자 정보 (임시로 설정)
-          created_at: new Date().toISOString()
-      };
-      setComments(prevComments => [...prevComments, newComment]);
+    const addComment = async (text) => {
+      try {
+        const newComment = await postComment(id, text);
+        setComments(prevComments => [...prevComments, newComment]);
+        setDetail(prevDetail => ({
+          ...prevDetail,
+          comments_cnt: prevDetail.comments_cnt + 1
+        }));
+      } catch (error) {
+        console.error("Failed to add comment: ", error);
+      }
     };
 
-    const deleteComment = (id) => {
-        setComments(prevComments => prevComments.filter(comment => comment.id !== id));
+    const deleteComment = async (commentId) => {
+      try {
+        await removeComment(id, commentId);
+        setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+        setDetail(prevDetail => ({
+          ...prevDetail,
+          comments_cnt: prevDetail.comments_cnt - 1
+        }));
+      } catch (error) {
+        console.error("Failed to delete comment: ", error);
+      }
     };
 
     const handleLikeToggle = async () => {
@@ -177,7 +195,7 @@ function DetailPage() {
       <S.DetailPageWrapper>
         {/* <S.DetailPageHeaderWrapper>
           <S.DetailPageTitle>Community</S.DetailPageTitle>
-            <S.DetailPageSubTitle>어쩌구 커뮤니티에 관한 설명 어쩌구</S.DetailPageSubTitle>
+            <S.DetailPageSubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.DetailPageSubTitle>
         </S.DetailPageHeaderWrapper> */}
 
         <S.DetailContentWrapper>

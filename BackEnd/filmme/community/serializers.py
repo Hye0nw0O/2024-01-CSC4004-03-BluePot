@@ -56,7 +56,7 @@ class CommunityCommentSerializer(serializers.ModelSerializer):
         return instance.community.id
     
     def get_writer(self, instance):
-        return instance.writer.nickname
+        return instance.writer.nickName
     
     class Meta:
         model = CommunityComment

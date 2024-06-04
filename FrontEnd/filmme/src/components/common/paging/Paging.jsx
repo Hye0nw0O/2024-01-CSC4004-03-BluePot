@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import "./style.css";
 
 function Paging({ page, count, postPerPage, setPage }) {
     const pageRangeDisplayed = 5;
-    const numPages = Math.ceil(count / postPerPage);
+    const numPages = Math.max(1, Math.ceil(count / postPerPage)); // 최소 1페이지는 보장
     const numPagesSection = Math.ceil(numPages / pageRangeDisplayed);
     const [currentPageSection, setCurrentPageSection] = useState(0);
 
     useEffect(() => {
         setPage(currentPageSection * pageRangeDisplayed + 1);
     }, [currentPageSection]);
+
+    if (numPages === 0) return null;
 
     return (
         <>
@@ -24,8 +26,7 @@ function Paging({ page, count, postPerPage, setPage }) {
             &lt;
             </S.Button>
 
-            {Array(numPages)
-            .fill()
+            {Array.from({ length: numPages })
             .slice(
                 currentPageSection * pageRangeDisplayed,
                 (currentPageSection + 1) * pageRangeDisplayed
