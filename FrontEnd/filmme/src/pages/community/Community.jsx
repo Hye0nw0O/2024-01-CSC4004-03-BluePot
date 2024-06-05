@@ -25,10 +25,9 @@ function Community() {
         <S.CommunityWrapper>
             <S.CommunityHeaderWrapper>
                 <S.CommunityTitle>Community</S.CommunityTitle>
-                <S.CommunitySubTitle>어쩌구 커뮤니티에 관한 설명 어쩌구</S.CommunitySubTitle>
+                <S.CommunitySubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.CommunitySubTitle>
             </S.CommunityHeaderWrapper>
 
-            <CommunitySearch/>
 
             <S.CommunityContentWrapper>
                 <S.CommunityContentCategory>

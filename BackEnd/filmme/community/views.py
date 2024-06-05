@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 
 from .models import Community, CommunityComment, CommunityLike
 from .serializers import *
-from .paginations import CommunityCommentPagination, CommunityPagination
+from .paginations import CommunityPagination
 from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
@@ -19,6 +19,7 @@ from .permissions import IsOwnerOrReadOnly
 class CommunityListCreate(generics.ListCreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunityCreateUpdateSerializer
+
 # 정렬 기능
 class CommunityOrderingFilter(filters.OrderingFilter):
     def filter_queryset(self, request, queryset, view):
@@ -30,13 +31,14 @@ class CommunityOrderingFilter(filters.OrderingFilter):
         else:
             # 기본은 최신순으로 설정
             return queryset.order_by('-created_at')
+        
 # 커뮤니티 목록
 class CommunityViewSet(viewsets.GenericViewSet,
                     mixins.ListModelMixin
                 ):
     queryset = Community.objects.all()
     filter_backends = [CommunityOrderingFilter, SearchFilter]
-    search_fields = ['title', 'content', 'writer','cinema__title'] 
+    search_fields = ['title', 'content', 'writer','cinema__name'] 
     pagination_class = CommunityPagination
 
     def get_serializer_class(self):
@@ -174,10 +176,11 @@ class CommunityDetailViewSet(viewsets.GenericViewSet,
         elif request.method == 'DELETE':
             community_like.delete()
             return Response({"detail": "좋아요를 취소하였습니다."})
+        
 # 커뮤니티 댓글 목록, 작성
 class CommunityCommentViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
     serializer_class = CommunityCommentSerializer
-    pagination_class = CommunityCommentPagination
+    # pagination_class = CommunityCommentPagination
     filter_backends = [CommunityOrderingFilter]
 
     def get_permissions(self):

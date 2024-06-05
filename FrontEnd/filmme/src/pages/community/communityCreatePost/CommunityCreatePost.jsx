@@ -38,7 +38,7 @@ function CommunityCreatePost() {
 
     const selectMenuHandler = index => {
         setCurrentTab(index);
-        setCategory(index === 0 ? "common" : index === 1 ? "review" : "suggestion");
+        setCategory(index === 0 ? "common" : index === 1 ? "tip" : "suggestion");
         const defaultText =
         index === 0
             ? "자유 게시판 내용을 입력해주세요."
@@ -83,7 +83,7 @@ function CommunityCreatePost() {
         <S.CommunityContentWrapper>
             <S.CreatePageHeaderWrapper>
                 <S.CreatePageTitle>Community</S.CreatePageTitle>
-                <S.CreatePageSubTitle>어쩌구 커뮤니티에 관한 설명 어쩌구</S.CreatePageSubTitle>
+                <S.CreatePageSubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.CreatePageSubTitle>
             </S.CreatePageHeaderWrapper>
 
         <CommunityDetailPageType type={`${category}s`} cinemaName={null} /> 

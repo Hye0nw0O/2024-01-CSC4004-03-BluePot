@@ -1,10 +1,19 @@
-// import axios from "../../../api/axios";
 import React, { useEffect, useState } from "react";
-import { useLocation,useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as S from "./style";
+
+import ThumbIcon from "../../../assets/images/Community/mypageThumb.png";
+import ThumbOutlineIcon from "../../../assets/images/Community/thumb_outline.png";
+import EyeOutlineIcon from "../../../assets/images/Community/eye_outline.png";
 
 import CommentWrite from "../../../components/common/commentWrite/CommentWrite";
 import CommunityCommentList from "../../../components/common/communityCommentList/CommunityCommentList";
+import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailPageType";
+import CommunityDetailContent from "../../../components/common/communityDetail/CommunityDetailContent";
+import Loading from "../../../components/common/loading/Loading";
+import { getDetail } from "../../../apis/api/community/getDetail";
+import { getComments, addComment as postComment, deleteComment as removeComment } from "../../../apis/api/community/community";
+
 
 function DetailPage() {
   // const [user, setUser] = useRecoilState(userState);
@@ -12,60 +21,126 @@ function DetailPage() {
   const [comments, setComments] = useState([]);
   const [viewCnt, setViewCnt] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [cinemaName, setcinemaName] = useState("에무시네마");
+  const [isWriter, setIsWriter] = useState(false);
+
+  const [likeImage, setLikeImage] = useState(ThumbOutlineIcon);
 
     // 한 페이지당 보여줄 댓글 수
     const itemsPerPage = 10;
     const navigate = useNavigate();
+    const { type, id } = useParams();
 
     // 현재 페이지
     const [currentPage, setCurrentPage] = useState(1);
   
-    // type에는 common, reviews, suggestions
-    const { type, id } = useParams();
-  
     // detail 정보 설정
     const [detail, setDetail] = useState({
-      
       comments_cnt: 0,
       view_cnt: 0,
-      is_liked: false
-    });
+      is_liked: false,
+      title: "",
+      writer: "",
+      created_at: "",
+      content: "",
+      likes_cnt: 0,
+      comments: []
+  });
 
-    // 댓글 더미 데이터
-    const dummyComments = [
-      { id: 1, text: "첫 번째 댓글입니다!", writer: "홍길동", created_at: "2023-05-12" },
-      { id: 2, text: "두 번째 댓글입니다!", writer: "이순신", created_at: "2023-05-12" }
-    ];
+  useEffect(() => {
+    const fetchDetail = async () => {
+        try {
+            const categoryMap = {
+                commons: 'commons',
+                tips: 'tips',
+                suggestions: 'suggestions'
+            };
 
-    useEffect(() => {
-      setComments(dummyComments); // 댓글 초기화
-      setDetail({
-        comments_cnt: dummyComments.length,
-        view_cnt: 100,
-        is_liked: false,
-        id: id,
-        title: "근로 월급이 오늘 들어와서 행복한",
-        content: "원래 16일이랬거든요? 근데 오늘 들어와서 너무 행복해졌어용.",
-        author: "씨니",
-        created_at: "2023-01-01 12:00",
-        dummyComments
-      }); // 상세 정보 초기화
-    }, []);
+            const category = categoryMap[type];
+            if (!category) {
+                throw new Error(`Unknown category type: ${type}`);
+            }
+
+            const data = await getDetail(category, id);
+            const commentsData = await getComments(id);
+
+            setDetail(data);
+            setViewCnt(data.view_cnt);
+            setComments(commentsData);
+        } catch (error) {
+            console.error("Failed to fetch detail: ", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchDetail();
+}, [type, id]);
+
+    const addComment = async (text) => {
+      try {
+        const newComment = await postComment(id, text);
+        setComments(prevComments => [...prevComments, newComment]);
+        setDetail(prevDetail => ({
+          ...prevDetail,
+          comments_cnt: prevDetail.comments_cnt + 1
+        }));
+      } catch (error) {
+        console.error("Failed to add comment: ", error);
+      }
+    };
+
+    const deleteComment = async (commentId) => {
+      try {
+        await removeComment(id, commentId);
+        setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+        setDetail(prevDetail => ({
+          ...prevDetail,
+          comments_cnt: prevDetail.comments_cnt - 1
+        }));
+      } catch (error) {
+        console.error("Failed to delete comment: ", error);
+      }
+    };
+
+    const handleLikeToggle = async () => {
+      if (!user) {
+        // 로그인 모달창\
+        // 로그인하지 않은 경우 로그인 페이지로 이동
+        navigate("/login");
+        return;
+      }
 
 
-    const addComment = (text) => {
-      const newComment = {
-          id: Math.random(), // 임시 ID 생성
-          text: text,
-          writer: "익명", // 작성자 정보 (임시로 설정)
-          created_at: new Date().toISOString()
+    try {
+      // 좋아요 상태 확인
+
+      const accessToken = user.accessToken;
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
       };
-      setComments(prevComments => [...prevComments, newComment]);
-    };
 
-    const deleteComment = (id) => {
-        setComments(prevComments => prevComments.filter(comment => comment.id !== id));
-    };
+      // isLiked가 true이면 좋아요 취소, delete 요청보내기
+      if (likeImage === ThumbIcon) {
+        const response = await API.delete(`communities/${type}/${id}`, {
+          headers
+        });
+
+        if (response.status === 200) {
+          setLikeImage(ThumbOutlineIcon);
+        }
+      } else {
+        const response = await API.post(`communities/${type}/${id}`, null, {
+          headers
+        });
+
+        if (response.status === 200) {
+          setLikeImage(ThumbIcon);
+        }
+      }
+    } catch (error) {}
+  };
+
 
     // 댓글 렌더링
     const renderComment = () => {
@@ -85,34 +160,54 @@ function DetailPage() {
       );
     };
 
+    const renderDetail = () => {
+      return !detail ? (
+        <>
+          <S.DetailTitle>로딩중</S.DetailTitle>
+          <S.DetailDiviner />
+        </>
+      ) : (
+        <>
+          <CommunityDetailContent
+            detail={detail}
+            isWriter={isWriter}
+            id={detail.id}
+            // writer={writer}
+            type={"community"}
+          />
+          <S.DetailDiviner />
+          <S.LikeViewWrapper>
+            <S.Thumbnailimg src={EyeOutlineIcon} alt="조회수" />
+            <S.DetailViewText>{viewCnt}</S.DetailViewText>
+            {/* is_liked 여부에 따라 */}
+            <S.Thumbnailimg
+              src={likeImage}
+              alt="좋아요"
+              onClick={handleLikeToggle}
+            />
+            <S.DetailViewText>{detail.likes_cnt}</S.DetailViewText>
+          </S.LikeViewWrapper>
+        </>
+      );
+    };
 
     return (
       <S.DetailPageWrapper>
-        <S.DetailPageHeaderWrapper>
+        {/* <S.DetailPageHeaderWrapper>
           <S.DetailPageTitle>Community</S.DetailPageTitle>
-            <S.DetailPageSubTitle>어쩌구 커뮤니티에 관한 설명 어쩌구</S.DetailPageSubTitle>
-        </S.DetailPageHeaderWrapper>
+            <S.DetailPageSubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.DetailPageSubTitle>
+        </S.DetailPageHeaderWrapper> */}
 
         <S.DetailContentWrapper>
-
+          <CommunityDetailPageType
+          type={type}
+          cinemaName={
+              type === "tips" || type == "suggestions" ? (cinemaName ? cinemaName : null) : null
+            }
+          />
           <S.DetailDiviner />
 
-          {/* 게시물 제목 */}
-          <S.DetailTitle>{detail.title}</S.DetailTitle>
-
-          {/* 게시물 작성자 및 작성일시 */}
-          <S.DetailAuthor>
-            작성자: {detail.author} 작성 일시: {detail.created_at}
-          </S.DetailAuthor>
-
-          {/* 게시물 내용 */}
-          <S.DetailContent>
-            {detail.content}
-          </S.DetailContent>
-
-          <S.DetailDiviner />
-          
-          <S.DetailViewText>조회수 {detail.view_cnt}</S.DetailViewText>
+          {renderDetail(isWriter)}
 
           {/* 댓글 입력 */}
           <S.DetailCommentHeader>댓글 {detail.comments_cnt}</S.DetailCommentHeader>

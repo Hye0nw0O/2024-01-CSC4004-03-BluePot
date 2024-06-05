@@ -41,13 +41,7 @@ urlpatterns = [
     path('communities/commons/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'common'}, name='community-common-detail'),
     path('communities/suggestions/<int:pk>', views.CommunityDetailViewSet.as_view(community_detail_action), {'category': 'suggestion'}, name='community-suggestion-detail'),
 
-    # 댓글
-    # path('communities/posts/<int:community_id>/', views.CommentViewSet.as_view), include(community_comment_router.urls),
-    # path('communities/posts/',include(comment_router.urls)),
-    
-    path('communities/posts/<int:community_id>/', views.CommentViewSet.as_view({'get': 'list', 'post': 'create'}), name='comment-list-create'),  # 수정된 부분
-    path('communities/posts/<int:community_id>/<int:pk>/', views.CommentViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='comment-update-delete'),  # 수정된 부분
-    path('', include(community_comment_router.urls)),  # 수정된 부분
-    path('', include(comment_router.urls)),  # 수정된 부분
+    path('communities/posts/<int:community_id>/', include(community_comment_router.urls)),
+    path('communities/posts/', include(comment_router.urls)),
 
 ]
