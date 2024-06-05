@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style.jsx";
 import Card from '../../components/card/Card.jsx'
+import Modal from '../../components/card/Modal.jsx';
 import searchImage from "../../assets/images/Main/searchImage.png";
 import theater from "../../data/theater.jsx";
 import AOS from 'aos';
@@ -13,6 +14,8 @@ function Main() {
     const [filteredTheaters, setFilteredTheaters] = useState([]);
     const [isPlaceholderHidden, setIsPlaceholderHidden] = useState(false);
     const [sortBy, setSortBy] = useState("latest");
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
@@ -137,9 +140,23 @@ function Main() {
                 score={theater.star}
                 like={theater.like_cnt}
                 img={theater.img}
+                onClick={() => handleCardClick(theater)}
             />
         ));
     }
+
+    const handleCardClick = (theater) => {
+        setModalContent(
+          <div>
+            <h2>{theater.name}</h2>
+            <p>{theater.location}</p>
+            <p>Score: {theater.score}</p>
+            <p>Likes: {theater.like_cnt}</p>
+            <img src={theater.img} alt={theater.name} />
+          </div>
+        );
+        setShowModal(true);
+      }
 
     return (
         <>
@@ -182,6 +199,7 @@ function Main() {
                     </S.TheaterContainer>
                 </div>
             </S.MainWrapper>
+            <Modal show={showModal} onClose={() => setShowModal(false)} content={modalContent} />
         </>
     );
 }
