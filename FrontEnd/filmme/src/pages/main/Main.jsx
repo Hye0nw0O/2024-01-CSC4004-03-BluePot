@@ -139,7 +139,7 @@ function Main() {
                 star={theater.score}
                 score={theater.star}
                 like={theater.like_cnt}
-                img={theater.img}
+                img={theater.view_url}
                 onClick={() => handleCardClick(theater)}
             />
         ));
