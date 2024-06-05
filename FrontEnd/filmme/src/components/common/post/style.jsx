@@ -243,7 +243,7 @@ export const PostListMobileContent = styled.div`
 // style.js
 
 export const PopularPostsSection = styled.div`
-display: flex;
+// display: flex;
 align-items: center;
 `;
 

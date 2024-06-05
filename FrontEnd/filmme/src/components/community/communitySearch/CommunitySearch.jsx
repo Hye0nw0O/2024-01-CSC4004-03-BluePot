@@ -3,31 +3,25 @@ import * as S from "./style";
 import { useNavigate } from "react-router-dom";
 import searchImage from "../../../assets/images/Main/searchImage.png";
 
-function CommunitySearch() {
-
-    const navigate = useNavigate();
+function CommunitySearch({ onSearch }) {
     const [searchWord, setSearchWord] = useState("");
-    const changeSearchWord = event => setSearchWord(event.target.value);
-
-    const onSubmit = event => {
-        event.preventDefault();
-        navigate(`/community-search?q=${searchWord}`);
+    const changeSearchWord = event => {
+        setSearchWord(event.target.value);
+        onSearch(event.target.value);
     };
 
     return (
-        <>
-        <S.CommunitySearchWrapper onSubmit={onSubmit}>
-            <S.SearchImage src={searchImage} alt="searchImage"/>
-                <S.SearchInput
-                    type="text"
-                    name="searchWord"
-                    value={searchWord}
-                    onChange={changeSearchWord}
-                    placeholder="검색어를 입력해주세요."
-                />
-                <S.SearchBox/>
+        <S.CommunitySearchWrapper>
+            <S.SearchImage src={searchImage} alt="searchImage" />
+            <S.SearchInput
+                type="text"
+                name="searchWord"
+                value={searchWord}
+                onChange={changeSearchWord}
+                placeholder="검색어를 입력하세요."
+            />
+            <S.SearchBox />
         </S.CommunitySearchWrapper>
-        </>
     );
 }
 
