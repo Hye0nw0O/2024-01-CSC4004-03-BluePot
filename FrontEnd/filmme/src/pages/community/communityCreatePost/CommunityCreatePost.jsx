@@ -3,7 +3,7 @@ import { FileDrop } from "react-file-drop";
 import MDEditor from "@uiw/react-md-editor";
 import * as S from "./style";
 import "./EditorStyle.css";
-import { createPost } from "../../../apis/api/community/community";
+import { createPost, getCinemas } from "../../../apis/api/community/community"; // getCinemas 가져오기
 import { useLocation, useNavigate } from "react-router-dom";
 import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailPageType";
 
@@ -22,6 +22,19 @@ function CommunityCreatePost() {
             setCategory(state.category);
         }
     }, [state.category]);
+
+    useEffect(() => {
+        const fetchCinemas = async () => {
+            try {
+                const cinemas = await getCinemas();
+                setCinemaOption(cinemas);
+            } catch (error) {
+                console.error("Failed to fetch cinemas:", error);
+            }
+        };
+
+        fetchCinemas();
+    }, []);
 
     const handleImageUpload = async files => {
         const image = files[0];
@@ -101,17 +114,11 @@ function CommunityCreatePost() {
                     onChange={e => getCurrentCinemaOption(e.target.value)}
                 >
                     <S.Option value={null}>▿ 영화관 선택</S.Option>
-                    {state.cinema && (
-                        <S.Option value={state.cinema} selected>
-                        {state.cinema}
+                    {cinemaOption.map((cinema, index) =>
+                        <S.Option key={index} value={cinema.name}>
+                            {cinema.name}
                         </S.Option>
                     )}
-                    {cinemaOption.map((cinema, index) =>
-                        state.cinema === cinema.title ? null : (
-                        <S.Option key={index} value={cinema.title}>
-                            {cinema.title}
-                        </S.Option>
-                    ))}
                 </S.Select>
                 <S.SelcetorDescriptionText>
                     {category === "tips" ? (
