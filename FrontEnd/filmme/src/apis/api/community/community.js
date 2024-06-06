@@ -22,3 +22,9 @@ export const createPost = async (data) => {
     const response = await API.post('/api/communities/posts', data);
     return response.data;
 };
+
+// 영화관 목록 가져오기
+export const getCinemas = async () => {
+    const response = await API.get('/api/cinemas/');
+    return response.data;
+};

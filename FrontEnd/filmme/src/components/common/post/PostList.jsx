@@ -8,6 +8,8 @@ import Selector from "../selector/Selector";
 import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
+import ListView from "../../common/paging/List";
+import { getCinemas } from "../../../apis/api/community/community"; // getCinemas 가져오기
 
 const PostList = ({
   use,
@@ -29,20 +31,36 @@ const PostList = ({
   const [filteredData, setFilteredData] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [sortOption, setSortOption] = useState("latest");
+  const [cinemaList, setCinemaList] = useState([]);
+  const [selectedCinema, setSelectedCinema] = useState("");
 
   useEffect(() => {
-    if (data) {
-      if (searchWord) {
-        setFilteredData(data.filter(post =>
-          post.title.includes(searchWord) ||
-          post.content.includes(searchWord) ||
-          (post.cinema && post.cinema.includes(searchWord))
-        ));
-      } else {
-        setFilteredData(data);
+    const fetchCinemas = async () => {
+      try {
+        const cinemas = await getCinemas();
+        setCinemaList(cinemas);
+      } catch (error) {
+        console.error("Failed to fetch cinemas:", error);
       }
+    };
+
+    fetchCinemas();
+  }, []);
+
+  useEffect(() => {
+    let filtered = data;
+    if (searchWord) {
+      filtered = filtered.filter(post =>
+        post.title.includes(searchWord) ||
+        post.content.includes(searchWord) ||
+        (post.cinema && post.cinema.includes(searchWord))
+      );
     }
-  }, [searchWord, data]);
+    if (selectedCinema) {
+      filtered = filtered.filter(post => post.cinema === selectedCinema);
+    }
+    setFilteredData(filtered);
+  }, [searchWord, data, selectedCinema]);
 
   useEffect(() => {
     if (filteredData) {
@@ -70,6 +88,11 @@ const PostList = ({
 
   const handleSortChange = (sortOption) => {
     setSortOption(sortOption);
+  };
+
+  const handleCinemaChange = (cinema) => {
+    setSelectedCinema(cinema);
+    setCurrentCinemaOption(cinema);
   };
 
   let thList = [];
@@ -163,45 +186,49 @@ const PostList = ({
                 🍿 금주의 인기글
                 {popularPosts.map((post, index) => (
                   <S.PopularPostsList key={index} onClick={() => handlePopularPostClick(post.id)} style={{ cursor: 'pointer', color: '#6069E4' }}>
-                    {getMedalEmoji(index)} {post.title}
-                    <br />
-                    {typeof post.content === 'string'
-                      ? post.content.slice(0, 20) + (post.content.length > 20 ? "..." : "")
-                      : ""}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '1.5rem'}}>
+                        {getMedalEmoji(index)}
+                        {use === "communityTips" && post.cinema && ` [${post.cinema}]`}
+                        {post.title}
+                        <br />
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={Likes} alt="좋아요수" style={{ width: '16px', height: '16px', marginRight: '4px' }} />
+                        {post.likes_cnt}
+                      </span>
+                    </div>
                   </S.PopularPostsList>
                 ))}
               </S.PopularPostsHeader>
             ) : null}
           </S.PopularPostsSection>
           <S.PostListHeaderWrapper>
-            {cinemaOption != "" ? (
+            {(use === "communityTips") && (
               <S.Select
                 required
                 name="cinemas"
-                onChange={e => getCurrentCinemaOption(e.target.value)}
+                onChange={e => handleCinemaChange(e.target.value)}
               >
                 <S.Option value="">▿ 영화관 선택</S.Option>
-                {cinemaOption.map((cinema, index) => (
-                  <S.Option key={index} value={cinema.title}>
-                    {cinema.title}
+                {cinemaList.map((cinema, index) => (
+                  <S.Option key={index} value={cinema.name}>
+                    {cinema.name}
                   </S.Option>
                 ))}
               </S.Select>
+            )}
+            {currentOption !== "" && use !== "communitySuggestions" ? (
+              <S.PostListHeaderSort>
+                <Selector
+                  options={SelectorOption}
+                  getCurrentOption={handleSortChange}
+                />
+              </S.PostListHeaderSort>
             ) : (
               <></>
             )}
           </S.PostListHeaderWrapper>
-
-          {currentOption !== "" && use !== "communitySuggestions" ? (
-            <S.PostListHeaderSort>
-              <Selector
-                options={SelectorOption}
-                getCurrentOption={handleSortChange}
-              />
-            </S.PostListHeaderSort>
-          ) : (
-            <></>
-          )}
         </S.PostListHeader>
 
         <S.PostListTable>
