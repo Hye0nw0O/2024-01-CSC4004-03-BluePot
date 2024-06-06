@@ -15,6 +15,17 @@ const fadeInAnimation = keyframes`
   }
 `;
 
+const slideUpAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const PostListWrap = styled.div`
   width: 100%;
   display: flex;
@@ -262,5 +273,28 @@ export const ControlSection = styled.div`
 
 export const PopularPostsList = styled.div `
   margin-top: 2rem;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #e9e9e9;
+  }
+  
+
+  &:nth-child(1) {
+    animation: ${slideUpAnimation} 0.5s ease-in-out;
+  }
+
+  &:nth-child(2) {
+    animation: ${slideUpAnimation} 1s ease-in-out;
+  }
+
+  &:nth-child(3) {
+    animation: ${slideUpAnimation} 1.5s ease-in-out;
+  }
 `;

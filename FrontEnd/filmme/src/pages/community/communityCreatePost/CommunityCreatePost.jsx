@@ -1,52 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { FileDrop } from "react-file-drop";
 import MDEditor from "@uiw/react-md-editor";
-
 import * as S from "./style";
 import "./EditorStyle.css";
-import { userState } from "../../../components/common/authState/authState";
-
-import { useRecoilState } from "recoil";
+import { createPost } from "../../../apis/api/community/community";
 import { useLocation, useNavigate } from "react-router-dom";
 import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailPageType";
 
 function CommunityCreatePost() {
     const navigate = useNavigate();
-    const [cinemaOption, setCinemaOption] = useState([]);
     const { state } = useLocation();
-    const [currentCinemaOption, setCurrentCinemaOption] = useState(state.Cinema);
-    const [currentTab, setCurrentTab] = useState(0);
+    const [cinemaOption, setCinemaOption] = useState([]);
+    const [currentCinemaOption, setCurrentCinemaOption] = useState(state.cinema || "");
     const [category, setCategory] = useState(state.category);
-    const [user, setUser] = useRecoilState(userState);
     const [title, setTitle] = useState("");
     const [value, setValue] = useState("내용을 입력해주세요.");
     const [boardColor, setBoardColor] = useState(false);
-    const [header, setHeader] = useState("");
 
     useEffect(() => {
-        setCurrentTab(
-            state.category === "undefined"
-            ? 0
-            : state.category === "common"
-            ? 0
-            : state.category === "review"
-            ? 1
-            : 2
-        );
-        setCategory(state.category);
-    }, []);
-
-    const selectMenuHandler = index => {
-        setCurrentTab(index);
-        setCategory(index === 0 ? "common" : index === 1 ? "tip" : "suggestion");
-        const defaultText =
-        index === 0
-            ? "자유 게시판 내용을 입력해주세요."
-            : index === 1
-            ? "영화관 후기 내용을 입력해주세요."
-            : "건의사항 내용을 입력해주세요.";
-        setValue(`**${defaultText}**`);
-    };
+        if (state.category) {
+            setCategory(state.category);
+        }
+    }, [state.category]);
 
     const handleImageUpload = async files => {
         const image = files[0];
@@ -65,8 +40,8 @@ function CommunityCreatePost() {
         setCurrentCinemaOption(option);
     };
 
-    const handleClickWrite = () => {
-        if (category === "review" && (currentCinemaOption === "▿ 서비스 선택" || currentCinemaOption === "")) {
+    const handleClickWrite = async () => {
+        if (category === "tips" && (currentCinemaOption === "▿ 영화관 선택" || currentCinemaOption === "")) {
             alert("후기 게시판은 영화관을 선택하셔야 합니다.");
             return;
         }
@@ -74,8 +49,38 @@ function CommunityCreatePost() {
             alert("제목을 입력해주세요.");
             return;
         }
-        alert("게시글이 작성되었습니다.");
-        navigate("/community"); // 게시글 작성 후 커뮤니티 페이지로 이동
+
+        // 카테고리 값을 백엔드 요구 형식으로 변환
+        const categoryMap = {
+            "commons": "common",
+            "tips": "cinema_tip",
+            "suggestions": "suggestion"
+        };
+        const backendCategory = categoryMap[category] || "common";
+
+        const postData = {
+            category: backendCategory,
+            title: title,
+            content: value,
+            cinema: currentCinemaOption || undefined,
+            user: 1 // 임시로 user id를 1로 설정
+        };
+
+        console.log("Sending post data:", postData); // 요청 데이터 로그 출력
+
+        try {
+            const response = await createPost(postData);
+
+            if (response) {
+                alert("게시글이 작성되었습니다.");
+                navigate("/community");
+            } else {
+                alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("Failed to create post:", error);
+            alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
     return (
@@ -83,34 +88,12 @@ function CommunityCreatePost() {
         <S.CommunityContentWrapper>
             <S.CreatePageHeaderWrapper>
                 <S.CreatePageTitle>Community</S.CreatePageTitle>
-                <S.CreatePageSubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.CreatePageSubTitle>
             </S.CreatePageHeaderWrapper>
 
-        <CommunityDetailPageType type={`${category}s`} cinemaName={null} /> 
-            <S.CommunityContentCategory>
-            <S.CommunityContentCategoryTabMenu>
-                <S.CommunityContentCategoryMenuItem
-                $isActive={currentTab === 0}
-                onClick={() => selectMenuHandler(0)}
-                >
-                자유 게시판
-                </S.CommunityContentCategoryMenuItem>
-                <S.CommunityContentCategoryMenuItem
-                $isActive={currentTab === 1}
-                onClick={() => selectMenuHandler(1)}
-                >
-                영화관 후기
-                </S.CommunityContentCategoryMenuItem>
-                <S.CommunityContentCategoryMenuItem
-                $isActive={currentTab === 2}
-                onClick={() => selectMenuHandler(2)}
-                >
-                건의하기
-                </S.CommunityContentCategoryMenuItem>
-            </S.CommunityContentCategoryTabMenu>
-            </S.CommunityContentCategory>
+            <CommunityDetailPageType type={category} cinemaName={null} /> 
+
             <S.CreatePost>
-            {currentTab === 1 || currentTab === 2 ? (
+            {category !== "commons" && (
                 <S.SelcetorWrapper>
                 <S.Select
                     required
@@ -118,11 +101,11 @@ function CommunityCreatePost() {
                     onChange={e => getCurrentCinemaOption(e.target.value)}
                 >
                     <S.Option value={null}>▿ 영화관 선택</S.Option>
-                    {state.cinema !== "" ? (
+                    {state.cinema && (
                         <S.Option value={state.cinema} selected>
                         {state.cinema}
                         </S.Option>
-                    ) : null }
+                    )}
                     {cinemaOption.map((cinema, index) =>
                         state.cinema === cinema.title ? null : (
                         <S.Option key={index} value={cinema.title}>
@@ -131,14 +114,14 @@ function CommunityCreatePost() {
                     ))}
                 </S.Select>
                 <S.SelcetorDescriptionText>
-                    {currentTab === 1 ? (
+                    {category === "tips" ? (
                     <strong style={{ color: "#FF5D47", fontSize: "1.5rem" }}>
                         *필수
                     </strong>
                     ) : "*선택"}
                 </S.SelcetorDescriptionText>
                 </S.SelcetorWrapper>
-            ) : null}
+            )}
 
             <S.CommunityCreateTitle
                 placeholder="제목을 입력해주세요."

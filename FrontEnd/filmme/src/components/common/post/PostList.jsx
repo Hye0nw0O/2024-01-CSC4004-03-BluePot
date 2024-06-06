@@ -93,7 +93,7 @@ const PostList = ({
     setCurrentPage(pageNumber);
   };
 
-  const [popularPost, setPopularPost] = useState(null);
+  const [popularPosts, setPopularPosts] = useState([]);
   const [isMobile, setisMobile] = useState(false);
 
   const ifThListContain = thTitle => thList.includes(thTitle);
@@ -117,10 +117,8 @@ const PostList = ({
       });
 
       if (filteredData.length > 0) {
-        const highestLikes = filteredData.reduce((prev, current) => {
-          return (prev.likes_cnt > current.likes_cnt) ? prev : current;
-        });
-        setPopularPost(highestLikes);
+        const sortedByLikes = filteredData.sort((a, b) => b.likes_cnt - a.likes_cnt);
+        setPopularPosts(sortedByLikes.slice(0, 3)); // 상위 3개 인기 게시물 설정
       }
     }
     if (window.innerWidth <= 550) {
@@ -137,6 +135,23 @@ const PostList = ({
     console.log("PostList data:", data);
   }, [data]);
 
+  const handlePopularPostClick = (id) => {
+    navigate(`${url}${id}`);
+  };
+
+  const getMedalEmoji = (index) => {
+    switch(index) {
+      case 0:
+        return "🥇";
+      case 1:
+        return "🥈";
+      case 2:
+        return "🥉";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
       <S.PostListWrap>
@@ -146,15 +161,15 @@ const PostList = ({
             {use === "communityCommons" || use === "communityTips" ? (
               <S.PopularPostsHeader>
                 🍿 금주의 인기글
-                {popularPost && (
-                  <S.PopularPostsList>
-                    {popularPost.title}
+                {popularPosts.map((post, index) => (
+                  <S.PopularPostsList key={index} onClick={() => handlePopularPostClick(post.id)} style={{ cursor: 'pointer', color: '#6069E4' }}>
+                    {getMedalEmoji(index)} {post.title}
                     <br />
-                    {typeof popularPost.content === 'string'
-                      ? popularPost.content.slice(0, 20) + (popularPost.content.length > 20 ? "..." : "")
+                    {typeof post.content === 'string'
+                      ? post.content.slice(0, 20) + (post.content.length > 20 ? "..." : "")
                       : ""}
                   </S.PopularPostsList>
-                )}
+                ))}
               </S.PopularPostsHeader>
             ) : null}
           </S.PopularPostsSection>
@@ -258,11 +273,14 @@ const PostList = ({
         {use != "notice" ? (
           <S.PostListHeaderWrite>
             <S.PostListHeaderWriteContent
-              onClick={() => { navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } }); }}
+              onClick={() => { 
+                navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } }); 
+              }}
             >
               <S.StyledPencilIcon />
               글쓰기
             </S.PostListHeaderWriteContent>
+
           </S.PostListHeaderWrite>
         ) : (
           <></>
