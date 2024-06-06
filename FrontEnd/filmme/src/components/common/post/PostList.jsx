@@ -258,11 +258,14 @@ const PostList = ({
         {use != "notice" ? (
           <S.PostListHeaderWrite>
             <S.PostListHeaderWriteContent
-              onClick={() => { navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } }); }}
+              onClick={() => { 
+                navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } }); 
+              }}
             >
               <S.StyledPencilIcon />
               글쓰기
             </S.PostListHeaderWriteContent>
+
           </S.PostListHeaderWrite>
         ) : (
           <></>

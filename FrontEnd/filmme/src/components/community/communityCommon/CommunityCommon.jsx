@@ -61,7 +61,7 @@ function CommunityCommon() {
                 ) : ( */}
                     <PostList
                         use={"communityCommons"}
-                        category={"common"}
+                        category={"commons"}
                         data={commonContent}
                         url={"/community/commons/"}
                         writeUrl={"/community/create"}
