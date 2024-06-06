@@ -16,18 +16,23 @@ function Paging({ page, count, postPerPage, setPage }) {
         }
     }, [numPages, page, setPage]);
 
+    useEffect(() => {
+        setCurrentPageSection(Math.floor((page - 1) / pageRangeDisplayed));
+    }, [page, pageRangeDisplayed]);
+
     if (numPages === 0) return null;
 
     return (
         <>
         <S.Nav>
             <S.Button
-            onClick={() => {
-                setCurrentPageSection(currentPageSection - 1);
-            }}
-            disabled={currentPageSection === 0}
-            >
-            &lt;
+                onClick={() => {
+                    setCurrentPageSection(currentPageSection - 1);
+                    setPage((currentPageSection - 1) * pageRangeDisplayed + 1);
+                }}
+                disabled={currentPageSection === 0}
+                >
+                &lt;
             </S.Button>
 
             {Array.from({ length: numPages })
@@ -52,13 +57,15 @@ function Paging({ page, count, postPerPage, setPage }) {
                 </S.Button>
             ))}
 
+
             <S.Button
-            onClick={() => {
-                setCurrentPageSection(currentPageSection + 1);
-            }}
-            disabled={currentPageSection === numPagesSection - 1}
-            >
-            &gt;
+                onClick={() => {
+                    setCurrentPageSection(currentPageSection + 1);
+                    setPage((currentPageSection + 1) * pageRangeDisplayed + 1);
+                }}
+                disabled={currentPageSection === numPagesSection - 1}
+                >
+                &gt;
             </S.Button>
         </S.Nav>
         </>

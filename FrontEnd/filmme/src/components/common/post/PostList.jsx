@@ -8,6 +8,7 @@ import Selector from "../selector/Selector";
 import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
+import ListView from "../../common/paging/List";
 
 const PostList = ({
   use,

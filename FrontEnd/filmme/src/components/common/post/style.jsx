@@ -275,7 +275,8 @@ export const PopularPostsList = styled.div `
   margin-top: 2rem;
   font-size: 1.5rem;
   padding: 2rem;
-  background-color: #f9f9f9;
+  background: #E7E9FB;
+  box-shadow: 0px 3.415px 3.415px 0px rgba(0, 0, 0, 0.10);
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s;
