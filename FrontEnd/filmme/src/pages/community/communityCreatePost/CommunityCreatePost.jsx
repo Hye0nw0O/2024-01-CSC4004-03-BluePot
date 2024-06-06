@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FileDrop } from "react-file-drop";
 import MDEditor from "@uiw/react-md-editor";
-
 import * as S from "./style";
 import "./EditorStyle.css";
-import { userState } from "../../../components/common/authState/authState";
-
-import { useRecoilState } from "recoil";
+import { createPost } from "../../../apis/api/community/community";
 import { useLocation, useNavigate } from "react-router-dom";
 import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailPageType";
 
@@ -16,7 +13,6 @@ function CommunityCreatePost() {
     const [cinemaOption, setCinemaOption] = useState([]);
     const [currentCinemaOption, setCurrentCinemaOption] = useState(state.cinema || "");
     const [category, setCategory] = useState(state.category);
-    const [user, setUser] = useRecoilState(userState);
     const [title, setTitle] = useState("");
     const [value, setValue] = useState("내용을 입력해주세요.");
     const [boardColor, setBoardColor] = useState(false);
@@ -44,7 +40,7 @@ function CommunityCreatePost() {
         setCurrentCinemaOption(option);
     };
 
-    const handleClickWrite = () => {
+    const handleClickWrite = async () => {
         if (category === "tips" && (currentCinemaOption === "▿ 영화관 선택" || currentCinemaOption === "")) {
             alert("후기 게시판은 영화관을 선택하셔야 합니다.");
             return;
@@ -53,8 +49,38 @@ function CommunityCreatePost() {
             alert("제목을 입력해주세요.");
             return;
         }
-        alert("게시글이 작성되었습니다.");
-        navigate("/community"); // 게시글 작성 후 커뮤니티 페이지로 이동
+
+        // 카테고리 값을 백엔드 요구 형식으로 변환
+        const categoryMap = {
+            "commons": "common",
+            "tips": "cinema_tip",
+            "suggestions": "suggestion"
+        };
+        const backendCategory = categoryMap[category] || "common";
+
+        const postData = {
+            category: backendCategory,
+            title: title,
+            content: value,
+            cinema: currentCinemaOption || undefined,
+            user: 1 // 임시로 user id를 1로 설정
+        };
+
+        console.log("Sending post data:", postData); // 요청 데이터 로그 출력
+
+        try {
+            const response = await createPost(postData);
+
+            if (response) {
+                alert("게시글이 작성되었습니다.");
+                navigate("/community");
+            } else {
+                alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("Failed to create post:", error);
+            alert("게시글 작성에 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
     return (
