@@ -48,12 +48,13 @@ const PostList = ({
   }, []);
 
   useEffect(() => {
-    let filtered = data;
+    let filtered = data || [];
     if (searchWord) {
+      const regex = new RegExp(searchWord, 'i');
       filtered = filtered.filter(post =>
-        post.title.includes(searchWord) ||
-        post.content.includes(searchWord) ||
-        (post.cinema && post.cinema.includes(searchWord))
+        (post.title && regex.test(post.title)) ||
+        (post.content && regex.test(post.content)) ||
+        (post.cinema && regex.test(post.cinema))
       );
     }
     if (selectedCinema) {
@@ -83,7 +84,7 @@ const PostList = ({
   }, [filteredData, sortOption]);
 
   const handleSearch = (searchWord) => {
-    setSearchWord(searchWord);
+    setSearchWord(searchWord || "");
   };
 
   const handleSortChange = (sortOption) => {
