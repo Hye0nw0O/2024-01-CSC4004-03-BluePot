@@ -8,8 +8,8 @@ import Selector from "../selector/Selector";
 import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
-import ListView from "../../common/paging/List";
-import { getCinemas } from "../../../apis/api/community/community";
+import ListView from "../paging/ListView";
+import { getCinemas, getPosts } from "../../../apis/api/community/community";
 
 const PostList = ({
   use,
@@ -33,6 +33,9 @@ const PostList = ({
   const [sortOption, setSortOption] = useState("latest");
   const [cinemaList, setCinemaList] = useState([]);
   const [selectedCinema, setSelectedCinema] = useState("");
+  const itemsPerPage = 10;
+  const [currentPageInternal, setCurrentPageInternal] = useState(currentPage || 1);
+  const [totalPosts, setTotalPosts] = useState(0);
 
   useEffect(() => {
     const fetchCinemas = async () => {
@@ -111,7 +114,6 @@ const PostList = ({
 
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const navigate = useNavigate();
-  const itemsPerPage = 10;
 
   const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber);
@@ -175,6 +177,10 @@ const PostList = ({
         return "";
     }
   };
+
+  // 현재 페이지에 해당하는 데이터 계산
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentPageData = sortedData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <>
