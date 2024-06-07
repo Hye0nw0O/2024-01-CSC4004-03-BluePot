@@ -9,7 +9,7 @@ import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
 import ListView from "../../common/paging/List";
-import { getCinemas } from "../../../apis/api/community/community"; // getCinemas 가져오기
+import { getCinemas } from "../../../apis/api/community/community";
 
 const PostList = ({
   use,
@@ -240,61 +240,71 @@ const PostList = ({
             </S.PostListTableTr>
           </S.PostListTableThead>
           <S.PostListTableTbody>
-            {sortedData && sortedData.map((data, idx) => (
-              <S.PostListTableTrContent
-                key={data.id}
-                onClick={() => navigate(`${url}${data.id}`)}
-              >
-                {ifThListContain("번호") ? (
-                  <S.PostListTableTd>
-                    {idx + 1 + (currentPage - 1) * itemsPerPage}
+            {sortedData && sortedData.length > 0 ? (
+              sortedData.map((data, idx) => (
+                <S.PostListTableTrContent
+                  key={data.id}
+                  onClick={() => navigate(`${url}${data.id}`)}
+                >
+                  {ifThListContain("번호") ? (
+                    <S.PostListTableTd>
+                      {idx + 1 + (currentPage - 1) * itemsPerPage}
+                    </S.PostListTableTd>
+                  ) : null}
+
+                  {ifThListContain("제목") ? (
+                    <S.PostListTableTdTitle>
+                      {data.title}
+                      {data.comments_cnt != undefined ? (
+                        <strong
+                          style={{ fontSize: "1.6rem", color: "#161835" }}
+                        >
+                          [{data.comments_cnt}]
+                        </strong>
+                      ) : null}
+                    </S.PostListTableTdTitle>
+                  ) : null}
+
+                  {ifThListContain("영화관명") ? (
+                    <S.PostListTableTd>{data.cinema}</S.PostListTableTd>
+                  ) : null}
+
+                  {ifThListContain("등록일시") ? (
+                    <S.PostListTableTd>{data.created_at?.split(" ")[0]}</S.PostListTableTd>
+                  ) : null}
+
+                  {ifThListContain("좋아요") ? (
+                    <S.PostListTableTd>
+                      <img src={Likes} alt="좋아요수" style={{ width: '16px', height: '16px' }} />{data.likes_cnt}
+                    </S.PostListTableTd>
+                  ) : null}
+
+                  {ifThListContain("조회수") ? (
+                    <S.PostListTableTd>
+                      <img src={EyeOutlineIcon} alt="조회수" style={{ width: '16px', height: '16px' }} />{data.view_cnt}
+                    </S.PostListTableTd>
+                  ) : null}
+
+                  {ifThListContain("답변 여부") ? (
+                    <S.PostListTableTd>
+                      {data.reflected_status === 0 ? (
+                        <S.StatusText color="#0057FF">답변 완료</S.StatusText>
+                      ) : (
+                        <S.StatusText color="#9A9A9A">대기 중</S.StatusText>
+                      )}
+                    </S.PostListTableTd>
+                  ) : null}
+                </S.PostListTableTrContent>
+              ))
+            ) : (
+              use === "communityTips" && (
+                <S.PostListTableTr>
+                  <S.PostListTableTd colSpan={thList.length} style={{ textAlign: 'center', padding: '20px' }}>
+                    해당 영화관의 후기가 아직 없습니다. 첫번째로 남겨보세요!
                   </S.PostListTableTd>
-                ) : null}
-
-                {ifThListContain("제목") ? (
-                  <S.PostListTableTdTitle>
-                    {data.title}
-                    {data.comments_cnt != undefined ? (
-                      <strong
-                        style={{ fontSize: "1.6rem", color: "#161835" }}
-                      >
-                        [{data.comments_cnt}]
-                      </strong>
-                    ) : null}
-                  </S.PostListTableTdTitle>
-                ) : null}
-
-                {ifThListContain("영화관명") ? (
-                  <S.PostListTableTd>{data.cinema}</S.PostListTableTd>
-                ) : null}
-
-                {ifThListContain("등록일시") ? (
-                  <S.PostListTableTd>{data.created_at?.split(" ")[0]}</S.PostListTableTd>
-                ) : null}
-
-                {ifThListContain("좋아요") ? (
-                  <S.PostListTableTd>
-                    <img src={Likes} alt="좋아요수" style={{ width: '16px', height: '16px' }} />{data.likes_cnt}
-                  </S.PostListTableTd>
-                ) : null}
-
-                {ifThListContain("조회수") ? (
-                  <S.PostListTableTd>
-                    <img src={EyeOutlineIcon} alt="조회수" style={{ width: '16px', height: '16px' }} />{data.view_cnt}
-                  </S.PostListTableTd>
-                ) : null}
-
-                {ifThListContain("답변 여부") ? (
-                  <S.PostListTableTd>
-                    {data.reflected_status === 0 ? (
-                      <S.StatusText color="#0057FF">답변 완료</S.StatusText>
-                    ) : (
-                      <S.StatusText color="#9A9A9A">대기 중</S.StatusText>
-                    )}
-                  </S.PostListTableTd>
-                ) : null}
-              </S.PostListTableTrContent>
-            ))}
+                </S.PostListTableTr>
+              )
+            )}
           </S.PostListTableTbody>
         </S.PostListTable>
         {use != "notice" ? (
@@ -307,7 +317,6 @@ const PostList = ({
               <S.StyledPencilIcon />
               글쓰기
             </S.PostListHeaderWriteContent>
-
           </S.PostListHeaderWrite>
         ) : (
           <></>
