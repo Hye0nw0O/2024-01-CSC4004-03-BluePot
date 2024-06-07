@@ -9,7 +9,7 @@ import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
 import ListView from "../paging/ListView";
-import { getCinemas, getPosts } from "../../../apis/api/community/community";
+import { getCinemas } from "../../../apis/api/community/community";
 
 const PostList = ({
   use,

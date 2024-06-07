@@ -28,9 +28,3 @@ export const getCinemas = async () => {
     const response = await API.get('/api/cinemas/');
     return response.data;
 };
-
-// 각 페이지의 게시물 가져오기
-export const getPosts = async (category, page) => {
-    const response = await API.get(`/api/communities/${category}?page=${page}`);
-    return response.data;
-};
