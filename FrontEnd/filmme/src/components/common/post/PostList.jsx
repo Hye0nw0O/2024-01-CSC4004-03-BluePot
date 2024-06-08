@@ -310,7 +310,7 @@ const PostList = ({
 
                   {ifThListContain("답변 여부") ? (
                     <S.PostListTableTd>
-                      {data.reflected_status === 0 ? (
+                      {data.is_received === "o" ? (
                         <S.StatusText color="#0057FF">답변 완료</S.StatusText>
                       ) : (
                         <S.StatusText color="#9A9A9A">대기 중</S.StatusText>
