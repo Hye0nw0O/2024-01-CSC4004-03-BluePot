@@ -3,7 +3,6 @@ import * as S from "./style.jsx";
 import Card from '../../components/card/Card.jsx'
 import Modal from '../../components/card/Modal.jsx';
 import searchImage from "../../assets/images/Main/searchImage.png";
-import theater from "../../data/theater.jsx";
 import AOS from 'aos';
 import axios from 'axios';
 
@@ -16,6 +15,7 @@ function Main() {
     const [sortBy, setSortBy] = useState("ascending");
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
+    const [isLikeRequesting, setIsLikeRequesting] = useState(false);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
@@ -33,8 +33,12 @@ function Main() {
     useEffect(() => {
         axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
-                setTheaters(response.data);
-                setFilteredTheaters(response.data);
+                const theatersWithLikeStatus = response.data.map(theater => ({
+                    ...theater,
+                    isLiked: false
+                }));
+                setTheaters(theatersWithLikeStatus);
+                setFilteredTheaters(theatersWithLikeStatus);
             })
             .catch(error => {
                 console.error("영화관 정보를 가져오는 중 오류가 발생했습니다!", error);
@@ -97,6 +101,37 @@ function Main() {
         setFilteredTheaters(sortedTheaters);
     }
 
+    const handleLikeToggle = async (id) => {
+        if (isLikeRequesting) return; // 좋아요 요청 중이면 중복 요청 방지
+        setIsLikeRequesting(true); // 좋아요 요청 중으로 설정
+        try {
+            const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
+            if (response.status === 200) {
+                const updatedLikeCount = response.data.like_cnt;
+                const updatedTheaters = theaters.map(theater => {
+                    if (theater.id === id) {
+                        const isLiked = !theater.isLiked;
+                        return {
+                            ...theater,
+                            isLiked: isLiked,
+                            like_cnt: theater.isLiked ? theater.like_cnt - 1 : theater.like_cnt + 1 // 좋아요 수를 1씩 증가 또는 감소
+                        };
+                    }
+                    return theater;
+                });
+                setTheaters(updatedTheaters);
+                setFilteredTheaters(sortTheaters(updatedTheaters));
+            } else {
+                console.error("좋아요를 업데이트하는 데 문제가 발생했습니다.");
+            }
+        } catch (error) {
+            console.error("서버 요청 중 오류가 발생했습니다:", error);
+        } finally {
+            setIsLikeRequesting(false); // 요청 완료 후 상태 업데이트
+        }
+    };
+    
+
     // 영화관 리스트
     const ViewTheater = () => {
         let theatersToDisplay = filteredTheaters;
@@ -116,6 +151,8 @@ function Main() {
                 like={theater.like_cnt}
                 img={theater.view_url}
                 onClick={() => handleCardClick(theater)}
+                onLikeToggle={handleLikeToggle}
+                isLiked={theater.isLiked}
             />
         ));
     }
