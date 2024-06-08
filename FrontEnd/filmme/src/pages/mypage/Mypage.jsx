@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import * as S from "./style.jsx";
 import profileImage from "../../../public/images/mypage/profile_image.svg";
+import comment from "../../assets/images/Mypage/comment.png";
+import heart from "../../assets/images/Mypage/heart.png";
+import post from "../../assets/images/Mypage/post.png";
+import thumbup from "../../assets/images/Mypage/thumb-up.png";
 
 function Mypage() {
+    const navigate = useNavigate();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [viewingDate, setViewingDate] = useState(new Date());
-    
+
     const currentMonth = currentDate.getMonth() + 1;
     const viewingMonth = viewingDate.getMonth() + 1;
     const daysInMonth = new Date(viewingDate.getFullYear(), viewingMonth, 0).getDate();
@@ -19,6 +25,10 @@ function Mypage() {
     };
 
     const isCurrentMonth = currentMonth === viewingMonth && currentDate.getFullYear() === viewingDate.getFullYear();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
 
     return (
         <S.MypageWrapper>
@@ -38,10 +48,22 @@ function Mypage() {
                     나의 <S.HighlightedText>필름미</S.HighlightedText> 활동 기록
                 </S.FilmmeRecordTitle>
                 <S.RecordWrapper>
-                    <S.RecordCard>좋아요 한 영화관</S.RecordCard>
-                    <S.RecordCard>좋아요 한 게시물</S.RecordCard>
-                    <S.RecordCard>작성한 게시물</S.RecordCard>
-                    <S.RecordCard>작성한 댓글</S.RecordCard>
+                    <S.RecordCard onClick={() => handleNavigate('liked-cinema')}>
+                        <S.RecordCardImage src={thumbup} alt="좋아요 한 영화관" />
+                        좋아요 한 영화관
+                    </S.RecordCard>
+                    <S.RecordCard onClick={() => handleNavigate('liked-post')}>
+                        <S.RecordCardImage src={heart} alt="좋아요 한 게시물" />
+                        좋아요 한 게시물
+                    </S.RecordCard>
+                    <S.RecordCard onClick={() => handleNavigate('my-post')}>
+                        <S.RecordCardImage src={post} alt="작성한 게시물" />
+                        작성한 게시물
+                    </S.RecordCard>
+                    <S.RecordCard onClick={() => handleNavigate('my-comment')}>
+                        <S.RecordCardImage src={comment} alt="작성한 댓글" />
+                        작성한 댓글
+                    </S.RecordCard>
                 </S.RecordWrapper>
             </S.MyFilmmeRecord>
             <S.MyCinemaRecord>

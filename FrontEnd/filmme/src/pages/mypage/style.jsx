@@ -83,7 +83,7 @@ export const HighlightedText = styled.span`
 export const RecordWrapper = styled.div`
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 4rem; 
 `;
 
 export const RecordCard = styled.div`
@@ -92,17 +92,26 @@ export const RecordCard = styled.div`
     background-color: #E7E9FB;
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 16px;
     color: #161835;
     cursor: pointer;
     transition: background-color 0.3s;
+    position: relative;
 
     &:hover {
         background-color: #e0e0e0;
     }
 `;
+
+export const RecordCardImage = styled.img`
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 2rem;
+`;
+
 
 export const MyCinemaRecord = styled.div`
     margin-top: 10rem;
