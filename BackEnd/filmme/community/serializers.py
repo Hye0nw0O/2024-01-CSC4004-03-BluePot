@@ -313,6 +313,7 @@ class cinema_tipDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 
             'category',
+            'cinema',
             'writer', 
             'title', 
             'content', 
