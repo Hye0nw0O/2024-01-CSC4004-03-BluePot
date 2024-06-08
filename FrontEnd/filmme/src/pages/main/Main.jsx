@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style.jsx";
 import Card from '../../components/card/Card.jsx'
+import Modal from '../../components/card/Modal.jsx';
 import searchImage from "../../assets/images/Main/searchImage.png";
 import theater from "../../data/theater.jsx";
 import AOS from 'aos';
@@ -12,12 +13,13 @@ function Main() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredTheaters, setFilteredTheaters] = useState([]);
     const [isPlaceholderHidden, setIsPlaceholderHidden] = useState(false);
-    const [sortBy, setSortBy] = useState("latest");
+    const [sortBy, setSortBy] = useState("ascending");
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
     const sortOptions = [
-    { value: "latest", label: "최신순" },
     { value: "ascending", label: "오름차순" },
     { value: "descending", label: "내림차순" },
     { value: "rating", label: "평점순" },
@@ -28,19 +30,9 @@ function Main() {
         AOS.init();
     }, []);
 
-    // 영화관 검색 필터
-    /*useEffect(() => {
-        const filtered = theater.filter(theater =>
-            theater.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const sortedTheaters = sortBy === "latest" ? filtered.reverse() : sortBy === "ascending" ? filtered.sort((a, b) => a.name.localeCompare(b.name)) : filtered;
-        setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy]);*/
-
     useEffect(() => {
         axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
-                console.log(response.data);  // 반환된 데이터 확인
                 setTheaters(response.data);
                 setFilteredTheaters(response.data);
             })
@@ -49,19 +41,6 @@ function Main() {
             });
     }, []);
 
-    /*//useEffect(() => {
-        const filtered = theaters.filter(theater =>
-            theater.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const sortedTheaters = sortBy === "latest"
-            ? filtered.reverse()
-            : sortBy === "ascending"
-                ? filtered.sort((a, b) => a.name.localeCompare(b.name))
-                : filtered;
-
-        setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy, theaters]);//*/
-
     useEffect(() => {
         filterAndSortTheaters();
       }, [searchQuery, sortBy, theaters]);
@@ -69,11 +48,12 @@ function Main() {
       const filterAndSortTheaters = () => {
         let filtered = theaters.filter(theater => theater.name.toLowerCase().includes(searchQuery.toLowerCase()));
         if (clickedRegion !== 0) {
-          filtered = filtered.filter(theater => theater.region === regionNames[clickedRegion]);
+            filtered = filtered.filter(theater => theater.location === regionNames[clickedRegion]);
         }
         filtered = sortTheaters(filtered);
         setFilteredTheaters(filtered);
-      };
+    };
+    
 
     // 검색어 입력 시 placeholder 가리기
     const handleSearchInputChange = (e) => {
@@ -98,8 +78,6 @@ function Main() {
     //정렬 기능
     const sortTheaters = (theaters) => {
         switch (sortBy) {
-            case "latest":
-                return theaters.reverse();
             case "ascending":
                 return theaters.sort((a, b) => a.name.localeCompare(b.name));
             case "descending":
@@ -124,7 +102,7 @@ function Main() {
         let theatersToDisplay = filteredTheaters;
 
         if (clickedRegion !== 0) {
-            theatersToDisplay = filteredTheaters.filter(theater => theater.region === regionNames[clickedRegion]);
+            theatersToDisplay = filteredTheaters.filter(theater => theater.location === regionNames[clickedRegion]);
         }
 
         return theatersToDisplay.map(theater => (
@@ -136,10 +114,66 @@ function Main() {
                 star={theater.score}
                 score={theater.star}
                 like={theater.like_cnt}
-                img={theater.img}
+                img={theater.view_url}
+                onClick={() => handleCardClick(theater)}
             />
         ));
     }
+
+    const handleCardClick = (theater) => {
+        const regionColors = {
+            '서울': '#AEAFB9',
+            '인천': 'red',
+            '경기': 'orange',
+            '강원': 'yellow',
+            '대전': '#7FFF00',
+            '세종': 'green',
+            '충남': 'skyblue',
+            '충북': '#00CED1',
+            '광주': 'blue',
+            '전남': '#00008B',
+            '전북': 'purple',
+            '경남': 'pink',
+            '경북': '#8A2BE2',
+            '대구': '#A52A2A',
+            '부산': '#808000',
+            '울산': '#FFB07C',
+            '제주': '#ADD8E6',
+            default: '#AEAFB9'
+        };
+
+        const regionStyle = {
+            display: 'flex',
+            marginLeft: '1.3rem',
+            backgroundColor: regionColors[theater.location] || regionColors.default,
+            color: '#fff',
+            padding: '10px 14px',
+            borderRadius: '3.28px',
+            fontSize: '11px',
+            fontFamily: 'Pretendard',
+            justifyContent: 'center',
+            textAlign: 'center',
+            alignItems: 'center',
+        };
+
+        const nameRegionContainerStyle = {
+            display: 'flex',
+            alignItems: 'center'
+        };
+
+        setModalContent(
+          <div>
+            <img style={{ width: '700px', height: '250px' }} src={theater.view_url} alt={theater.name} /><hr/><br/><br/>
+            <div style={nameRegionContainerStyle}>
+                    <h2 style={{ fontSize: '35px', fontFamily: 'Pretendard-Medium', fontWeight: 'bold' }} className="ModalName">{theater.name}</h2>
+                    <p style={regionStyle} className="ModalRegion">{theater.location}</p>
+            </div><br/><br/>
+            <p style={{ fontSize: '20px', fontFamil: 'Pretendard-Medium' }}>{theater.discription}</p><br/><br/><br/>
+            <a href={theater.cite_url} style={{ fontSize: '15px' }} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</a>
+          </div>
+        );
+        setShowModal(true);
+      }
 
     return (
         <>
@@ -182,6 +216,7 @@ function Main() {
                     </S.TheaterContainer>
                 </div>
             </S.MainWrapper>
+            <Modal show={showModal} onClose={() => setShowModal(false)} content={modalContent} />
         </>
     );
 }

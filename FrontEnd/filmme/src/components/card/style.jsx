@@ -61,31 +61,31 @@ export const CardContentRegion = styled.div`
       case '강원':
         return 'yellow';
       case '대전':
-        return 'green';
+        return '#7FFF00';
       case '세종':
-        return 'blue';
+        return 'green';
       case '충남':
-        return 'purple';
+        return 'skyblue';
       case '충북':
-        return 'red';
+        return '#00CED1';
       case '광주':
-        return 'orange';
-      case '전남':
-        return 'yellow';
-      case '전북':
-        return 'green';
-      case '경남':
         return 'blue';
-      case '경북':
+      case '전남':
+        return '#00008B';
+      case '전북':
         return 'purple';
+      case '경남':
+        return 'pink';
+      case '경북':
+        return '#8A2BE2';
       case '대구':
-        return 'red';
+        return '#A52A2A';
       case '부산':
-        return 'orange';
+        return '#808000';
       case '울산':
-        return 'yellow';
+        return '#FFB07C';
       case '제주':
-        return 'green';
+        return '#ADD8E6';
       default:
         return '#AEAFB9'; // 기본 색상
     }
@@ -118,4 +118,62 @@ export const CardLikehart = styled.div `
 export const CardContentLike = styled.div `
   margin-left: 0.5rem;
   font-size: 12px;
+`;
+
+//Modal
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const ModalContent = styled.div`
+  background: white;
+  border-radius: 8px;
+  width: 80vw;
+  max-width: 750px;
+  height: 80vh;
+  max-height: 550px;
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+export const ModalImageWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+`;
+
+export const ModalImage = styled.img`
+  width: 100%; 
+  height: auto; 
+  display: block;
+  margin: 0 auto; // 중앙 정렬을 위해 추가
+`;
+
+export const ModalBody = styled.div`
+  padding: 20px;
+  font-size: 16px;
+  color: #333;
+  overflow-y: auto;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
 `;
