@@ -13,14 +13,13 @@ function Main() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredTheaters, setFilteredTheaters] = useState([]);
     const [isPlaceholderHidden, setIsPlaceholderHidden] = useState(false);
-    const [sortBy, setSortBy] = useState("latest");
+    const [sortBy, setSortBy] = useState("ascending");
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
     const sortOptions = [
-    { value: "latest", label: "최신순" },
     { value: "ascending", label: "오름차순" },
     { value: "descending", label: "내림차순" },
     { value: "rating", label: "평점순" },
@@ -79,8 +78,6 @@ function Main() {
     //정렬 기능
     const sortTheaters = (theaters) => {
         switch (sortBy) {
-            case "latest":
-                return theaters.reverse();
             case "ascending":
                 return theaters.sort((a, b) => a.name.localeCompare(b.name));
             case "descending":
