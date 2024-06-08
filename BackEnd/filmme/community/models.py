@@ -23,7 +23,7 @@ class Community(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_received = models.BooleanField(default=False) # 건의사항 반영여부 필드
-    rating = models.IntegerField(null=True, blank=True)
+    rating = models.FloatField(null=True, blank=True)
     # rating_cnt = models.PositiveIntegerField(default=0)
 
 # class CinemaRating(models.Model): # 평점 따로 관리
