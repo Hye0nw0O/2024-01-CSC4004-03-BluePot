@@ -70,6 +70,7 @@ class TipListSerializer(serializers.ModelSerializer):
     comments_cnt = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField(read_only=True) 
     cinema = serializers.SerializerMethodField(read_only=True)
+    ratings_cnt = serializers.IntegerField(read_only=True)
 
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
@@ -94,7 +95,8 @@ class TipListSerializer(serializers.ModelSerializer):
             "comments_cnt",
             "view_cnt",
             "likes_cnt",
-            "created_at"
+            "created_at",
+            "ratings_cnt"
         ]
 
 # 커뮤니티 리스트 - commons
@@ -252,7 +254,8 @@ class cinema_tipDetailSerializer(serializers.ModelSerializer):
     likes_cnt = serializers.IntegerField(read_only=True)
     comments_cnt = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField()
-    updated_at = serializers.SerializerMethodField()    
+    updated_at = serializers.SerializerMethodField()
+    ratings_cnt = serializers.IntegerField(read_only=True)    
 
     def get_created_at(self, instance):
         return instance.created_at.strftime("%Y/%m/%d %H:%M")
@@ -290,7 +293,8 @@ class cinema_tipDetailSerializer(serializers.ModelSerializer):
             'likes_cnt', 
             'images', 
             'created_at', 
-            'updated_at'
+            'updated_at',
+            'ratings_cnt'
         ]
         read_only_fields = [
             'id', 
@@ -378,10 +382,12 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         category = validated_data.get('category')
         cinema_title = validated_data.get('cinema')
+        rating = validated_data.get('rating')
 
         if category == 'cinema_tip' and (cinema_title is None or cinema_title == ""):
             raise serializers.ValidationError("영화관 후기 게시물을 작성할 때는 영화관을 선택(입력)해주세요.")
-
+        if rating is None or not (1 <= rating <= 5):
+            raise serializers.ValidationError("별점은 1점에서 5점 사이로 입력해주세요.")
         cinema_instance = None
         if cinema_title:
             try:
@@ -397,7 +403,16 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
         for image_data in image_data.getlist('image'):
             CommunityImage.objects.create(community=instance, image=image_data)
         return instance
-    
+    def validate(self, attrs):
+        category = attrs.get('category')
+        rating = attrs.get('rating')
+        user = self.context['request'].user
+
+        if category == 'cinema_tip' and rating is not None:
+            if attrs.get('writer') != user:
+                raise serializers.ValidationError("글 작성자만 별점을 등록할 수 있습니다.")
+
+        return attrs
     # 게시물 수정 함수
     def update(self, instance, validated_data):
         cinema_title = validated_data.get('cinema')
