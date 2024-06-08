@@ -15,19 +15,26 @@ class Community(models.Model):
         ('suggestion', 'suggestion'),
     )
     category = models.CharField(max_length=10, choices=CATEGORY_LIST, blank=False, null=False)
-    writer = models.CharField(max_length=10, blank=False, null=False) # User 모델과 ForeignKey로 연결해야 하지만 지금은 일단 외래키 연결 안 하고 사용
+    # writer = models.CharField(max_length=10, blank=False, null=False)
+    writer = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, default='')
     title = models.CharField(max_length=30)
     content = models.TextField(null=False, max_length=5000)
     view_cnt = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    rating = models.IntegerField(null=True, blank=True)
-    rating_cnt = models.PositiveIntegerField(default=0)
+    is_received = models.BooleanField(default=False) # 건의사항 반영여부 필드
+
+class CinemaRating(models.Model):
+    id = models.AutoField(primary_key=True)
+    rating = models.IntegerField(null=True, blank=True, default=None)
+    cinema = models.ForeignKey(Cinema, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_cinema')
+    user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_user')
 
 class CommunityComment(models.Model):
     id = models.AutoField(primary_key=True)
     community = models.ForeignKey(Community, blank=False, null=False, on_delete=models.CASCADE, related_name='comments_community')
-    writer = models.CharField(max_length=10, blank=False, null=False)
+    # writer = models.CharField(max_length=10, blank=False, null=False)
+    writer = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, default='')
     content = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,4 +47,5 @@ class CommunityImage(models.Model):
 class CommunityLike(models.Model):
     id = models.AutoField(primary_key=True)
     community = models.ForeignKey(Community, blank=False, null=False, on_delete=models.CASCADE, related_name='likes_community')
-    user = models.CharField(max_length=10, blank=False, null=False)
+    # user = models.CharField(max_length=10, blank=False, null=False)
+    user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, default='')
