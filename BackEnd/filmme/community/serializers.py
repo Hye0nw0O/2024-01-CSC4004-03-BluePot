@@ -7,6 +7,7 @@ import requests
 
 from accounts.models import User
 
+
 def get_user(request):
     access = request.COOKIES['accessToken']
     kakao_profile_request = requests.post(
@@ -144,12 +145,15 @@ class CommonListSerializer(serializers.ModelSerializer):
         ]
 
 # 커뮤니티 리스트 - suggestions
-class suggestionListSerializer(serializers.ModelSerializer):
+
+class SuggestionListSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
     comments_cnt = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField(read_only=True)
     cinema = serializers.SerializerMethodField(read_only=True)
+    is_received = serializers.SerializerMethodField()
+    can_edit_received = serializers.SerializerMethodField()
 
     def get_cinema(self, instance):
         cinema_instance = instance.cinema
@@ -160,21 +164,35 @@ class suggestionListSerializer(serializers.ModelSerializer):
                 return "기타"
         else:
             return "기타"
-        
+
     def get_created_at(self, instance):
         return instance.created_at.strftime("%Y/%m/%d %H:%M")
 
     def get_comments_cnt(self, instance):
         return instance.comments_community.count()
-    
+
     def get_is_liked(self, instance):
-        # user = get_user(self.context['request'])
         User = get_user_model()
         user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
         if user is not None:
-            return CommunityLike.objects.filter(community=instance,user=user).exists()
+            return CommunityLike.objects.filter(community=instance, user=user).exists()
         else:
             return False
+
+    def get_is_received(self, instance):
+        return 'o' if instance.is_received else 'x'
+
+    def get_can_edit_received(self, instance):
+        user = self.context['request'].user
+        return user.is_staff
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        if 'is_received' in validated_data and user.is_staff:
+            instance.is_received = validated_data['is_received']
+            instance.save()
+        return super().update(instance, validated_data)
+
     class Meta:
         model = Community
         fields = [
@@ -186,8 +204,19 @@ class suggestionListSerializer(serializers.ModelSerializer):
             "view_cnt",
             "is_liked",
             "likes_cnt",
-            "created_at"
+            "created_at",
+            "is_received",
+            "can_edit_received",
         ]
+        read_only_fields = ["is_received", "can_edit_received"]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        user = self.context['request'].user
+        if user.is_staff:
+            representation['is_received'] = 'o' if instance.is_received else 'x'
+        return representation
+
 
 # 커뮤니티 디테일 - 자유게시판
 class CommonDetailSerializer(serializers.ModelSerializer):

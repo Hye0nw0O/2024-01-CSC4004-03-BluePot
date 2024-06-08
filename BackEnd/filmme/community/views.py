@@ -76,6 +76,18 @@ class CommunityViewSet(viewsets.GenericViewSet,
             likes_cnt=Count('likes_community', distinct=True)
         )
         return queryset
+    
+    @action(methods=['patch'], detail=True, url_path='update-received', permission_classes=[IsAdminUser])
+    def update_received(self, request, *args, **kwargs):
+        instance = self.get_object()
+        is_received = request.data.get('is_received')
+
+        if is_received is not None:
+            instance.is_received = is_received
+            instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
         
 # 게시물 작성 & 수정
 class CommunityPostViewSet(viewsets.GenericViewSet,
@@ -84,15 +96,8 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
                             mixins.DestroyModelMixin
                             ):
     serializer_class = CommunityCreateUpdateSerializer
-
     queryset = Community.objects.all()
 
-    # def get_permissions(self):
-    #     if self.action in ['create']:
-    #         return [IsAuthenticated()]
-    #     else:
-    #         return [IsOwnerOrReadOnly()]
-    
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data
@@ -121,7 +126,7 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
     def perform_destroy(self, instance):
         serializer = self.get_serializer(instance)
         serializer.delete(instance)
-    
+        
 # 커뮤니티 디테일
 class CommunityDetailViewSet(viewsets.GenericViewSet,
                             mixins.RetrieveModelMixin,

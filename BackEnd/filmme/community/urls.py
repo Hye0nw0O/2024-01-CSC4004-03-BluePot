@@ -44,4 +44,9 @@ urlpatterns = [
     path('communities/posts/<int:community_id>/', include(community_comment_router.urls)),
     path('communities/posts/', include(comment_router.urls)),
 
+    # 관리자가 접수 여부를 수정하는 URL
+    path('communities/<int:pk>/update-received', views.CommunityViewSet.as_view({'patch': 'update_received'}), name='community-update-received'),
+
+    path('communities/posts/<int:community_id>/', include(community_comment_router.urls)),
+    path('communities/posts/', include(comment_router.urls)),
 ]
