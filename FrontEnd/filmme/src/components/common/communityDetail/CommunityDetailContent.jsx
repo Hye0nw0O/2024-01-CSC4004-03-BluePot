@@ -1,11 +1,12 @@
 import React from "react";
-import * as S from "./style"; // 해당 컴포넌트에 사용되는 스타일 파일 경로를 임포트해주세요.
+import * as S from "./style";
 
 import EditDelete from "../editDelete/EditDelete";
 import { API } from "../../../apis/utils/index";
 import { useNavigate } from "react-router-dom";
 
 import ReactMarkdown from 'react-markdown';
+import ReactStars from "react-rating-stars-component";
 
 
 const CommunityDetailContent = ({ detail, isWriter, id, writer, type }) => {
@@ -66,6 +67,19 @@ const CommunityDetailContent = ({ detail, isWriter, id, writer, type }) => {
         <S.DetailTitleGrayInfo>작성자 : {detail.writer}</S.DetailTitleGrayInfo>
         <S.DetailTitleGrayInfo>{detail.created_at}</S.DetailTitleGrayInfo>
       </S.DetailTitleInfoWrapper>
+
+      {detail.category === "cinema_tip" && detail.rating !== null && (
+        <S.DetailRating>
+          <ReactStars
+            count={5}
+            value={detail.rating}
+            size={16} // 별 크기를 조정
+            activeColor="#ffd700"
+            isHalf={true}
+            edit={false}
+          />
+        </S.DetailRating>
+      )}
 
       <ReactMarkdown className={"markDown"} children={detail.content} />
 

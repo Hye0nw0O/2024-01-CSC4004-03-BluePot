@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
 import ListView from "../paging/ListView";
 import { getCinemas } from "../../../apis/api/community/community";
+import ReactStars from "react-rating-stars-component";
 
 const PostList = ({
   use,
@@ -105,7 +106,7 @@ const PostList = ({
       thList = ["번호", "제목", "등록일시", "좋아요", "조회수"];
       break;
     case "communityTips":
-      thList = ["번호", "제목", "영화관명", "등록일시", "좋아요", "조회수"];
+      thList = ["번호", "제목", "영화관명", "평점", "등록일시", "좋아요", "조회수"];
       break;
     case "communitySuggestions":
       thList = ["번호", "제목", "등록일시", "답변 여부"];
@@ -276,6 +277,21 @@ const PostList = ({
                     <S.PostListTableTd>{data.cinema}</S.PostListTableTd>
                   ) : null}
 
+                  {ifThListContain("평점") ? (
+                    <S.PostListTableTd>
+                      {data.rating !== null ? (
+                        <ReactStars
+                          count={5}
+                          value={data.rating}
+                          size={16}
+                          activeColor="#ffd700"
+                          isHalf={true}
+                          edit={false}
+                        />
+                      ) : 'N/A'}
+                    </S.PostListTableTd>
+                  ) : null}
+
                   {ifThListContain("등록일시") ? (
                     <S.PostListTableTd>{data.created_at?.split(" ")[0]}</S.PostListTableTd>
                   ) : null}
@@ -294,7 +310,7 @@ const PostList = ({
 
                   {ifThListContain("답변 여부") ? (
                     <S.PostListTableTd>
-                      {data.reflected_status === 0 ? (
+                      {data.is_received === "o" ? (
                         <S.StatusText color="#0057FF">답변 완료</S.StatusText>
                       ) : (
                         <S.StatusText color="#9A9A9A">대기 중</S.StatusText>

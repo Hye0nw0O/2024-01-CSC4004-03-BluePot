@@ -44,3 +44,11 @@ export const DetailContent = styled.div`
   line-height: 2.5rem;
   margin-bottom: 2rem;
 `;
+
+export const DetailRating = styled.div`
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+`;

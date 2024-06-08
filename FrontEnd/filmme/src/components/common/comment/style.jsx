@@ -27,7 +27,7 @@ export const CommunityCommentWrap = styled.div`
   animation: ${fadeInAnimation} 0.5s ease-in-out;
 `;
 
-// 별점
+// 평점
 export const CommunityCommentStarWrap = styled.div`
   width: 100%;
   display: flex;

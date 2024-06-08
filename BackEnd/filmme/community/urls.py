@@ -2,7 +2,6 @@ from django.urls import path, include
 from rest_framework import routers
 from . import views
 from .views import CommunityViewSet, CommunityDetailViewSet,CommunityCommentViewSet, CommentViewSet, CommunityPostViewSet
-from .views import CommunityListCreate
 
 app_name = "community"
 
@@ -46,7 +45,4 @@ urlpatterns = [
 
     # 관리자가 접수 여부를 수정하는 URL
     path('communities/<int:pk>/update-received', views.CommunityViewSet.as_view({'patch': 'update_received'}), name='community-update-received'),
-
-    path('communities/posts/<int:community_id>/', include(community_comment_router.urls)),
-    path('communities/posts/', include(comment_router.urls)),
 ]

@@ -193,3 +193,9 @@ export const CreatePageSubTitle = styled.div `
 
     color: #161835;
 `;
+
+export const RatingWrapper = styled.div`
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+`;
