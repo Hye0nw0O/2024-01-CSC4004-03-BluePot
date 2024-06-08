@@ -14,11 +14,10 @@ from .serializers import *
 from .paginations import CommunityPagination
 from .permissions import IsOwnerOrReadOnly
 
-# Create your views here.
 #리스트 생성
-class CommunityListCreate(generics.ListCreateAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunityCreateUpdateSerializer
+# class CommunityListCreate(generics.ListCreateAPIView):
+#     queryset = Community.objects.all()
+#     serializer_class = CommunityCreateUpdateSerializer
 
 # 정렬 기능
 class CommunityOrderingFilter(filters.OrderingFilter):
@@ -33,9 +32,7 @@ class CommunityOrderingFilter(filters.OrderingFilter):
             return queryset.order_by('-created_at')
         
 # 커뮤니티 목록
-class CommunityViewSet(viewsets.GenericViewSet,
-                    mixins.ListModelMixin
-                ):
+class CommunityViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = Community.objects.all()
     filter_backends = [CommunityOrderingFilter, SearchFilter]
     search_fields = ['title', 'content', 'writer','cinema__name'] 
@@ -137,9 +134,9 @@ class CommunityDetailViewSet(viewsets.GenericViewSet,
             if category == 'common':
                 return CommonDetailSerializer
             if category == 'cinema_tip':
-                return cinema_tipDetailSerializer
+                return Cinema_tipDetailSerializer
             else:
-                return suggestionDetailSerializer
+                return SuggestionDetailSerializer
     
     def get_permissions(self):
         if self.action in ['like_action']:
