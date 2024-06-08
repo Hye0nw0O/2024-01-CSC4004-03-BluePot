@@ -83,9 +83,9 @@ function Main() {
             case "descending":
                 return theaters.sort((a, b) => b.name.localeCompare(a.name));
             case "rating":
-                return theaters.sort((a, b) => b.score - a.score);
+                return theaters.sort((a, b) => b.star - a.star);
             case "likes":
-                return theaters.sort((a, b) => b.like - a.like);
+                return theaters.sort((a, b) => b.like_cnt - a.like_cnt);
             default:
                 return theaters;
         }
