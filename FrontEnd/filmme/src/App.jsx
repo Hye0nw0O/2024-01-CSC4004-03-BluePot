@@ -3,6 +3,7 @@ import { GlobalStyle } from './style/globalStyle';
 import { Outlet } from 'react-router-dom';
 import NavBar from './components/layouts/navbar/NavBar';
 import Footer from './components/layouts/footer/Footer';
+import router from './router';
 
 const Wrapper = styled.div`
   margin: 0 auto;

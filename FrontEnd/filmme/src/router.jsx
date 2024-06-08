@@ -11,55 +11,70 @@ import Landing from './pages/landing/Landing';
 import DetailPage from "./pages/community/communityDetail/DetailPage";
 import CommunityCreatPost from "./pages/community/communityCreatePost/CommunityCreatePost";
 import CommunityEdit from "./pages/community/communityEdit/CommunityEdit";
-import CommunitySearch from './components/community/communitySearch/CommunitySearch';
-import CommunitySearchDetail from './pages/community/communitySearchDetail/CommunitySearchDetail';
 
+// mypage 관련
+import MypageLikeCinema from './components/mypage/mypageLikeCinema/MypageLikeCinema';
+import MypageLikePost from './components/mypage/mypageLikePost/MypageLikePost';
+import MypageMyComment from './components/mypage/mypageMyComment/MypageMyComment';
+import MypageMyPost from './components/mypage/mypageMyPost/MypageMyPost';
 
 const router = createBrowserRouter([
     {
-    path: '/',
-    element: <App />,
-    children: [
-        {
-            path: '',
-            element: <Main />,
-        },
-        {
-            path: '/about',
-            element: <About />,
-        },
-        {
-            path: '/community',
-            element: <Community />,
-        },
-        {
-            path: '/auths',
-            element: <Auths />,
-        },
-        {
-            path: '/mypage',
-            element: <Mypage />,
-        },
-        {
-            path: '/landing',
-            element: <Landing />,
-        },
-        {
-            path: "community/:type/:id",
-            element: <DetailPage />
-        },
-        {
-            path: "community/create",
-            element: <CommunityCreatPost />
-        },
-        {
-            path: "community/edit/:id",
-            element: <CommunityEdit />
-        },
-        {
-            path: "community-search",
-            element: <CommunitySearchDetail />
-        },
+        path: '/',
+        element: <App />,
+        children: [
+            {
+                path: '',
+                element: <Main />,
+            },
+            {
+                path: 'about',
+                element: <About />,
+            },
+            {
+                path: 'community',
+                element: <Community />,
+            },
+            {
+                path: 'auths',
+                element: <Auths />,
+            },
+            {
+                path: 'mypage',
+                element: <Mypage />,
+            },
+            {
+                path: 'mypage/liked-cinema',
+                element: <MypageLikeCinema />
+            },
+            {
+                path: 'mypage/liked-post',
+                element: <MypageLikePost />
+            },
+            {
+                path: 'mypage/my-comment',
+                element: <MypageMyComment />
+            },
+            {
+                path: 'mypage/my-post',
+                element: <MypageMyPost />
+            },
+            {
+                path: 'landing',
+                element: <Landing />,
+            },
+            {
+                path: 'community/:type/:id',
+                element: <DetailPage />
+            },
+            {
+                path: 'community/create',
+                element: <CommunityCreatPost />
+            },
+            {
+                path: 'community/edit/:id',
+                element: <CommunityEdit />
+            }
         ],
     },
 ]);
