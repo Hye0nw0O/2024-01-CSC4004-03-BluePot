@@ -138,3 +138,43 @@ export const SortContainer = styled.div `
         box-shadow: 0px 2.776px 2.776px 0px rgba(0, 0, 0, 0.25);
     }
 `;
+
+//모달창
+export const ModalImage = styled.img`
+  width: 700px;
+  height: 250px;
+`;
+
+export const NameRegionContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ModalName = styled.h2`
+  font-size: 35px;
+  font-family: 'Pretendard-Medium';
+  font-weight: bold;
+`;
+
+export const ModalRegion = styled.p`
+  display: flex;
+  margin-left: 1.3rem;
+  background-color: ${props => props.color || '#AEAFB9'};
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 3.28px;
+  font-size: 11px;
+  font-family: 'Pretendard';
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+`;
+
+export const ModalDescription = styled.p`
+  font-size: 20px;
+  font-family: 'Pretendard-Medium';
+`;
+
+export const ModalURL = styled.a`
+  font-size: 15px;
+`;

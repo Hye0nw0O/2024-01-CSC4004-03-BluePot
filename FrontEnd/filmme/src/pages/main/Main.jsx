@@ -142,38 +142,19 @@ function Main() {
             default: '#AEAFB9'
         };
 
-        const regionStyle = {
-            display: 'flex',
-            marginLeft: '1.3rem',
-            backgroundColor: regionColors[theater.location] || regionColors.default,
-            color: '#fff',
-            padding: '10px 14px',
-            borderRadius: '3.28px',
-            fontSize: '11px',
-            fontFamily: 'Pretendard',
-            justifyContent: 'center',
-            textAlign: 'center',
-            alignItems: 'center',
-        };
-
-        const nameRegionContainerStyle = {
-            display: 'flex',
-            alignItems: 'center'
-        };
-
         setModalContent(
-          <div>
-            <img style={{ width: '700px', height: '250px' }} src={theater.view_url} alt={theater.name} /><hr/><br/><br/>
-            <div style={nameRegionContainerStyle}>
-                    <h2 style={{ fontSize: '35px', fontFamily: 'Pretendard-Medium', fontWeight: 'bold' }} className="ModalName">{theater.name}</h2>
-                    <p style={regionStyle} className="ModalRegion">{theater.location}</p>
-            </div><br/><br/>
-            <p style={{ fontSize: '20px', fontFamil: 'Pretendard-Medium' }}>{theater.discription}</p><br/><br/><br/>
-            <a href={theater.cite_url} style={{ fontSize: '15px' }} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</a>
-          </div>
+            <div>
+                <S.ModalImage src={theater.view_url} alt={theater.name} /><hr /><br /><br />
+                <S.NameRegionContainer>
+                    <S.ModalName>{theater.name}</S.ModalName>
+                    <S.ModalRegion color={regionColors[theater.location] || regionColors.default}>{theater.location}</S.ModalRegion>
+                </S.NameRegionContainer><br /><br />
+                <S.ModalDescription>{theater.discription}</S.ModalDescription><br /><br /><br />
+                <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL>
+            </div>
         );
         setShowModal(true);
-      }
+    }
 
     return (
         <>
