@@ -6,6 +6,7 @@ import "./EditorStyle.css";
 import { createPost, getCinemas } from "../../../apis/api/community/community"; // getCinemas 가져오기
 import { useLocation, useNavigate } from "react-router-dom";
 import CommunityDetailPageType from "../communityDetailPageType/CommunityDetailPageType";
+import ReactStars from "react-rating-stars-component";
 
 function CommunityCreatePost() {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ function CommunityCreatePost() {
     const [category, setCategory] = useState(state.category);
     const [title, setTitle] = useState("");
     const [value, setValue] = useState("내용을 입력해주세요.");
+    const [rating, setRating] = useState(0);
     const [boardColor, setBoardColor] = useState(false);
 
     useEffect(() => {
@@ -76,6 +78,7 @@ function CommunityCreatePost() {
             title: title,
             content: value,
             cinema: currentCinemaOption || undefined,
+            rating: backendCategory === "cinema_tip" ? rating : null,
             user: 1 // 임시로 user id를 1로 설정
         };
 
@@ -120,6 +123,7 @@ function CommunityCreatePost() {
                         </S.Option>
                     )}
                 </S.Select>
+                
                 <S.SelcetorDescriptionText>
                     {category === "tips" ? (
                     <strong style={{ color: "#FF5D47", fontSize: "1.5rem" }}>
@@ -128,6 +132,17 @@ function CommunityCreatePost() {
                     ) : "*선택"}
                 </S.SelcetorDescriptionText>
                 </S.SelcetorWrapper>
+            )}
+            {category === "tips" && (
+                <S.RatingWrapper>
+                    <ReactStars
+                        count={5}
+                        onChange={newRating => setRating(newRating)}
+                        size={24}
+                        activeColor="#ffd700"
+                        isHalf={true}
+                    />
+                </S.RatingWrapper>
             )}
 
             <S.CommunityCreateTitle
