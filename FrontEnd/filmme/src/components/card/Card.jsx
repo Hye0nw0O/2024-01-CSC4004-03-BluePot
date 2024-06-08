@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import * as S from './style';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Modal from './Modal';
 
 function Card({ id, img, name, region, star, score, like, onClick }) {
 

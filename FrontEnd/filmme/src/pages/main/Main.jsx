@@ -31,15 +31,6 @@ function Main() {
         AOS.init();
     }, []);
 
-    // 영화관 검색 필터
-    /*useEffect(() => {
-        const filtered = theater.filter(theater =>
-            theater.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const sortedTheaters = sortBy === "latest" ? filtered.reverse() : sortBy === "ascending" ? filtered.sort((a, b) => a.name.localeCompare(b.name)) : filtered;
-        setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy]);*/
-
     useEffect(() => {
         axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
@@ -50,19 +41,6 @@ function Main() {
                 console.error("영화관 정보를 가져오는 중 오류가 발생했습니다!", error);
             });
     }, []);
-
-    /*//useEffect(() => {
-        const filtered = theaters.filter(theater =>
-            theater.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const sortedTheaters = sortBy === "latest"
-            ? filtered.reverse()
-            : sortBy === "ascending"
-                ? filtered.sort((a, b) => a.name.localeCompare(b.name))
-                : filtered;
-
-        setFilteredTheaters(sortedTheaters);
-    }, [searchQuery, sortBy, theaters]);//*/
 
     useEffect(() => {
         filterAndSortTheaters();
@@ -146,13 +124,55 @@ function Main() {
     }
 
     const handleCardClick = (theater) => {
+        const regionColors = {
+            '서울': '#AEAFB9',
+            '인천': 'red',
+            '경기': 'orange',
+            '강원': 'yellow',
+            '대전': '#7FFF00',
+            '세종': 'green',
+            '충남': 'skyblue',
+            '충북': '#00CED1',
+            '광주': 'blue',
+            '전남': '#00008B',
+            '전북': 'purple',
+            '경남': 'pink',
+            '경북': '#8A2BE2',
+            '대구': '#A52A2A',
+            '부산': '#808000',
+            '울산': '#FFB07C',
+            '제주': '#ADD8E6',
+            default: '#AEAFB9'
+        };
+
+        const regionStyle = {
+            display: 'flex',
+            marginLeft: '1.3rem',
+            backgroundColor: regionColors[theater.location] || regionColors.default,
+            color: '#fff',
+            padding: '10px 14px',
+            borderRadius: '3.28px',
+            fontSize: '11px',
+            fontFamily: 'Pretendard',
+            justifyContent: 'center',
+            textAlign: 'center',
+            alignItems: 'center',
+        };
+
+        const nameRegionContainerStyle = {
+            display: 'flex',
+            alignItems: 'center'
+        };
+
         setModalContent(
           <div>
-            <h2>{theater.name}</h2>
-            <p>{theater.location}</p>
-            <p>Score: {theater.score}</p>
-            <p>Likes: {theater.like_cnt}</p>
-            <img src={theater.img} alt={theater.name} />
+            <img style={{ width: '700px', height: '250px' }} src={theater.view_url} alt={theater.name} /><hr/><br/><br/>
+            <div style={nameRegionContainerStyle}>
+                    <h2 style={{ fontSize: '35px', fontFamily: 'Pretendard-Medium', fontWeight: 'bold' }} className="ModalName">{theater.name}</h2>
+                    <p style={regionStyle} className="ModalRegion">{theater.location}</p>
+            </div><br/><br/>
+            <p style={{ fontSize: '20px', fontFamil: 'Pretendard-Medium' }}>{theater.discription}</p><br/><br/><br/>
+            <a href={theater.cite_url} style={{ fontSize: '15px' }} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</a>
           </div>
         );
         setShowModal(true);
