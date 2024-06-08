@@ -23,12 +23,15 @@ class Community(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_received = models.BooleanField(default=False) # 건의사항 반영여부 필드
+    rating = models.IntegerField(null=True, blank=True)
+    # rating_cnt = models.PositiveIntegerField(default=0)
 
-class CinemaRating(models.Model):
-    id = models.AutoField(primary_key=True)
-    rating = models.IntegerField(null=True, blank=True, default=None)
-    cinema = models.ForeignKey(Cinema, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_cinema')
-    user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_user')
+# class CinemaRating(models.Model): # 평점 따로 관리
+#     id = models.AutoField(primary_key=True)
+#     rating = models.IntegerField(null=True, blank=True, default=None)
+#     cinema = models.ForeignKey(Cinema, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_cinema')
+#     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name='rating_user')
+#     tip_post = models.ForeignKey(Community, blank=True, null=True, on_delete=models.CASCADE, related_name='rating_tip_post') 
 
 class CommunityComment(models.Model):
     id = models.AutoField(primary_key=True)
