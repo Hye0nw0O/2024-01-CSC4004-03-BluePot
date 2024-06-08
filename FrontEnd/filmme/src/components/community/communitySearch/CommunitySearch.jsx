@@ -1,33 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import * as S from "./style";
-import { useNavigate } from "react-router-dom";
 import searchImage from "../../../assets/images/Main/searchImage.png";
 
-function CommunitySearch() {
-
-    const navigate = useNavigate();
+function CommunitySearch({ onSearch }) {
     const [searchWord, setSearchWord] = useState("");
-    const changeSearchWord = event => setSearchWord(event.target.value);
+    const [isFocused, setIsFocused] = useState(false);
 
-    const onSubmit = event => {
-        event.preventDefault();
-        navigate(`/community-search?q=${searchWord}`);
+    const changeSearchWord = event => {
+        setSearchWord(event.target.value);
+        onSearch(event.target.value);
+    };
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
     };
 
     return (
-        <>
-        <S.CommunitySearchWrapper onSubmit={onSubmit}>
-            <S.SearchImage src={searchImage} alt="searchImage"/>
+        <S.CommunitySearchWrapper>
+            <S.SearchBox>
+                <S.SearchImage src={searchImage} alt="searchImage" />
                 <S.SearchInput
                     type="text"
                     name="searchWord"
                     value={searchWord}
                     onChange={changeSearchWord}
-                    placeholder="검색어를 입력해주세요."
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder={isFocused ? '' : '검색어를 입력하세요.'}
                 />
-                <S.SearchBox/>
+            </S.SearchBox>
         </S.CommunitySearchWrapper>
-        </>
     );
 }
 

@@ -98,6 +98,7 @@ export const Select = styled.select`
     appearance: none;
     text-align: center;
     cursor: pointer;
+    width: 25rem;
 `;
 
 export const Option = styled.option`

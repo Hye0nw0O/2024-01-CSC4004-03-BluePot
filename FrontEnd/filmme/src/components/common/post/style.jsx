@@ -15,6 +15,17 @@ const fadeInAnimation = keyframes`
   }
 `;
 
+const slideUpAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const PostListWrap = styled.div`
   width: 100%;
   display: flex;
@@ -32,14 +43,14 @@ export const PostListHeader = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 1rem;
-
 `;
 
 export const PostListHeaderWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 `;
-
 
 export const PostListHeaderWrite = styled.div`
   :hover {
@@ -168,12 +179,13 @@ export const Select = styled.select`
   border-radius: 10px;
   color: white;
   padding: 1rem 0.5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 500;
   margin-right: 2rem;
   appearance: none;
   text-align: center;
   cursor: pointer;
+  width: 30rem;
 `;
 
 export const Option = styled.option`
@@ -203,6 +215,7 @@ export const PostListMobukeWrapperBox1 = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 export const PostListMobukeWrapperBox2 = styled.div`
   font-size: 2rem;
   display: flex;
@@ -243,7 +256,7 @@ export const PostListMobileContent = styled.div`
 // style.js
 
 export const PopularPostsSection = styled.div`
-display: flex;
+// display: flex;
 align-items: center;
 `;
 
@@ -252,6 +265,7 @@ export const PopularPostsHeader = styled.div`
   font-size: 2.0rem;
   font-weight: bold;
   text-align: left;
+  margin-bottom: 3rem;
 `;
 
 export const ControlSection = styled.div`
@@ -262,5 +276,28 @@ export const ControlSection = styled.div`
 
 export const PopularPostsList = styled.div `
   margin-top: 2rem;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  padding: 2rem;
+  background: #E7E9FB;
+  box-shadow: 0px 3.415px 3.415px 0px rgba(0, 0, 0, 0.10);
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #e9e9e9;
+  }
+  
+
+  &:nth-child(1) {
+    animation: ${slideUpAnimation} 0.5s ease-in-out;
+  }
+
+  &:nth-child(2) {
+    animation: ${slideUpAnimation} 1s ease-in-out;
+  }
+
+  &:nth-child(3) {
+    animation: ${slideUpAnimation} 1.5s ease-in-out;
+  }
 `;

@@ -3,10 +3,10 @@ import { styled } from "styled-components";
 export const DetailPageType = styled.div`
     display: flex;
     width: 100%;
-
     flex-direction: row;
     align-items: center;
     margin-bottom: 1rem;
+    margin-top: 2rem;
 `;
 
 export const RightArrowBlueIcon = styled.img`
@@ -18,7 +18,7 @@ export const RightArrowBlueIcon = styled.img`
 
 export const DetailPageTypeText = styled.h1`
     display: flex;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 700;
 `;
 

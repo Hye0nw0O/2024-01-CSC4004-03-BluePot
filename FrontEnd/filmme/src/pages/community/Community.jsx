@@ -25,7 +25,7 @@ function Community() {
         <S.CommunityWrapper>
             <S.CommunityHeaderWrapper>
                 <S.CommunityTitle>Community</S.CommunityTitle>
-                <S.CommunitySubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.CommunitySubTitle>
+                {/* <S.CommunitySubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.CommunitySubTitle> */}
             </S.CommunityHeaderWrapper>
 
 
