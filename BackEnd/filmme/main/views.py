@@ -63,6 +63,27 @@ class Seoul_Cinema_List(APIView): # location 변경하여 다른 지역구 영�
         serializers = Cinema_Serializer(cinemas, many = True)
         return Response(serializers.data)
 
-def cinema_location_map(request, pk):
+def cinema_location_map(request, pk): # use X
     cinema = get_object_or_404(Cinema, pk=pk)
     return render(request, 'main/map.html', {'cinema': cinema})
+
+class Rate_Cinema(APIView):
+    def post(self, request, pk):
+        try:
+            cinema = Cinema.objects.get(pk=pk)
+        except Cinema.DoesNotExist:
+            return Response({'error': 'Cinema not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        rating = request.data.get('rating')
+        if rating is not None:
+            try:
+                rating = Decimal(rating)
+                if 0.0 <= rating <= 5.0:
+                    cinema.update_rating(rating)
+                    return Response({'status': 'success', 'rating': cinema.star}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'error': 'Rating must be between 0 and 5'}, status=status.HTTP_400_BAD_REQUEST)
+            except ValueError:
+                return Response({'error': 'Invalid rating value'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'Rating is required'}, status=status.HTTP_400_BAD_REQUEST)
