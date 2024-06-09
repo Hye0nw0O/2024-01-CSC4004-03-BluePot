@@ -16,6 +16,7 @@ function Main() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
     const [isLikeRequesting, setIsLikeRequesting] = useState(false);
+    const [currentMovies, setCurrentMovies] = useState([]);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
@@ -107,7 +108,6 @@ function Main() {
         try {
             const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
             if (response.status === 200) {
-                const updatedLikeCount = response.data.like_cnt;
                 const updatedTheaters = theaters.map(theater => {
                     if (theater.id === id) {
                         const isLiked = !theater.isLiked;
@@ -179,19 +179,39 @@ function Main() {
             default: '#AEAFB9'
         };
 
-        setModalContent(
-            <div>
-                <S.ModalImage src={theater.view_url} alt={theater.name} /><hr /><br /><br />
-                <S.NameRegionContainer>
-                    <S.ModalName>{theater.name}</S.ModalName>
-                    <S.ModalRegion color={regionColors[theater.location] || regionColors.default}>{theater.location}</S.ModalRegion>
-                </S.NameRegionContainer><br /><br />
-                <S.ModalDescription>{theater.discription}</S.ModalDescription><br /><br /><br />
-                <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL>
-            </div>
-        );
-        setShowModal(true);
-    }
+        setCurrentMovies([]);
+
+        axios.get(`http://localhost:8000/api/cinemas/detail/${theater.id}/`)
+        .then(response => {
+            const movies = response.data.movies || [];
+            setCurrentMovies(movies);
+
+            setModalContent(
+                <div>
+                    <S.ModalImage src={theater.view_url} alt={theater.name} /><hr /><br /><br />
+                    <S.NameRegionContainer>
+                        <S.ModalName>{theater.name}</S.ModalName>
+                        <S.ModalRegion color={regionColors[theater.location] || regionColors.default}>{theater.location}</S.ModalRegion>
+                    </S.NameRegionContainer><br /><br />
+                    <S.ModalDescription>{theater.description}</S.ModalDescription><br /><br /><br />
+                    <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/>
+                    <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie>
+                    <ul>
+                        {movies.map((movie, index) => (
+                            <li key={index}>
+                                <img src={movie.poster_url} />
+                                {movie.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+            setShowModal(true);
+        })
+        .catch(error => {
+            console.error("현재 상영 중인 영화를 가져오는 중 오류가 발생했습니다:", error);
+        });
+}
 
     return (
         <>

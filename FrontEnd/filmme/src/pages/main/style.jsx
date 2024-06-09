@@ -178,3 +178,9 @@ export const ModalDescription = styled.p`
 export const ModalURL = styled.a`
   font-size: 15px;
 `;
+
+export const Movie = styled.h3`
+    font-size: 20px;
+    font-family: 'Pretendard-Medium';
+    font-weight: bold;
+`;
