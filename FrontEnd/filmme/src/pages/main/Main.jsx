@@ -172,6 +172,7 @@ function Main() {
           const response = await axios.post(`http://localhost:8000/api/cinemas/rating/${modalContent.id}/`, { rating });
           if (response.status === 200) {
             console.log("별점이 저장되었습니다.");
+            alert("별점이 저장되었습니다.");
           } else {
             console.error("별점을 저장하는 데 문제가 발생했습니다.");
           }
