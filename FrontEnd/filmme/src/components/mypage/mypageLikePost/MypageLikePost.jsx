@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MypageCommon from '../mypageCommon/MypageCommon.jsx';
 import LikePostList from './LikePostList.jsx';
 import { getLikedPosts } from '../../../apis/api/mypage/mypage.js';
+import * as S from './style';
 
 function MypageLikePost() {
     const [posts, setPosts] = useState([]);
@@ -21,8 +22,10 @@ function MypageLikePost() {
 
     return (
         <>
+        <S.MypageWrapper>
             <MypageCommon />
             <LikePostList data={posts} url="/community/post/" />
+        </S.MypageWrapper>
         </>
     );
 }
