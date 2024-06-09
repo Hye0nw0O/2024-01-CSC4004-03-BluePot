@@ -238,3 +238,19 @@ class CommentViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.
         instance.delete()
         return Response({"detail": "댓글이 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
     
+
+# 전체 게시물
+class CommunityListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'content', 'writer', 'cinema__name']
+    pagination_class = CommunityPagination
+
+    def get_permissions(self):
+        return [AllowAny()]
+
+    def get_queryset(self):
+        return Community.objects.annotate(
+            likes_cnt=Count('likes_community', distinct=True)
+        )
