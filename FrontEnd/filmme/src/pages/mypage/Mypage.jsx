@@ -6,25 +6,10 @@ import comment from "../../assets/images/Mypage/comment.png";
 import heart from "../../assets/images/Mypage/heart.png";
 import post from "../../assets/images/Mypage/post.png";
 import thumbup from "../../assets/images/Mypage/thumb-up.png";
+import MypageCalendar from "../../components/mypage/mypageRecord/MypageCalender.jsx";
 
 function Mypage() {
     const navigate = useNavigate();
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const [viewingDate, setViewingDate] = useState(new Date());
-
-    const currentMonth = currentDate.getMonth() + 1;
-    const viewingMonth = viewingDate.getMonth() + 1;
-    const daysInMonth = new Date(viewingDate.getFullYear(), viewingMonth, 0).getDate();
-
-    const handlePreviousMonth = () => {
-        setViewingDate(new Date(viewingDate.setMonth(viewingDate.getMonth() - 1)));
-    };
-
-    const handleNextMonth = () => {
-        setViewingDate(new Date(viewingDate.setMonth(viewingDate.getMonth() + 1)));
-    };
-
-    const isCurrentMonth = currentMonth === viewingMonth && currentDate.getFullYear() === viewingDate.getFullYear();
 
     const handleNavigate = (path) => {
         navigate(path);
@@ -66,20 +51,7 @@ function Mypage() {
                     </S.RecordCard>
                 </S.RecordWrapper>
             </S.MyFilmmeRecord>
-            <S.MyCinemaRecord>
-                <S.CinemaRecordTitle>
-                    <S.Arrow onClick={handlePreviousMonth}>&lt;</S.Arrow>
-                    나의 <S.HighlightedText>{viewingMonth}월</S.HighlightedText> 영화 기록
-                    <S.Arrow onClick={handleNextMonth}>&gt;</S.Arrow>
-                </S.CinemaRecordTitle>
-                <S.CinemaRecordGrid isCurrentMonth={isCurrentMonth}>
-                    {[...Array(daysInMonth)].map((_, i) => (
-                        <S.CinemaRecordCard key={i} isCurrentMonth={isCurrentMonth}>
-                            <S.DayNumber>{i + 1}</S.DayNumber>
-                        </S.CinemaRecordCard>
-                    ))}
-                </S.CinemaRecordGrid>
-            </S.MyCinemaRecord>
+            <MypageCalendar />
         </S.MypageWrapper>
     );
 }

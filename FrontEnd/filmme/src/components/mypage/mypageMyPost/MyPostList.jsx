@@ -5,7 +5,7 @@ import EyeOutlineIcon from '../../../assets/images/Community/eye_outline.png';
 import { useNavigate } from 'react-router-dom';
 import { getLikedPosts } from '../../../apis/api/mypage/mypage';
 
-const LikePostList = () => {
+const MyPostList = () => {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
 
@@ -71,4 +71,4 @@ const LikePostList = () => {
     );
 };
 
-export default LikePostList;
+export default MyPostList;
