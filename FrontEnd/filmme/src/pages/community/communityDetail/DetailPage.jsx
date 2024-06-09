@@ -180,12 +180,16 @@ function DetailPage() {
             <S.Thumbnailimg src={EyeOutlineIcon} alt="조회수" />
             <S.DetailViewText>{viewCnt}</S.DetailViewText>
             {/* is_liked 여부에 따라 */}
-            <S.Thumbnailimg
-              src={likeImage}
-              alt="좋아요"
-              onClick={handleLikeToggle}
-            />
-            <S.DetailViewText>{detail.likes_cnt}</S.DetailViewText>
+            {type !== 'suggestions' && (
+            <>
+              <S.Thumbnailimg
+                src={likeImage}
+                alt="좋아요"
+                onClick={handleLikeToggle}
+              />
+              <S.DetailViewText>{detail.likes_cnt}</S.DetailViewText>
+            </>
+          )}
           </S.LikeViewWrapper>
         </>
       );
