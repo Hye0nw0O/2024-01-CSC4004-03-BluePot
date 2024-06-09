@@ -183,4 +183,28 @@ export const Movie = styled.h3`
     font-size: 20px;
     font-family: 'Pretendard-Medium';
     font-weight: bold;
+    width: 700px;
+`;
+
+export const MoviePoster = styled.img`
+    width: 200px;
+    height: 300px;
+    flex-direction: column;
+    padding: 15px;
+`;
+
+export const MovieList = styled.ul`
+    display: flex;
+    flex-wrap: wrap; // 필요한 경우 줄 바꿈을 허용
+    list-style: none; // 기본 ul 스타일 제거
+    padding: 0; // 기본 padding 제거
+`;
+
+export const MovieListItem = styled.li`
+    margin-right: 10px; // 각 포스터 사이의 간격 조정
+    margin-bottom: 10px; // 줄 바꿈 시 포스터 사이의 간격 조정
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Pretendard-Medium';
+    font-weight: bold;
 `;

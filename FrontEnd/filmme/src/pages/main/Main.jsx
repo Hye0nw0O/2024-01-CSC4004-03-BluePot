@@ -194,16 +194,16 @@ function Main() {
                         <S.ModalRegion color={regionColors[theater.location] || regionColors.default}>{theater.location}</S.ModalRegion>
                     </S.NameRegionContainer><br /><br />
                     <S.ModalDescription>{theater.description}</S.ModalDescription><br /><br /><br />
-                    <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/>
-                    <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie>
-                    <ul>
+                    <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/><br/>
+                    <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie><br/>
+                    <S.MovieList>
                         {movies.map((movie, index) => (
-                            <li key={index}>
-                                <img src={movie.poster_url} />
+                            <S.MovieListItem key={index}>
+                                <S.MoviePoster src={movie.poster_url} /><br/>
                                 {movie.name}
-                            </li>
+                            </S.MovieListItem>
                         ))}
-                    </ul>
+                    </S.MovieList>
                 </div>
             );
             setShowModal(true);
