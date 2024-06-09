@@ -145,20 +145,6 @@ export const ModalContent = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-`;
-
-export const ModalImageWrapper = styled.div`
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-`;
-
-export const ModalImage = styled.img`
-  width: 100%; 
-  height: auto; 
-  display: block;
-  margin: 0 auto; // 중앙 정렬을 위해 추가
 `;
 
 export const ModalBody = styled.div`
@@ -176,4 +162,84 @@ export const CloseButton = styled.button`
   border: none;
   font-size: 16px;
   cursor: pointer;
+`;
+
+//모달창
+export const ModalImage = styled.img`
+  width: 700px;
+  height: 250px;
+`;
+
+export const NameRegionContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ModalName = styled.h2`
+  font-size: 35px;
+  font-family: 'Pretendard-Medium';
+  font-weight: bold;
+`;
+
+export const ModalRegion = styled.p`
+  display: flex;
+  margin-left: 1.3rem;
+  background-color: ${props => props.color || '#AEAFB9'};
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 3.28px;
+  font-size: 11px;
+  font-family: 'Pretendard';
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+`;
+
+export const ModalDescription = styled.p`
+  font-size: 20px;
+  font-family: 'Pretendard-Medium';
+`;
+
+export const ModalURL = styled.a`
+  font-size: 15px;
+`;
+
+export const Movie = styled.h3`
+    font-size: 20px;
+    font-family: 'Pretendard-Medium';
+    font-weight: bold;
+    width: 700px;
+`;
+
+export const MoviePoster = styled.img`
+    width: 200px;
+    height: 300px;
+    flex-direction: column;
+    padding: 15px;
+`;
+
+export const MovieList = styled.ul`
+    display: flex;
+    flex-wrap: wrap; // 필요한 경우 줄 바꿈을 허용
+    list-style: none; // 기본 ul 스타일 제거
+    padding: 0; // 기본 padding 제거
+`;
+
+export const MovieListItem = styled.li`
+    margin-right: 10px; // 각 포스터 사이의 간격 조정
+    margin-bottom: 10px; // 줄 바꿈 시 포스터 사이의 간격 조정
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Pretendard-Medium';
+    font-weight: bold;
+`;
+
+// 별점 저장 버튼
+export const SaveButton = styled.button`
+  width: 80px;
+  padding: 3px;
+  margin: 8px;
+  background: gray;
+  border: 1px;
+  border-radius:3px;
 `;

@@ -5,6 +5,7 @@ import Modal from '../../components/card/Modal.jsx';
 import searchImage from "../../assets/images/Main/searchImage.png";
 import AOS from 'aos';
 import axios from 'axios';
+import ReactStars from "react-rating-stars-component";
 
 function Main() {
     const [theaters, setTheaters] = useState([]);
@@ -17,6 +18,7 @@ function Main() {
     const [modalContent, setModalContent] = useState(null);
     const [isLikeRequesting, setIsLikeRequesting] = useState(false);
     const [currentMovies, setCurrentMovies] = useState([]);
+    const [rating, setRating] = useState(0);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
@@ -164,6 +166,20 @@ function Main() {
         ));
     }
 
+    const handleSaveRating = async () => {
+        try {
+          console.log(`Sending rating ${rating} for cinema ID ${modalContent.id}`);
+          const response = await axios.post(`http://localhost:8000/api/cinemas/rating/${modalContent.id}/`, { rating });
+          if (response.status === 200) {
+            console.log("별점이 저장되었습니다.");
+          } else {
+            console.error("별점을 저장하는 데 문제가 발생했습니다.");
+          }
+        } catch (error) {
+          console.error("별점을 저장하는 중 오류가 발생했습니다:", error);
+        }
+      };
+
     const handleCardClick = (theater) => {
         const regionColors = {
             '서울': '#AEAFB9',
@@ -193,26 +209,17 @@ function Main() {
             const movies = response.data.movies || [];
             setCurrentMovies(movies);
 
-            setModalContent(
-                <div>
-                    <S.ModalImage src={theater.view_url} alt={theater.name} /><hr /><br /><br />
-                    <S.NameRegionContainer>
-                        <S.ModalName>{theater.name}</S.ModalName>
-                        <S.ModalRegion color={regionColors[theater.location] || regionColors.default}>{theater.location}</S.ModalRegion>
-                    </S.NameRegionContainer><br /><br />
-                    <S.ModalDescription>{theater.description}</S.ModalDescription><br /><br /><br />
-                    <S.ModalURL href={theater.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/><br/>
-                    <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie><br/>
-                    <S.MovieList>
-                        {movies.map((movie, index) => (
-                            <S.MovieListItem key={index}>
-                                <S.MoviePoster src={movie.poster_url} /><br/>
-                                {movie.name}
-                            </S.MovieListItem>
-                        ))}
-                    </S.MovieList>
-                </div>
-            );
+            setModalContent({
+                id: theater.id,
+                name: theater.name,
+                region: theater.location,
+                discription: theater.discription,
+                view_url: theater.view_url,
+                cite_url: theater.cite_url,
+                regionColor: regionColors[theater.location] || regionColors.default,
+                movies: movies
+            });
+
             setShowModal(true);
         })
         .catch(error => {
@@ -261,7 +268,14 @@ function Main() {
                     </S.TheaterContainer>
                 </div>
             </S.MainWrapper>
-            <Modal show={showModal} onClose={() => setShowModal(false)} content={modalContent} />
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                content={modalContent}
+                rating={rating}
+                setRating={setRating}
+                handleSaveRating={handleSaveRating}
+            />
         </>
     );
 }

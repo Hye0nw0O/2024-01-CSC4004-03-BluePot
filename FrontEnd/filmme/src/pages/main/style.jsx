@@ -170,7 +170,7 @@ export const ModalRegion = styled.p`
   align-items: center;
 `;
 
-export const ModalDescription = styled.p`
+export const ModalDiscription = styled.p`
   font-size: 20px;
   font-family: 'Pretendard-Medium';
 `;
