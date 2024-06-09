@@ -15,12 +15,12 @@ function Modal({ show, onClose, content, imageUrl, imageAlt, rating, setRating, 
     <S.ModalOverlay onClick={onClose}>
       <S.ModalContent onClick={e => e.stopPropagation()}>
         <S.CloseButton onClick={onClose}>X</S.CloseButton>
-        <S.ModalImage src={content.view_url} alt={content.name} /><hr /><br /><br />
+        <S.ModalImage src={content.view_url} alt={content.name} /><br/><br/><hr /><br />
                 <S.NameRegionContainer>
                     <S.ModalName>{content.name}</S.ModalName>
-                    <S.ModalRegion color={content.regionColor}>{content.location}</S.ModalRegion>
+                    <S.ModalRegion color={content.regionColor}>{content.region}</S.ModalRegion>
                 </S.NameRegionContainer><br /><br />
-                <S.ModalDescription>{content.discription}</S.ModalDescription><br /><br /><br />
+                <S.ModalDiscription>{content.discription}</S.ModalDiscription><br /><br /><br />
                 <S.ModalURL href={content.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/><br/>
                 <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie><br/>
                 <S.MovieList>
@@ -30,8 +30,8 @@ function Modal({ show, onClose, content, imageUrl, imageAlt, rating, setRating, 
                             {movie.name}
                         </S.MovieListItem>
                     ))}
-                </S.MovieList><br/><br/>
-                영화관 별점 주기<br/>
+                </S.MovieList><br/><br/><br/>
+                <S.Star>영화관 별점 주기</S.Star>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <ReactStars
                         count={5}
@@ -40,7 +40,7 @@ function Modal({ show, onClose, content, imageUrl, imageAlt, rating, setRating, 
                         activeColor="#ffd700"
                         isHalf={true}
                     />
-                    <button type="button" onClick={handleSaveRating}>저장하기</button>
+                    <S.Starbutton type="button" onClick={handleSaveRating}>저장하기</S.Starbutton>
                 </div>
             </S.ModalContent>
         </S.ModalOverlay>

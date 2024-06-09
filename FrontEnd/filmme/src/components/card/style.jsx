@@ -166,7 +166,7 @@ export const CloseButton = styled.button`
 
 //모달창
 export const ModalImage = styled.img`
-  width: 700px;
+  width: 750px;
   height: 250px;
 `;
 
@@ -195,7 +195,7 @@ export const ModalRegion = styled.p`
   align-items: center;
 `;
 
-export const ModalDescription = styled.p`
+export const ModalDiscription = styled.p`
   font-size: 20px;
   font-family: 'Pretendard-Medium';
 `;
@@ -234,12 +234,13 @@ export const MovieListItem = styled.li`
     font-weight: bold;
 `;
 
-// 별점 저장 버튼
-export const SaveButton = styled.button`
-  width: 80px;
-  padding: 3px;
-  margin: 8px;
+export const Star = styled.div`
+  font-size: 18px;
+`;
+
+export const Starbutton = styled.button`
   background: gray;
-  border: 1px;
-  border-radius:3px;
+  border-radius: 3px;
+  padding: 7px 8px;
+  margin: 7px;
 `;
