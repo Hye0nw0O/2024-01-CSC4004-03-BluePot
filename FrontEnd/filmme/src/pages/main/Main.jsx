@@ -3,9 +3,9 @@ import * as S from "./style.jsx";
 import Card from '../../components/card/Card.jsx'
 import Modal from '../../components/card/Modal.jsx';
 import searchImage from "../../assets/images/Main/searchImage.png";
-import theater from "../../data/theater.jsx";
 import AOS from 'aos';
 import axios from 'axios';
+import ReactStars from "react-rating-stars-component";
 
 function Main() {
     const [theaters, setTheaters] = useState([]);
@@ -16,6 +16,9 @@ function Main() {
     const [sortBy, setSortBy] = useState("ascending");
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
+    const [isLikeRequesting, setIsLikeRequesting] = useState(false);
+    const [currentMovies, setCurrentMovies] = useState([]);
+    const [rating, setRating] = useState(0);
     const regionNames = ["전체", "서울", "인천", "경기", "강원", "대전", "세종", "충남", "충북", "광주", "전남", "전북", "경남", "경북", "대구", "부산", "울산", "제주"];
 
     //정렬 옵션 목록
@@ -33,8 +36,12 @@ function Main() {
     useEffect(() => {
         axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
-                setTheaters(response.data);
-                setFilteredTheaters(response.data);
+                const theatersWithLikeStatus = response.data.map(theater => ({
+                    ...theater,
+                    isLiked: false
+                }));
+                setTheaters(theatersWithLikeStatus);
+                setFilteredTheaters(theatersWithLikeStatus);
             })
             .catch(error => {
                 console.error("영화관 정보를 가져오는 중 오류가 발생했습니다!", error);
@@ -83,9 +90,9 @@ function Main() {
             case "descending":
                 return theaters.sort((a, b) => b.name.localeCompare(a.name));
             case "rating":
-                return theaters.sort((a, b) => b.score - a.score);
+                return theaters.sort((a, b) => b.star - a.star);
             case "likes":
-                return theaters.sort((a, b) => b.like - a.like);
+                return theaters.sort((a, b) => b.like_cnt - a.like_cnt);
             default:
                 return theaters;
         }
@@ -96,6 +103,43 @@ function Main() {
         const sortedTheaters = sortTheaters(option);
         setFilteredTheaters(sortedTheaters);
     }
+
+    const handleLikeToggle = async (id) => {
+        if (isLikeRequesting) return; // 좋아요 요청 중이면 중복 요청 방지
+        setIsLikeRequesting(true); // 좋아요 요청 중으로 설정
+        try {
+            const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
+            if (response.status === 200) {
+                const updatedTheaters = theaters.map(theater => {
+                    if (theater.id === id) {
+                        const isLiked = !theater.isLiked;
+                        return {
+                            ...theater,
+                            isLiked: isLiked,
+                            like_cnt: theater.isLiked ? theater.like_cnt - 1 : theater.like_cnt + 1 // 좋아요 수를 1씩 증가 또는 감소
+                        };
+                    }
+                    return theater;
+                });
+                setTheaters(updatedTheaters);
+                setFilteredTheaters(sortTheaters(updatedTheaters));
+            } else {
+                console.error("좋아요를 업데이트하는 데 문제가 발생했습니다.");
+            }
+        } catch (error) {
+            console.error("서버 요청 중 오류가 발생했습니다:", error);
+        } finally {
+            setIsLikeRequesting(false); // 요청 완료 후 상태 업데이트
+        }
+    };
+
+    // 별 출력
+    const renderStarRating = (score) => {
+        const starCount = Math.round(score); // 점수 반올림
+        const stars = '⭐'.repeat(starCount); 
+        return stars;
+    };
+    
 
     // 영화관 리스트
     const ViewTheater = () => {
@@ -111,14 +155,31 @@ function Main() {
                 id={theater.id}
                 name={theater.name}
                 region={theater.location}
-                star={theater.score}
+                star={renderStarRating(theater.star)}
                 score={theater.star}
                 like={theater.like_cnt}
                 img={theater.view_url}
                 onClick={() => handleCardClick(theater)}
+                onLikeToggle={handleLikeToggle}
+                isLiked={theater.isLiked}
             />
         ));
     }
+
+    const handleSaveRating = async () => {
+        try {
+          console.log(`Sending rating ${rating} for cinema ID ${modalContent.id}`);
+          const response = await axios.post(`http://localhost:8000/api/cinemas/rating/${modalContent.id}/`, { rating });
+          if (response.status === 200) {
+            console.log("별점이 저장되었습니다.");
+            alert("별점이 저장되었습니다.");
+          } else {
+            console.error("별점을 저장하는 데 문제가 발생했습니다.");
+          }
+        } catch (error) {
+          console.error("별점을 저장하는 중 오류가 발생했습니다:", error);
+        }
+      };
 
     const handleCardClick = (theater) => {
         const regionColors = {
@@ -142,38 +203,30 @@ function Main() {
             default: '#AEAFB9'
         };
 
-        const regionStyle = {
-            display: 'flex',
-            marginLeft: '1.3rem',
-            backgroundColor: regionColors[theater.location] || regionColors.default,
-            color: '#fff',
-            padding: '10px 14px',
-            borderRadius: '3.28px',
-            fontSize: '11px',
-            fontFamily: 'Pretendard',
-            justifyContent: 'center',
-            textAlign: 'center',
-            alignItems: 'center',
-        };
+        setCurrentMovies([]);
 
-        const nameRegionContainerStyle = {
-            display: 'flex',
-            alignItems: 'center'
-        };
+        axios.get(`http://localhost:8000/api/cinemas/detail/${theater.id}/`)
+        .then(response => {
+            const movies = response.data.movies || [];
+            setCurrentMovies(movies);
 
-        setModalContent(
-          <div>
-            <img style={{ width: '700px', height: '250px' }} src={theater.view_url} alt={theater.name} /><hr/><br/><br/>
-            <div style={nameRegionContainerStyle}>
-                    <h2 style={{ fontSize: '35px', fontFamily: 'Pretendard-Medium', fontWeight: 'bold' }} className="ModalName">{theater.name}</h2>
-                    <p style={regionStyle} className="ModalRegion">{theater.location}</p>
-            </div><br/><br/>
-            <p style={{ fontSize: '20px', fontFamil: 'Pretendard-Medium' }}>{theater.discription}</p><br/><br/><br/>
-            <a href={theater.cite_url} style={{ fontSize: '15px' }} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</a>
-          </div>
-        );
-        setShowModal(true);
-      }
+            setModalContent({
+                id: theater.id,
+                name: theater.name,
+                region: theater.location,
+                discription: theater.discription,
+                view_url: theater.view_url,
+                cite_url: theater.cite_url,
+                regionColor: regionColors[theater.location] || regionColors.default,
+                movies: movies
+            });
+
+            setShowModal(true);
+        })
+        .catch(error => {
+            console.error("현재 상영 중인 영화를 가져오는 중 오류가 발생했습니다:", error);
+        });
+}
 
     return (
         <>
@@ -216,7 +269,14 @@ function Main() {
                     </S.TheaterContainer>
                 </div>
             </S.MainWrapper>
-            <Modal show={showModal} onClose={() => setShowModal(false)} content={modalContent} />
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                content={modalContent}
+                rating={rating}
+                setRating={setRating}
+                handleSaveRating={handleSaveRating}
+            />
         </>
     );
 }
