@@ -130,6 +130,13 @@ function Main() {
             setIsLikeRequesting(false); // 요청 완료 후 상태 업데이트
         }
     };
+
+    // 별 출력
+    const renderStarRating = (score) => {
+        const starCount = Math.round(score); // 점수 반올림
+        const stars = '⭐'.repeat(starCount); 
+        return stars;
+    };
     
 
     // 영화관 리스트
@@ -146,7 +153,7 @@ function Main() {
                 id={theater.id}
                 name={theater.name}
                 region={theater.location}
-                star={theater.score}
+                star={renderStarRating(theater.star)}
                 score={theater.star}
                 like={theater.like_cnt}
                 img={theater.view_url}
