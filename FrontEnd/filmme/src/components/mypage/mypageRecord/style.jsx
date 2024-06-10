@@ -47,7 +47,7 @@ export const CinemaRecordGrid = styled.div`
 
 export const CinemaRecordCard = styled.div`
     background-color: ${(props) => props.isCurrentMonth ? '#E7E9FB' : '#f0f0f0'};
-    height: 179.036px;
+    height: 150px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -59,7 +59,7 @@ export const CinemaRecordCard = styled.div`
     cursor: pointer;
     transition: background-color 0.3s;
     position: relative;
-    border: 1px solid #ddd;
+    border: 0.5px solid #ddd;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
