@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from accounts.models import User, UserManager
-from accounts.serializers import UserSerializer
+# from accounts.serializers import UserSerializer
 from django.shortcuts import render
 from rest_framework.response import Response
 import requests
@@ -16,19 +16,19 @@ from community.models import *
 from community.serializers import *
 
 #쿠키로 읽어오는 부분 request에 담겨진 json으로 읽도록 수정할예정
-def get_user(request):
-    access = request.COOKIES['accessToken']
-    kakao_profile_request = requests.post(
-        "https://kapi.kakao.com/v2/user/me",
-        headers={"Authorization":f"Bearer {access}"},
-    )
-    kakao_profile_json = kakao_profile_request.json()
+# def get_user(request):
+#     access = request.COOKIES['accessToken']
+#     kakao_profile_request = requests.post(
+#         "https://kapi.kakao.com/v2/user/me",
+#         headers={"Authorization":f"Bearer {access}"},
+#     )
+#     kakao_profile_json = kakao_profile_request.json()
 
-    kakao_account = kakao_profile_json.get("kakao_account")
+#     kakao_account = kakao_profile_json.get("kakao_account")
 
-    email = kakao_account.get("email", None)
-    user = User.objects.get(email=email)
-    return user
+#     email = kakao_account.get("email", None)
+#     user = User.objects.get(email=email)
+#     return user
 
 
 @api_view(['GET'])
@@ -67,7 +67,7 @@ def modify_profile(request):
     user = get_user(request)
     email = user.email
     nickname = request.data.get('nickname')
-    user.update_user(email=email, nickName=nickname)
+    user.update_user(email=email, nickname=nickname)
     user_serializer = UserSerializer(user).data
 
     res = Response(

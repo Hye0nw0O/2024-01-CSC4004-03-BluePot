@@ -57,7 +57,7 @@ class CommunityCommentSerializer(serializers.ModelSerializer):
         return instance.community.id
     
     def get_writer(self, instance):
-        return instance.writer.nickName
+        return instance.writer.nickname
     
     class Meta:
         model = CommunityComment
@@ -221,7 +221,7 @@ class SuggestionListSerializer(serializers.ModelSerializer):
 
 # 커뮤니티 디테일 - 자유게시판
 class CommonDetailSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickName', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
     images = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
@@ -278,7 +278,7 @@ class CommonDetailSerializer(serializers.ModelSerializer):
 # 커뮤니티 디테일 - cinema_tip
 class Cinema_tipDetailSerializer(serializers.ModelSerializer):
     cinema = serializers.CharField(source='cinema.name', read_only=True)
-    writer = serializers.CharField(source='writer.nickName', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
     images = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
@@ -338,7 +338,7 @@ class Cinema_tipDetailSerializer(serializers.ModelSerializer):
 # 커뮤니티 디테일 - suggestion
 class SuggestionDetailSerializer(serializers.ModelSerializer):
     cinema = serializers.CharField(source='cinema.name', read_only=True)
-    writer = serializers.CharField(source='writer.nickName', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
     images = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField(read_only=True)
     likes_cnt = serializers.IntegerField(read_only=True)
@@ -394,7 +394,7 @@ class SuggestionDetailSerializer(serializers.ModelSerializer):
     
 # 게시물 작성 & 수정
 class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
-    writer = serializers.CharField(source='writer.nickName', read_only=True)
+    writer = serializers.CharField(source='writer.nickname', read_only=True)
     images = serializers.ListField(child=serializers.ImageField(), required=False)
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
