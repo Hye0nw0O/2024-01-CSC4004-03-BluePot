@@ -14,6 +14,7 @@
     "aos": "^2.3.4",
     "axios": "^1.7.2",
     "react": "^18.2.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-file-drop": "^3.1.6",
     "react-icons": "^5.2.1",
@@ -21,6 +22,7 @@
     "react-modal": "^3.16.1",
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.23.1",
+    "react-snowfall": "^2.1.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
     "styled-components": "^6.1.11"
