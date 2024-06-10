@@ -19,7 +19,7 @@ function Mypage() {
         <S.MypageWrapper>
             <S.MypageTitle>Mypage</S.MypageTitle>
             <S.MypageHeaderWrapper>
-                <S.ProfileImage src={profileImage} alt="프로필사진" />
+                {/* <S.ProfileImage src={profileImage} alt="프로필사진" /> */}
                 <S.Profile>
                     <S.ProfileName>
                         <S.Name>홍길동</S.Name>
