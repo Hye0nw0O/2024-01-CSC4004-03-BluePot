@@ -4,7 +4,7 @@ import MypageRecordModal from "./MypageRecordModal.jsx";
 
 function MypageCalendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [viewingDate, setViewingDate] = useState(new Date());
+    const [viewingDate, setViewingDate] = useState(new Date(new Date().setFullYear(2024)));
     const [records, setRecords] = useState({});
     const [selectedDate, setSelectedDate] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,11 +16,25 @@ function MypageCalendar() {
     const daysInMonth = new Date(viewingDate.getFullYear(), viewingMonth, 0).getDate();
 
     const handlePreviousMonth = () => {
-        setViewingDate(new Date(viewingDate.setMonth(viewingDate.getMonth() - 1)));
+        setViewingDate((prevDate) => {
+            const newDate = new Date(prevDate);
+            newDate.setMonth(newDate.getMonth() - 1);
+            if (newDate.getFullYear() < 2024) {
+                newDate.setFullYear(2024);
+            }
+            return newDate;
+        });
     };
 
     const handleNextMonth = () => {
-        setViewingDate(new Date(viewingDate.setMonth(viewingDate.getMonth() + 1)));
+        setViewingDate((prevDate) => {
+            const newDate = new Date(prevDate);
+            newDate.setMonth(newDate.getMonth() + 1);
+            if (newDate.getFullYear() > 2024) {
+                newDate.setFullYear(2024);
+            }
+            return newDate;
+        });
     };
 
     const isCurrentMonth = currentMonth === viewingMonth && currentDate.getFullYear() === viewingDate.getFullYear();
@@ -68,12 +82,14 @@ function MypageCalendar() {
                     return (
                         <S.CinemaRecordCard key={i} isCurrentMonth={isCurrentMonth} onClick={() => handleViewRecord(date)} style={{ backgroundImage }}>
                             <S.DayNumber>{i + 1}</S.DayNumber>
-                            <S.AddButton
-                                onClick={(e) => { e.stopPropagation(); handleAddRecord(date, isCurrentMonth); }}
-                                isCurrentMonth={isCurrentMonth}
-                            >
-                                +
-                            </S.AddButton>
+                            {!records[date] && (
+                                <S.AddButton
+                                    onClick={(e) => { e.stopPropagation(); handleAddRecord(date, isCurrentMonth); }}
+                                    isCurrentMonth={isCurrentMonth}
+                                >
+                                    +
+                                </S.AddButton>
+                            )}
                         </S.CinemaRecordCard>
                     );
                 })}
