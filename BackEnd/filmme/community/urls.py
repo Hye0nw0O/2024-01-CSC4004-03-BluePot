@@ -6,7 +6,7 @@ from .views import CommunityViewSet, CommunityDetailViewSet,CommunityCommentView
 app_name = "community"
 
 default_router = routers.SimpleRouter(trailing_slash=False)
-default_router.register("communities", CommunityListViewSet, basename="community")
+default_router.register("all", CommunityListViewSet, basename="community")
 
 community_detail_router = routers.SimpleRouter(trailing_slash=False)
 community_detail_router.register("communities", CommunityDetailViewSet, basename="commuinties-detail")
@@ -28,7 +28,7 @@ community_detail_action = {
 
 urlpatterns = [
     # 게시물 전체
-    path('', include(default_router.urls)),
+    path('communities/', include(default_router.urls)),
 
     # 게시글 작성, 수정, 삭제
     path('', include(community_post_router.urls)),
