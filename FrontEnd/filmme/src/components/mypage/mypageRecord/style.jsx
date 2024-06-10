@@ -60,6 +60,9 @@ export const CinemaRecordCard = styled.div`
     transition: background-color 0.3s;
     position: relative;
     border: 1px solid #ddd;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     &:hover {
         background-color: ${(props) => props.isCurrentMonth ? '#e0e0e0' : '#dcdcdc'};

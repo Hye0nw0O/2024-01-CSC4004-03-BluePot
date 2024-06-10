@@ -47,7 +47,8 @@ function MypageCalendar() {
         }
     };
 
-    const handleSaveRecord = () => {
+    const handleSaveRecord = (updatedRecords) => {
+        setRecords(updatedRecords);
         setIsModalOpen(false);
     };
 
@@ -62,8 +63,10 @@ function MypageCalendar() {
             <S.CinemaRecordGrid isCurrentMonth={isCurrentMonth}>
                 {[...Array(daysInMonth)].map((_, i) => {
                     const date = `${viewingDate.getFullYear()}-${viewingMonth}-${i + 1}`;
+                    const record = records[date] || {};
+                    const backgroundImage = record.recordPhoto ? `url(${record.recordPhoto})` : 'none';
                     return (
-                        <S.CinemaRecordCard key={i} isCurrentMonth={isCurrentMonth} onClick={() => handleViewRecord(date)}>
+                        <S.CinemaRecordCard key={i} isCurrentMonth={isCurrentMonth} onClick={() => handleViewRecord(date)} style={{ backgroundImage }}>
                             <S.DayNumber>{i + 1}</S.DayNumber>
                             <S.AddButton
                                 onClick={(e) => { e.stopPropagation(); handleAddRecord(date, isCurrentMonth); }}

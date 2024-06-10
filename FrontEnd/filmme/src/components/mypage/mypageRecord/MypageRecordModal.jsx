@@ -36,8 +36,9 @@ const MypageRecordModal = ({ isAddMode, selectedDate, records, setRecords, curre
     };
 
     const handleSave = () => {
-        setRecords({ ...records, [selectedDate]: currentRecord });
-        handleSaveRecord();
+        const updatedRecords = { ...records, [selectedDate]: currentRecord };
+        setRecords(updatedRecords);
+        handleSaveRecord(updatedRecords);
     };
 
     return (
@@ -64,15 +65,17 @@ const MypageRecordModal = ({ isAddMode, selectedDate, records, setRecords, curre
                         {currentRecord.recordPhoto ? (
                             <>
                                 <S.ModalImage src={currentRecord.recordPhoto} alt="기록 사진" />
+                                {/* <S.ButtonGroup> */}
                                     <S.CinemaFileInputLabel onClick={() => handleDeleteFile("recordPhoto")}>삭제</S.CinemaFileInputLabel>
                                     <S.CinemaFileInputLabel htmlFor="recordPhoto">수정</S.CinemaFileInputLabel>
+                                {/* </S.ButtonGroup> */}
                                 <S.ModalInput type="file" id="recordPhoto" name="recordPhoto" onChange={handleFileChange} style={{ display: 'none' }} />
                             </>
                         ) : (
                             <>
-                            <S.FileInputLabel htmlFor="recordPhoto">오늘의 사진 첨부</S.FileInputLabel>
-                            <S.OnePhoto>*사진은 1장만 가능합니다.</S.OnePhoto>
-                            <S.ModalInput type="file" id="recordPhoto" name="recordPhoto" onChange={handleFileChange} />
+                                <S.FileInputLabel htmlFor="recordPhoto">오늘의 사진 첨부</S.FileInputLabel>
+                                <S.OnePhoto>*사진은 1장만 가능합니다.</S.OnePhoto>
+                                <S.ModalInput type="file" id="recordPhoto" name="recordPhoto" onChange={handleFileChange} />
                             </>
                         )}
                         
