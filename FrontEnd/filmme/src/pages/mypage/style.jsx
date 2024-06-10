@@ -6,6 +6,7 @@ export const MypageWrapper = styled.div`
     align-items: center;
     width: 100%;
     padding: 2rem;
+    margin-bottom: 10rem;
 `;
 
 export const MypageTitle = styled.div`

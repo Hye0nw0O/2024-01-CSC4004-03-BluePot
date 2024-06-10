@@ -1,0 +1,16 @@
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+.MypageTitle {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+    font-family: Jalnan;
+    font-size: 40px;
+    color: #161835;
+    font-weight: 700;
+    animation: typing 2s steps(40, end);
+}

@@ -47,7 +47,7 @@ export const CinemaRecordGrid = styled.div`
 
 export const CinemaRecordCard = styled.div`
     background-color: ${(props) => props.isCurrentMonth ? '#E7E9FB' : '#f0f0f0'};
-    height: 179.036px;
+    height: 150px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -59,7 +59,10 @@ export const CinemaRecordCard = styled.div`
     cursor: pointer;
     transition: background-color 0.3s;
     position: relative;
-    border: 1px solid #ddd;
+    border: 0.5px solid #ddd;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     &:hover {
         background-color: ${(props) => props.isCurrentMonth ? '#e0e0e0' : '#dcdcdc'};
@@ -109,11 +112,12 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
     background: #fff;
-    padding: 5rem;
+    padding: 2rem;
     border-radius: 10px;
     text-align: left;
     width: 500px;
-    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
 `;
 
 export const ModalTitle = styled.h2`
@@ -132,6 +136,7 @@ export const ModalLabel = styled.label`
     display: block;
     color: #161835;
 `;
+
 export const ModalAlertLabel = styled.label`
     font-size: 13px;
     font-weight: bold;
@@ -181,7 +186,7 @@ export const ModalButton = styled.button`
 `;
 
 export const ModalSelect = styled.select`
-    width: 30%;
+    width: 100%;
     margin-bottom: 1rem; 
     padding: 0.5rem;
     font-size: 13px;
@@ -195,7 +200,7 @@ export const ModalContentText = styled.p`
 `;
 
 export const ModalImage = styled.img`
-    width: 50%;
+    width: 20%;
     margin-top: 1rem;
     border-radius: 5px;
 `;
@@ -229,4 +234,80 @@ export const CinemaFileInputLabel = styled.label`
     &:hover {
         background-color: #161835;
     }
+`;
+
+export const ButtonGroup = styled.div`
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+`;
+
+export const OnePhoto = styled.label`
+    font-size: 9px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    color: #cdcdcd;
+`;
+
+// 작성 후 모습
+export const RecordImage = styled.img`
+    width: 80%;
+    max-width: 80%;
+    margin-top: 1rem;
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
+export const ViewContent = styled.div`
+    color: #161835;
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+`;
+
+export const ViewModalTitle = styled.h2`
+    font-size: 24px;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #161835;
+`;
+
+export const ViewLabel = styled.label`
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    color: #161835;
+
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+`;
+
+export const ViewModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 2rem;
+    overflow-y: auto;
+    max-height: 70vh;
+`;
+
+export const ViewContentButton = styled.div`
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    color: #161835;
+    cursor: default;
+    margin-bottom: 1.5rem;
+    display: inline-block;
 `;

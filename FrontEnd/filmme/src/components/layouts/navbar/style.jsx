@@ -7,7 +7,7 @@ export const Nav = styled.nav`
     display: flex;
     flex-direction: row;
     position: sticky;
-    z-index: 10;
+    z-index: 0;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;

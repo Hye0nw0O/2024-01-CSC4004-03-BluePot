@@ -31,9 +31,14 @@ const MypageRecordModal = ({ isAddMode, selectedDate, records, setRecords, curre
         }
     };
 
+    const handleDeleteFile = (name) => {
+        setCurrentRecord({ ...currentRecord, [name]: null });
+    };
+
     const handleSave = () => {
-        setRecords({ ...records, [selectedDate]: currentRecord });
-        handleSaveRecord();
+        const updatedRecords = { ...records, [selectedDate]: currentRecord };
+        setRecords(updatedRecords);
+        handleSaveRecord(updatedRecords);
     };
 
     return (
@@ -51,34 +56,44 @@ const MypageRecordModal = ({ isAddMode, selectedDate, records, setRecords, curre
                                 </option>
                             ))}
                         </S.ModalSelect>
-                        <S.CinemaFileInputLabel htmlFor="cinemaPhoto">영화관 사진 첨부</S.CinemaFileInputLabel>
-                        <S.ModalInput type="file" id="cinemaPhoto" name="cinemaPhoto" onChange={handleFileChange} />
-                        {currentRecord.cinemaPhoto && <S.ModalImage src={currentRecord.cinemaPhoto} alt="영화관 사진" />}
                         
                         <S.ModalLabel>관람한 영화가 있다면 무엇인가요?</S.ModalLabel>
                         <S.ModalMovieInput name="movie" value={currentRecord.movie || ''} onChange={handleInputChange} />
-                        <S.FileInputLabel htmlFor="moviePhoto">영화 사진 첨부</S.FileInputLabel>
-                        <S.ModalInput type="file" id="moviePhoto" name="moviePhoto" onChange={handleFileChange} />
-                        {currentRecord.moviePhoto && <S.ModalImage src={currentRecord.moviePhoto} alt="영화 사진" />}
                         
                         <S.ModalLabel>{dateStr}의 경험을 자유롭게 기록해보세요!</S.ModalLabel>
                         <S.ModalTextarea name="experience" value={currentRecord.experience || ''} onChange={handleInputChange} />
-                        <S.FileInputLabel htmlFor="experiencePhoto">오늘의 사진 첨부</S.FileInputLabel>
-                        <S.ModalInput type="file" id="experiencePhoto" name="experiencePhoto" onChange={handleFileChange} />
-                        {currentRecord.experiencePhoto && <S.ModalImage src={currentRecord.experiencePhoto} alt="경험 사진" />}
+                        {currentRecord.recordPhoto ? (
+                            <>
+                                <S.ModalImage src={currentRecord.recordPhoto} alt="기록 사진" />
+                                {/* <S.ButtonGroup> */}
+                                    <S.CinemaFileInputLabel onClick={() => handleDeleteFile("recordPhoto")}>삭제</S.CinemaFileInputLabel>
+                                    <S.CinemaFileInputLabel htmlFor="recordPhoto">수정</S.CinemaFileInputLabel>
+                                {/* </S.ButtonGroup> */}
+                                <S.ModalInput type="file" id="recordPhoto" name="recordPhoto" onChange={handleFileChange} style={{ display: 'none' }} />
+                            </>
+                        ) : (
+                            <>
+                                <S.FileInputLabel htmlFor="recordPhoto">오늘의 사진 첨부</S.FileInputLabel>
+                                <S.OnePhoto>*사진은 1장만 가능합니다.</S.OnePhoto>
+                                <S.ModalInput type="file" id="recordPhoto" name="recordPhoto" onChange={handleFileChange} />
+                            </>
+                        )}
                         
                         <S.ModalAlertLabel>진실된, 온전한 그날의 기록을 위해 수정 및 삭제는 불가합니다.</S.ModalAlertLabel>
                         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
                     </>
                 ) : (
                     <>
-                        <S.ModalTitle>{dateStr}의 기록 보기</S.ModalTitle>
-                        <S.ModalContentText>방문한 영화관: {currentRecord.cinema}</S.ModalContentText>
-                        {currentRecord.cinemaPhoto && <S.ModalImage src={currentRecord.cinemaPhoto} alt="영화관 사진" />}
-                        <S.ModalContentText>관람한 영화: {currentRecord.movie}</S.ModalContentText>
-                        {currentRecord.moviePhoto && <S.ModalImage src={currentRecord.moviePhoto} alt="영화 사진" />}
-                        <S.ModalContentText>경험: {currentRecord.experience}</S.ModalContentText>
-                        {currentRecord.experiencePhoto && <S.ModalImage src={currentRecord.experiencePhoto} alt="경험 사진" />}
+                        <S.ViewModalTitle>나의 {dateStr} 기록</S.ViewModalTitle>
+                        {currentRecord.recordPhoto && <S.RecordImage src={currentRecord.recordPhoto} alt="기록 사진" />}
+                        <S.ViewModal>
+                            <S.ViewLabel>📽️ 오늘의 영화관</S.ViewLabel>
+                            <S.ViewContentButton>{currentRecord.cinema}</S.ViewContentButton>
+                            <S.ViewLabel>🎬 오늘의 영화</S.ViewLabel>
+                            <S.ViewContent>{currentRecord.movie}</S.ViewContent>
+                            <S.ViewLabel>😶 오늘의 소감</S.ViewLabel>
+                            <S.ViewContent>{currentRecord.experience}</S.ViewContent>
+                        </S.ViewModal>
                     </>
                 )}
             </S.ModalContent>
