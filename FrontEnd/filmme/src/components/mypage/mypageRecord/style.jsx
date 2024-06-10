@@ -132,6 +132,7 @@ export const ModalLabel = styled.label`
     display: block;
     color: #161835;
 `;
+
 export const ModalAlertLabel = styled.label`
     font-size: 13px;
     font-weight: bold;
@@ -195,7 +196,7 @@ export const ModalContentText = styled.p`
 `;
 
 export const ModalImage = styled.img`
-    width: 50%;
+    width: 20%;
     margin-top: 1rem;
     border-radius: 5px;
 `;
@@ -229,4 +230,59 @@ export const CinemaFileInputLabel = styled.label`
     &:hover {
         background-color: #161835;
     }
+`;
+
+export const ButtonGroup = styled.div`
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+`;
+
+export const OnePhoto = styled.label`
+    font-size: 9px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    color: #cdcdcd;
+`;
+
+// 작성 후 모습
+export const RecordImage = styled.img`
+    width: 80%;
+    max-width: 80%;
+    margin-top: 1rem;
+    border-radius: 5px;
+`;
+
+export const ViewContent = styled.div`
+    color: #161835;
+    text-align: left;
+    font-size: 1.5rem;
+`;
+
+export const ViewModalTitle = styled.h2`
+    font-size: 24px;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #161835;
+`;
+
+export const ViewLabel = styled.label`
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    color: #161835;
+
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin: 1rem auto 0;
+    width: 30%;
+`;
+
+export const ViewModal = styled.div`
 `;
