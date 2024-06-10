@@ -112,11 +112,12 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
     background: #fff;
-    padding: 5rem;
+    padding: 2rem;
     border-radius: 10px;
     text-align: left;
     width: 500px;
-    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
 `;
 
 export const ModalTitle = styled.h2`
@@ -185,7 +186,7 @@ export const ModalButton = styled.button`
 `;
 
 export const ModalSelect = styled.select`
-    width: 30%;
+    width: 100%;
     margin-bottom: 1rem; 
     padding: 0.5rem;
     font-size: 13px;
@@ -255,12 +256,16 @@ export const RecordImage = styled.img`
     max-width: 80%;
     margin-top: 1rem;
     border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 export const ViewContent = styled.div`
     color: #161835;
     text-align: left;
     font-size: 1.5rem;
+    margin-bottom: 1rem;
 `;
 
 export const ViewModalTitle = styled.h2`
@@ -283,9 +288,26 @@ export const ViewLabel = styled.label`
     border: none;
     border-radius: 5px;
     padding: 0.5rem 1rem;
-    margin: 1rem auto 0;
-    width: 30%;
+    width: fit-content;
 `;
 
 export const ViewModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 2rem;
+    overflow-y: auto;
+    max-height: 70vh;
+`;
+
+export const ViewContentButton = styled.div`
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    color: #161835;
+    cursor: default;
+    margin-bottom: 1.5rem;
+    display: inline-block;
 `;

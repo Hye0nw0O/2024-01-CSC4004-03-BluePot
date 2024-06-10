@@ -87,14 +87,11 @@ const MypageRecordModal = ({ isAddMode, selectedDate, records, setRecords, curre
                         <S.ViewModalTitle>나의 {dateStr} 기록</S.ViewModalTitle>
                         {currentRecord.recordPhoto && <S.RecordImage src={currentRecord.recordPhoto} alt="기록 사진" />}
                         <S.ViewModal>
-                            <S.ViewLabel>오늘의 영화관</S.ViewLabel>
-                            <br/>
-                            <S.ViewContent>{currentRecord.cinema}</S.ViewContent>
-                            <S.ViewLabel>오늘의 영화</S.ViewLabel>
-                            <br/>
+                            <S.ViewLabel>📽️ 오늘의 영화관</S.ViewLabel>
+                            <S.ViewContentButton>{currentRecord.cinema}</S.ViewContentButton>
+                            <S.ViewLabel>🎬 오늘의 영화</S.ViewLabel>
                             <S.ViewContent>{currentRecord.movie}</S.ViewContent>
-                            <S.ViewLabel>오늘의 소감</S.ViewLabel>
-                            <br/>
+                            <S.ViewLabel>😶 오늘의 소감</S.ViewLabel>
                             <S.ViewContent>{currentRecord.experience}</S.ViewContent>
                         </S.ViewModal>
                     </>
