@@ -95,6 +95,12 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
     serializer_class = CommunityCreateUpdateSerializer
     queryset = Community.objects.all()
 
+    def get_permissions(self):
+        if self.action in ['create']:
+            return [IsAuthenticated()]
+        else:
+            return [IsOwnerOrReadOnly()]
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data
@@ -115,14 +121,14 @@ class CommunityPostViewSet(viewsets.GenericViewSet,
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
     
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def destroy(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     self.perform_destroy(instance)
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def perform_destroy(self, instance):
-        serializer = self.get_serializer(instance)
-        serializer.delete(instance)
+    # def perform_destroy(self, instance):
+    #     serializer = self.get_serializer(instance)
+    #     serializer.delete(instance)
         
 # 커뮤니티 디테일
 class CommunityDetailViewSet(viewsets.GenericViewSet,
@@ -204,7 +210,7 @@ class CommunityCommentViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, 
         comment = CommunityComment.objects.create(
             community=community,
             content=request.data['content'],
-            writer=request.user  # 로그인한 사용자를 작성자로 저장
+            writer=request.user
         )
 
         serializer = CommunityCommentSerializer(comment)

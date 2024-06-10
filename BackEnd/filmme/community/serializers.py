@@ -3,24 +3,8 @@ from .models import Community, CommunityComment, CommunityImage, CommunityLike
 
 from django.contrib.auth import get_user_model
 from main.models import Cinema
-import requests
 
 from accounts.models import User
-
-
-# def get_user(request):
-#     access = request.COOKIES['accessToken']
-#     kakao_profile_request = requests.post(
-#         "https://kapi.kakao.com/v2/user/me",
-#         headers={"Authorization":f"Bearer {access}"},
-#     )
-#     kakao_profile_json = kakao_profile_request.json()
-
-#     kakao_account = kakao_profile_json.get("kakao_account")
-
-#     email = kakao_account.get("email", None)
-#     user = User.objects.get(email=email)
-#     return user
 
 class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -431,9 +415,7 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("존재하지 않는 영화관입니다.")
         
         image_data = self.context['request'].FILES
-        
-        User = get_user_model()
-        user = self.context['request'].user if isinstance(self.context['request'].user, User) else None
+        user = self.context['request'].user
         validated_data['writer'] = user
         validated_data['cinema'] = cinema_instance 
         instance = Community.objects.create(**validated_data)
@@ -442,16 +424,16 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
             CommunityImage.objects.create(community=instance, image=image_data)
         return instance
     
-    def validate(self, attrs):
-        category = attrs.get('category')
-        rating = attrs.get('rating')
-        user = self.context['request'].user
+    # def validate(self, attrs):
+    #     category = attrs.get('category')
+    #     rating = attrs.get('rating')
+    #     user = self.context['request'].user
 
-        if category == 'cinema_tip' and rating is not None:
-            if attrs.get('writer') != user:
-                raise serializers.ValidationError("글 작성자만 평점을 등록할 수 있습니다.")
+    #     if category == 'cinema_tip' and rating is not None:
+    #         if attrs.get('writer') != user:
+    #             raise serializers.ValidationError("글 작성자만 평점을 등록할 수 있습니다.")
 
-        return attrs
+    #     return attrs
     
     # 게시물 수정 함수
     def update(self, instance, validated_data):
@@ -479,21 +461,6 @@ class CommunityCreateUpdateSerializer(serializers.ModelSerializer):
     #이미지 삭제    
     def clear_existing_images(self, instance):
             instance.images.all().delete()    
-
-    # 게시물 삭제 함수
-    def delete(self, instance, validated_data):
-        cinema_title = validated_data.get('cinema')
-
-        cinema_instance = None
-        if cinema_title:
-            try:
-                cinema_instance = Cinema.objects.get(title=cinema_title)
-            except Cinema.DoesNotExist:
-                raise serializers.ValidationError("존재하지 않는 영화관입니다.")
-
-        instance.images.all().delete()
-        
-        instance.delete()
 
     class Meta:
         model = Community
