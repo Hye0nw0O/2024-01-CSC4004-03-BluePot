@@ -2,8 +2,14 @@ import { API } from "../../utils";
 
 // 댓글 데이터 불러오기
 export const getComments = async (postId) => {
-    const response = await API.get(`/api/communities/posts/${postId}/comments`);
-    return response.data;
+    try {
+        const response = await API.get(`/api/communities/posts/${postId}/comments`);
+        console.log("Fetched comments: ", response.data); // 로그 추가
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching comments: ", error);
+        throw error;
+    }
 };
 
 // 댓글 추가하기

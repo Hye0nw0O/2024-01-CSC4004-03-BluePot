@@ -216,20 +216,20 @@ export const CommunityCommentListHeaderWrapper = styled.div`
 
 export const CommunityCommentListWriter = styled.div`
   color: #282828;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   margin-right: 2rem;
 `;
 export const CommunityCommentListDate = styled.div`
   color: #acacac;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 500;
 `;
 export const CommunityCommentListContent = styled.div`
   width: 100%;
   margin-top: 2.2rem;
   color: #282828;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 500;
   white-space: pre-line;
   word-wrap: break-word;
