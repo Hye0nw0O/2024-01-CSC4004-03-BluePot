@@ -16,7 +16,7 @@ class Cinema_Detail(serializers.ModelSerializer):
 
     class Meta:
         model = Cinema
-        fields = ['name', 'cite_url', 'star', 'like_cnt', 'view_url', 'discription', 'location', 'movies', 'tel', 'time']
+        fields = ['name', 'cite_url', 'star', 'like_cnt', 'view_url', 'discription', 'location', 'movies', 'tel', 'detail_loc']
 
     def get_movie(self, obj):
         movies = obj.moviews.all()
