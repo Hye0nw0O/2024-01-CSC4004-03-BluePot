@@ -35,3 +35,9 @@ class CheckWriterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['is_writer']
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+

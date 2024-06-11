@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from accounts.models import User, UserManager
-# from accounts.serializers import UserSerializer
+#from accounts.serializers import serializer
+from accounts.serializers import UserSerializer
 from django.shortcuts import render
 from rest_framework.response import Response
 import requests
@@ -15,26 +16,53 @@ from django.shortcuts import get_object_or_404
 from community.models import *
 from community.serializers import *
 
-#쿠키로 읽어오는 부분 request에 담겨진 json으로 읽도록 수정할예정
-# def get_user(request):
-#     access = request.COOKIES['accessToken']
-#     kakao_profile_request = requests.post(
-#         "https://kapi.kakao.com/v2/user/me",
-#         headers={"Authorization":f"Bearer {access}"},
-#     )
-#     kakao_profile_json = kakao_profile_request.json()
+from django.contrib.auth import get_user_model
+from rest_framework.renderers import BrowsableAPIRenderer
 
-#     kakao_account = kakao_profile_json.get("kakao_account")
 
-#     email = kakao_account.get("email", None)
-#     user = User.objects.get(email=email)
-#     return user
 
 
 @api_view(['GET'])
-def get_profile(request):
-    user = get_user(request)
+def get_user_profile(request):
+    user = request.user    
+    user_serializer = UserSerializer(user).data
+    return Response({"user" : user_serializer}, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_movie_history(request):
+    user = request.user    
+    movie_histories = MovieHistorySerializer.get_by_user(user=user)
+    movie_histories_serializer = MovieHistorySerializer(movie_histories, many=True)
+    return Response({"movie_history" : movie_histories_serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_community_history(request):
+    user = request.user        
+    communities = Community.objects.filter(writer=user)
+    communities_serializer = CommunitySerializer(communities, many=True)
+    return Response({"communities" : communities_serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_community_history(request):
+    user = request.user        
+    comments = CommunityComment.objects.filter(writer=user)
+    comments_serializer = CommunityCommentSerializer(comments, many=True)
+    return Response({"comments" : comments_serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_like_posts(request):
+    user = request.user    
+    likePosts = CommunityLike.objects.filter(user=user)
+    likePosts_ids = likePosts.values_list('community', flat=True)
+    liked_communities = Community.objects.filter(id__in=likePosts_ids)
+    likePosts_serializer = LikePostsSerializer(likePosts, many=True)
+    liked_communities_serializer = CommunitySerializer(liked_communities, many=True)
+
+    return Response({"likes" : liked_communities_serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_profile(request):
+    user = request.user    
     user_serializer = UserSerializer(user).data
     movie_histories = MovieHistorySerializer.get_by_user(user=user)
     movie_histories_serializer = MovieHistorySerializer(movie_histories, many=True)
@@ -45,7 +73,7 @@ def get_profile(request):
     comments = CommunityComment.objects.filter(writer=user)
     comments_serializer = CommunityCommentSerializer(comments, many=True)
 
-    likePosts = CommunityLike.objects.filter(writer=user)
+    likePosts = CommunityLike.objects.filter(user=user)
     likePosts_serializer =  LikePostsSerializer(likePosts, many=True)
 
     res = Response(
@@ -62,9 +90,10 @@ def get_profile(request):
     
     return res
 
+
 @api_view(['POST'])
 def modify_profile(request):
-    user = get_user(request)
+    user=request.user
     email = user.email
     nickname = request.data.get('nickname')
     user.update_user(email=email, nickname=nickname)
@@ -83,7 +112,7 @@ def modify_profile(request):
 
 @api_view(['POST'])
 def create_movieHistory(request):
-    user = get_user(request)
+    user = request.user
     data = {
         'user' : user,
         'title': request.data.get('title'),
@@ -99,14 +128,14 @@ def create_movieHistory(request):
 
 @api_view(['GET'])
 def get_movieHistory(request):
-    user = get_user(request)
+    user = request.user
     movie_histories = MovieHistorySerializer.get_by_user(user=user)
     serializer = MovieHistorySerializer(movie_histories, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def update_movieHistory(request):
-    user = get_user(request)
+    user = request.user
     data = {
         'user': user,
         'title': request.data.get('title'),
