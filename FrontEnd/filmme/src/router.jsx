@@ -4,6 +4,7 @@ import Main from './pages/main/Main';
 import About from './pages/about/About';
 import Community from './pages/community/Community';
 import Auths from './pages/auths/Auths';
+import Signup from './pages/auths/Signup';
 import Mypage from './pages/mypage/Mypage';
 import Landing from './pages/landing/Landing';
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: 'auths',
                 element: <Auths />,
+            },
+            {
+                path: 'signup',
+                element: <Signup />,
             },
             {
                 path: 'mypage',
