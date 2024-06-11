@@ -24,16 +24,15 @@ function DetailPage() {
   const [loading, setLoading] = useState(true);
   const [cinemaName, setcinemaName] = useState("에무시네마");
   const [isWriter, setIsWriter] = useState(false);
-
   const [likeImage, setLikeImage] = useState(ThumbOutlineIcon);
 
-    // 한 페이지당 보여줄 댓글 수
-    const itemsPerPage = 10;
+    // // 한 페이지당 보여줄 댓글 수
+    // const itemsPerPage = 10;
     const navigate = useNavigate();
     const { type, id } = useParams();
 
     // 현재 페이지
-    const [currentPage, setCurrentPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
   
     // detail 정보 설정
     const [detail, setDetail] = useState({
@@ -64,6 +63,9 @@ function DetailPage() {
 
             const data = await getDetail(category, id);
             const commentsData = await getComments(id);
+
+            console.log("Detail data: ", data);
+            console.log("Comments data: ", commentsData);
 
             setDetail(data);
             setViewCnt(data.view_cnt);
@@ -150,10 +152,6 @@ function DetailPage() {
         <>
           <CommunityCommentList
             comments={comments}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            handlePageChange={(page) => setCurrentPage(page)}
-            count={comments.length}
             category={"community"}
           />
         </>

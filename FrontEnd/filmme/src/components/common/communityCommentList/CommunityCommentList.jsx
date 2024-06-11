@@ -5,21 +5,16 @@ import Comment from "../comment/Comment";
 
 const CommunityCommentList = ({
     comments,
-    itemsPerPage,
-    currentPage,
-    handlePageChange,
     userInfo,
-    count,
+    // count,
     category,
     fetchComments,
     fetchDetail
     }) => {
-    // 댓글 내용 부분만 추출
-    const commentsContent = comments.results;
-
-    if (!commentsContent) {
-        return <>작성된 댓글이 없습니다. 첫 댓글을 달아보세요!</>;
-    }
+        if (!comments || comments.length === 0) {
+            return <>작성된 댓글이 없습니다. 첫 댓글을 달아보세요!</>;
+        }
+        
 
     // 댓글 데이터를 최신순으로 정렬
     // const sortedComments = commentsContent.slice().reverse();
@@ -27,7 +22,7 @@ const CommunityCommentList = ({
     return (
         <S.CommunityCommentListWrap>
         <S.CommunityCommentListUl>
-            {commentsContent.map((comment, idx) => (
+            {comments.map((comment, idx) => (
             <Comment
                 key={idx}
                 id={comment.id}
@@ -41,7 +36,7 @@ const CommunityCommentList = ({
             />
             ))}
         </S.CommunityCommentListUl>
-        <S.CommunityCommentListPagingWrap>
+        {/* <S.CommunityCommentListPagingWrap>
             <S.CommunityCommentListPaging>
             <Paging
                 page={currentPage}
@@ -50,7 +45,7 @@ const CommunityCommentList = ({
                 setPage={handlePageChange}
             />
             </S.CommunityCommentListPaging>
-        </S.CommunityCommentListPagingWrap>
+        </S.CommunityCommentListPagingWrap> */}
         </S.CommunityCommentListWrap>
     );
 };

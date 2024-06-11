@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 // detailTitle
 export const DetailTitle = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 600;
   color: #161835;
   margin-bottom: 1rem;
