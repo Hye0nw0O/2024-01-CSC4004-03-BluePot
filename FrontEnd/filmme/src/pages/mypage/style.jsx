@@ -59,7 +59,8 @@ export const ChangeNameButton = styled.button`
 export const Email = styled.div`
     font-size: 18px;
     color: #161835;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
 `;
 
 export const MyFilmmeRecord = styled.div`
@@ -155,9 +156,9 @@ export const CinemaRecordCard = styled.div`
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; // 좌측 정렬
-    justify-content: flex-start; // 상단 정렬
-    padding: 1rem; // 내부 여백 추가
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
     font-size: 14px;
     color: #161835;
     cursor: pointer;
@@ -172,4 +173,19 @@ export const DayNumber = styled.div`
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 0.5rem;
+`;
+
+export const LogoutButton = styled.button`
+    margin-top: 6rem;
+    padding: 0.3rem 1rem;
+    font-size: 10px;
+    color: #cdcdcd;
+    background-color: #ffffff;
+    border: 1px solid #cdcdcd;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #c9302c;
+    }
 `;
