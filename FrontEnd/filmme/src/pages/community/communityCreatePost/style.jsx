@@ -22,7 +22,6 @@ export const CreatePost = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 auto;
 `;
 export const CommuntiyCreateHeader = styled.div`
     color: #161835;
@@ -166,7 +165,6 @@ export const CommunityContentCategoryMenuItem = styled.li`
     margin-bottom: -0.3rem;
 `;
 
-
 export const CreatePageHeaderWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -198,4 +196,27 @@ export const RatingWrapper = styled.div`
     margin-top: 2rem;
     display: flex;
     align-items: center;
+`;
+
+export const TextArea = styled.textarea`
+    width: 100%;
+    height: 200px;
+    margin-top: 2rem;
+    border: 1px solid #d9d9df;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1.5rem;
+    &:focus {
+        outline: none;
+    }
+`;
+
+export const ImageDropArea = styled.div`
+    border: 1px dashed #d9d9df;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 2rem;
+    background-color: ${props => (props.boardColor ? '#f0f0f0' : 'white')};
+    cursor: pointer;
 `;
