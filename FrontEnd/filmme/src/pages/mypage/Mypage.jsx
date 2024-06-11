@@ -9,13 +9,18 @@ import thumbup from "../../assets/images/Mypage/thumb-up.png";
 import MypageCalendar from "../../components/mypage/mypageRecord/MypageCalender.jsx";
 import Confetti from 'react-confetti'; // 벚꽃 효과
 import Snowfall from 'react-snowfall'; // 눈 효과
+import NicknameChangeModal from "../../components/mypage/nicknameChange/NicknameChangeModal.jsx";
+import PasswordChangeModal from "../../components/mypage/password/PasswordChangeModal.jsx";
 
 function Mypage() {
     const navigate = useNavigate();
 
     const [displayedTitle, setDisplayedTitle] = useState("");
+    const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [nickname, setNickname] = useState("현재 닉네임"); // API 연동 후 수정
 
-    const fullTitle = "000님의 마이페이지입니다.";
+    const fullTitle = `${nickname}님의 마이페이지입니다.`;
 
     useEffect(() => {
         let currentCharIndex = 0;
@@ -28,10 +33,25 @@ function Mypage() {
         }, 200);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [fullTitle]);
 
     const handleNavigate = (path) => {
         navigate(path);
+    };
+
+    const handleNicknameChange = (newNickname) => {
+        setNickname(newNickname);
+    };
+
+    const handlePasswordChange = (currentPassword, newPassword) => {
+        console.log("Current Password:", currentPassword);
+        console.log("New Password:", newPassword);
+
+    };
+
+    const handleLogout = () => {
+        console.log("로그아웃");
+
     };
 
     return (
@@ -47,10 +67,11 @@ function Mypage() {
                 <S.MypageTitle>{displayedTitle}</S.MypageTitle>
                 <S.MypageHeaderWrapper>
                     <S.Profile>
-                        <S.ProfileName>
-                            <S.ChangeNameButton>닉네임 수정</S.ChangeNameButton>
-                        </S.ProfileName>
                         <S.Email>이메일예이일@어쩌구.com</S.Email>
+                        <S.ProfileName>
+                            <S.ChangeNameButton onClick={() => setIsNicknameModalOpen(true)}>닉네임 수정</S.ChangeNameButton>
+                            <S.ChangeNameButton onClick={() => setIsPasswordModalOpen(true)}>비밀번호 변경</S.ChangeNameButton>
+                        </S.ProfileName>
                     </S.Profile>
                 </S.MypageHeaderWrapper>
                 <S.MyFilmmeRecord>
@@ -77,7 +98,21 @@ function Mypage() {
                     </S.RecordWrapper>
                 </S.MyFilmmeRecord>
                 <MypageCalendar />
+                <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
             </S.MypageWrapper>
+            {isNicknameModalOpen && (
+                <NicknameChangeModal
+                    currentNickname={nickname}
+                    onClose={() => setIsNicknameModalOpen(false)}
+                    onSave={handleNicknameChange}
+                />
+            )}
+            {isPasswordModalOpen && (
+                <PasswordChangeModal
+                    onClose={() => setIsPasswordModalOpen(false)}
+                    onSave={handlePasswordChange}
+                />
+            )}
         </>
     );
 }
