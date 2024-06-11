@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 function NavBar() {
     let navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         const handleOutsideClick = event => {
@@ -20,6 +21,20 @@ function NavBar() {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
         }, [isOpen]);
+
+        // 로그인 상태를 확인하고 상태에 따라 NavBar의 문구를 변경하는 함수
+        const renderLoginText = () => {
+            if (isLoggedIn) {
+                return '마이페이지';
+            } else {
+                return '로그인';
+            }
+        };
+
+        // 로그인 상태를 토글하는 함수
+        const toggleLogin = () => {
+            setIsLoggedIn(prevState => !prevState);
+        };
     
 
     return (
@@ -34,7 +49,7 @@ function NavBar() {
             <S.NavTab to="/" isOpen={isOpen}>영화관 소개</S.NavTab>
             <S.NavTab to="/community" isOpen={isOpen}>커뮤니티</S.NavTab>
             <S.NavTab to="/about" isOpen={isOpen}>서비스 소개</S.NavTab>
-            <S.NavTab to="/auths" isOpen={isOpen}>로그인</S.NavTab>
+            <S.NavTab to="/auths" isOpen={isOpen} onClick={toggleLogin}>{renderLoginText()}</S.NavTab>
         </S.NavTabWrapper>
     </S.Nav>
     );

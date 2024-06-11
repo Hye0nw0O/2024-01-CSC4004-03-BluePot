@@ -20,6 +20,7 @@ function Auths() {
             const response = await axios.post('http://localhost:8000/api/accounts/login', { email, password });
             if (response.status === 200) {
                 alert("로그인 성공!");
+                navigate('/');
             } else {
                 alert("닉네임 또는 비밀번호를 확인하세요.");
             }
