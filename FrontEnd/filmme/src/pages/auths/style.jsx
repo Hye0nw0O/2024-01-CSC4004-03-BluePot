@@ -13,3 +13,50 @@ export const LoginButton = styled.img `
     height: auto;
     margin-left: 200px;
 `;
+
+export const Form = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+`;
+
+export const Input = styled.input`
+    width: 250px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+`;
+
+export const Button = styled.button`
+    width: 250px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
+
+export const SignupButton = styled.button`
+    width: 250px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #218838;
+    }
+`;
