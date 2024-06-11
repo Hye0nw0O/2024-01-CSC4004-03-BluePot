@@ -15,6 +15,8 @@ class Cinema(models.Model):
     longitude = models.FloatField(default=126.976872)   # use x
     rating_sum = models.DecimalField(max_digits = 10, decimal_places=2, default=0.0) # rating 합
     rating_cnt = models.IntegerField(default=0) # rating 등록 횟수
+    tel = models.CharField(max_length=100, blank=True) # 연락처
+    time = models.CharField(max_length=100, blank=True) # 운영시간
     class Meta:
         db_table = 'Cinema'
 
