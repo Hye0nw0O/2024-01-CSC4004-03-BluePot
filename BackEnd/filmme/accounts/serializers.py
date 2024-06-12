@@ -36,8 +36,9 @@ class CheckWriterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['is_writer']
 
+# 마이페이지를 위한 것
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
+        
         model = User
-        fields = '__all__'
-
+        fields = ['id', 'nickname', 'email']        
