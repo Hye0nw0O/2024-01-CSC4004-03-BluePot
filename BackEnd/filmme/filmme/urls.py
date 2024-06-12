@@ -28,6 +28,6 @@ urlpatterns = [
     path('api/', include('mypage.urls')),
     path('api/', include('community.urls')),
     path('api/', include('rest_framework.urls')),
-    path('api/accounts/', include('dj_rest_auth.urls')),
+    path('api/user/', include('dj_rest_auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
