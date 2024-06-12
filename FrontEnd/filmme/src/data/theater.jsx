@@ -5,7 +5,7 @@ import Card from '../components/card/Card';
 const Theater = () => {
     const [theaters, setTheaters] = useState([]);
     useEffect(() => {
-      axios.get('http://localhost:8000/api/cinemas/')
+      axios.get('https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/')
         .then(response => {
           console.log(response);
           console.log(response.data);

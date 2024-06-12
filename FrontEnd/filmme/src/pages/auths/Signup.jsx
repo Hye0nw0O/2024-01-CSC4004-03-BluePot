@@ -15,7 +15,7 @@ function Signup() {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:8000/api/accounts/signup', { nickname, email, password });
+            const response = await axios.post('https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/accounts/signup', { nickname, email, password });
             if (response.status === 200) {
                 alert("회원가입 성공!");
                 navigate('/auths'); // 로그인 페이지로 이동

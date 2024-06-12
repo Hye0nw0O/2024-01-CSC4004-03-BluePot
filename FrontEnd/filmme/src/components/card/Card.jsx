@@ -21,7 +21,7 @@ function Card({ id, img, name, region, star, score, like, onClick, onLikeToggle 
     if (isLikeButtonDisabled) return;
     setIsLikeButtonDisabled(true);
     try {
-      const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
+      const response = await axios.post(`https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/like/${id}/`);
       if (response.status === 200) {
         setLikeCount(prevCount => prevCount + 1); // 좋아요 수 증가
         setIsLiked(true);
