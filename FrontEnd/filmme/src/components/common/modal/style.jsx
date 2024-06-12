@@ -20,12 +20,13 @@ export const NotUserDeleteModal = styled(Modal)`
 `;
 
 export const NotUserDeleteModalContentWrap = styled.div`
+  margin: 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100rem;
-  height: 30rem;
+  height: 25rem;
   border-radius: 8px;
   background: #fff;
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
@@ -44,7 +45,7 @@ export const DeleteModalContentButtonWrap = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 8.5rem;
+  margin-top: 5rem;
 `;
 
 export const NotUserDeleteModalContentButtonConfirm = styled.button`

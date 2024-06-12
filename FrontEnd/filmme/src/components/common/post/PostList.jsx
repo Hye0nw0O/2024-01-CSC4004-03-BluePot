@@ -5,12 +5,11 @@ import Likes from '../../../assets/images/Community/thumb.svg';
 import EyeOutlineIcon from '../../../assets/images/Community/eye_outline.png';
 import CommunitySearch from '../../community/communitySearch/CommunitySearch';
 import Selector from "../selector/Selector";
-// import Paging from "../paging/Paging";
-import { useRecoilState } from "recoil";
-import { userState } from "../authState/authState";
-// import ListView from "../paging/ListView";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../../context/authState";
 import { getCinemas } from "../../../apis/api/community/community";
 import ReactStars from "react-rating-stars-component";
+import Modal from "../modal/Modal";
 
 const PostList = ({
   use,
@@ -37,6 +36,10 @@ const PostList = ({
   const itemsPerPage = 10;
   const [currentPageInternal, setCurrentPageInternal] = useState(currentPage || 1);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const auth = useRecoilValue(authState);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCinemas = async () => {
@@ -100,6 +103,14 @@ const PostList = ({
     setCurrentCinemaOption(cinema);
   };
 
+  const handleWriteClick = () => {
+    if (!auth.isLoggedIn) {
+      setIsModalOpen(true);
+    } else {
+      navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } });
+    }
+  };
+
   let thList = [];
   switch (use) {
     case "communityCommons":
@@ -112,9 +123,6 @@ const PostList = ({
       thList = ["번호", "제목", "등록일시", "답변 여부"];
       break;
   }
-
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-  const navigate = useNavigate();
 
   const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber);
@@ -249,7 +257,7 @@ const PostList = ({
           </S.PostListTableThead>
           <S.PostListTableTbody>
             {sortedData && sortedData.length > 0 ? (
-              sortedData.map((data, idx) => (
+              currentPageData.map((data, idx) => (
                 <S.PostListTableTrContent
                   key={data.id}
                   onClick={() => navigate(`${url}${data.id}`)}
@@ -332,11 +340,7 @@ const PostList = ({
         </S.PostListTable>
         {use != "notice" ? (
           <S.PostListHeaderWrite>
-            <S.PostListHeaderWriteContent
-              onClick={() => { 
-                navigate(writeUrl, { state: { category: category, cinema: currentCinemaOption } }); 
-              }}
-            >
+            <S.PostListHeaderWriteContent onClick={handleWriteClick}>
               <S.StyledPencilIcon />
               글쓰기
             </S.PostListHeaderWriteContent>
@@ -351,6 +355,12 @@ const PostList = ({
           setPage={handlePageChange}
         /> */}
       </S.PostListWrap>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => navigate("/auths")}
+        content="로그인하시겠습니까?"
+      />
     </>
   );
 };
