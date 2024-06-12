@@ -40,7 +40,6 @@ function App() {
     <>
       <GlobalStyle />
       <Layout />
-      <button onClick={handleSignupClick}>회원 가입</button>
     </>
   );
 }
