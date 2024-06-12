@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets, status, mixins, generics
 from rest_framework.decorators import api_view
 from accounts.models import User, UserManager
 #from accounts.serializers import serializer
@@ -8,7 +8,6 @@ from django.shortcuts import render
 from rest_framework.response import Response
 import requests
 import json
-# Create your views here.
 from rest_framework.views import APIView
 from .models import MovieHistory
 from .serializers import MovieHistorySerializer
@@ -18,15 +17,23 @@ from community.serializers import *
 
 from django.contrib.auth import get_user_model
 from rest_framework.renderers import BrowsableAPIRenderer
+from rest_framework.permissions import IsAuthenticated
 
 
+class MyProfileViewSet(generics.RetrieveUpdateAPIView): # 조회랑 수정만 할 거니까
+    serializer_class = UserSerializer
+    http_method_names = ['get','put', 'patch']
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
 
-
-@api_view(['GET'])
-def get_user_profile(request):
-    user = request.user    
-    user_serializer = UserSerializer(user).data
-    return Response({"user" : user_serializer}, status=status.HTTP_200_OK)
+    def get_object(self):
+        return get_object_or_404(User, id=self.request.user.id)
+    
+# @api_view(['GET'])
+# def get_user_profile(request):
+    # user = request.user    
+    # user_serializer = UserSerializer(user).data
+#     return Response({"user" : user_serializer}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_movie_history(request):
@@ -91,23 +98,23 @@ def get_profile(request):
     return res
 
 
-@api_view(['POST'])
-def modify_profile(request):
-    user=request.user
-    email = user.email
-    nickname = request.data.get('nickname')
-    user.update_user(email=email, nickname=nickname)
-    user_serializer = UserSerializer(user).data
+# @api_view(['POST'])
+# def modify_profile(request):
+#     user=request.user
+#     email = user.email
+#     nickname = request.data.get('nickname')
+#     user.update_user(email=email, nickname=nickname)
+#     user_serializer = UserSerializer(user).data
 
-    res = Response(
-            {
-                "message" : "Getting Profile success",
-                "user" : user_serializer,
-            },
-            status = status.HTTP_200_OK,
-        )
+#     res = Response(
+#             {
+#                 "message" : "Getting Profile success",
+#                 "user" : user_serializer,
+#             },
+#             status = status.HTTP_200_OK,
+#         )
     
-    return res
+#     return res
 
 
 @api_view(['POST'])
