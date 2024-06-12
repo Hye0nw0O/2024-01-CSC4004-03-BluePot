@@ -98,40 +98,26 @@ function Main() {
         }
     }
 
-    const handleSortChange = (option) => {
+    /*const handleSortChange = (option) => {
         setSortBy(option);
         const sortedTheaters = sortTheaters(option);
         setFilteredTheaters(sortedTheaters);
     }
 
-    const handleLikeToggle = async (id) => {
-        if (isLikeRequesting) return; // 좋아요 요청 중이면 중복 요청 방지
-        setIsLikeRequesting(true); // 좋아요 요청 중으로 설정
-        try {
-            const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
-            if (response.status === 200) {
-                const updatedTheaters = theaters.map(theater => {
-                    if (theater.id === id) {
-                        const isLiked = !theater.isLiked;
-                        return {
-                            ...theater,
-                            isLiked: isLiked,
-                            like_cnt: theater.isLiked ? theater.like_cnt - 1 : theater.like_cnt + 1 // 좋아요 수를 1씩 증가 또는 감소
-                        };
-                    }
-                    return theater;
-                });
-                setTheaters(updatedTheaters);
-                setFilteredTheaters(sortTheaters(updatedTheaters));
-            } else {
-                console.error("좋아요를 업데이트하는 데 문제가 발생했습니다.");
+    const handleLikeToggle = (id, updatedLikeCount, isLiked) => {
+        const updatedTheaters = theaters.map(theater => {
+            if (theater.id === id) {
+                return {
+                    ...theater,
+                    isLiked: isLiked,
+                    like_cnt: updatedLikeCount
+                };
             }
-        } catch (error) {
-            console.error("서버 요청 중 오류가 발생했습니다:", error);
-        } finally {
-            setIsLikeRequesting(false); // 요청 완료 후 상태 업데이트
-        }
-    };
+            return theater;
+        });
+        setTheaters(updatedTheaters);
+        setFilteredTheaters(sortTheaters(updatedTheaters)); // Assuming sortTheaters is a function defined elsewhere
+    };*/
 
     // 별 출력
     const renderStarRating = (score) => {
@@ -160,7 +146,7 @@ function Main() {
                 like={theater.like_cnt}
                 img={theater.view_url}
                 onClick={() => handleCardClick(theater)}
-                onLikeToggle={handleLikeToggle}
+                //onLikeToggle={handleLikeToggle}
                 isLiked={theater.isLiked}
             />
         ));
@@ -218,7 +204,9 @@ function Main() {
                 view_url: theater.view_url,
                 cite_url: theater.cite_url,
                 regionColor: regionColors[theater.location] || regionColors.default,
-                movies: movies
+                movies: movies,
+                tel: theater.tel,
+                location: theater.detail_loc
             });
 
             setShowModal(true);
