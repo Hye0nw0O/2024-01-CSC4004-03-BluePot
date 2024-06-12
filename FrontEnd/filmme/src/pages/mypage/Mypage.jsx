@@ -53,12 +53,12 @@ function Mypage() {
             } else {
                 alert("유저 정보를 가져오는데 실패했습니다.");
                 localStorage.removeItem("userInfo");
-                navigate("/auths");
+                navigate("/login");
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
             localStorage.removeItem("userInfo");
-            navigate("/auths");
+            navigate("/login");
             alert("유저 정보를 가져오는데 실패했습니다.");
         }
     };
@@ -95,6 +95,10 @@ function Mypage() {
             );
             if (response.status === 200) {
                 setNickname(newNickname);
+                // 닉네임 정보 업뎃
+                const updatedUserInfo = { ...userInfo, nickname: newNickname };
+                localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+                setUserInfo(updatedUserInfo);
                 alert("닉네임이 성공적으로 변경되었습니다.");
             } else {
                 alert("닉네임 변경에 실패했습니다.");
@@ -108,8 +112,8 @@ function Mypage() {
     const handlePasswordChange = async (currentPassword, newPassword) => {
         try {
             const token = userInfo.accessToken;
-            const response = await axios.put("http://127.0.0.1:8000/api/mypage/profile", 
-                { current_password: currentPassword, new_password: newPassword }, 
+            const response = await axios.post("http://127.0.0.1:8000/api/accounts/password/change", 
+                { origin_password: currentPassword, new_password1: newPassword, new_password2: newPassword }, 
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
