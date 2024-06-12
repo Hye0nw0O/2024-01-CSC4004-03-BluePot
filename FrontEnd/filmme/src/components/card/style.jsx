@@ -244,3 +244,7 @@ export const Starbutton = styled.button`
   padding: 7px 8px;
   margin: 7px;
 `;
+
+export const tel = styled.div`
+  font-size: 16px;
+`;
