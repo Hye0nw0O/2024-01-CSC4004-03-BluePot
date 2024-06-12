@@ -139,7 +139,7 @@ function Mypage() {
     const handleLogout = async () => {
         try {
             const token = userInfo.accessToken;
-            await axios.post("http://127.0.0.1:8000/api/accounts/logout/", {}, {
+            await axios.post("http://127.0.0.1:8000/api/user/logout/", {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

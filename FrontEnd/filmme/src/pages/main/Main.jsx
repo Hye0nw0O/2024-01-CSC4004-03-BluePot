@@ -34,7 +34,7 @@ function Main() {
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
+        axios.get('https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/')  // IP 주소와 포트를 올바르게 업데이트
             .then(response => {
                 const theatersWithLikeStatus = response.data.map(theater => ({
                     ...theater,
@@ -108,7 +108,7 @@ function Main() {
         if (isLikeRequesting) return; // 좋아요 요청 중이면 중복 요청 방지
         setIsLikeRequesting(true); // 좋아요 요청 중으로 설정
         try {
-            const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
+            const response = await axios.post(`https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/like/${id}/`);
             if (response.status === 200) {
                 const updatedTheaters = theaters.map(theater => {
                     if (theater.id === id) {
@@ -169,7 +169,7 @@ function Main() {
     const handleSaveRating = async () => {
         try {
           console.log(`Sending rating ${rating} for cinema ID ${modalContent.id}`);
-          const response = await axios.post(`http://localhost:8000/api/cinemas/rating/${modalContent.id}/`, { rating });
+          const response = await axios.post(`https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/rating/${modalContent.id}/`, { rating });
           if (response.status === 200) {
             console.log("별점이 저장되었습니다.");
             alert("별점이 저장되었습니다.");
@@ -205,7 +205,7 @@ function Main() {
 
         setCurrentMovies([]);
 
-        axios.get(`http://localhost:8000/api/cinemas/detail/${theater.id}/`)
+        axios.get(`https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/detail/${theater.id}/`)
         .then(response => {
             const movies = response.data.movies || [];
             setCurrentMovies(movies);

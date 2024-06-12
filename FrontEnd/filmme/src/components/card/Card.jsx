@@ -19,7 +19,7 @@ function Card({ id, img, name, region, star, score, like, onClick, onLikeToggle,
     if (isLikeButtonDisabled) return; // 버튼이 이미 비활성화되어 있으면 요청을 보내지 않음
     setIsLikeButtonDisabled(true); // 버튼 비활성화
     try {
-      const response = await axios.post(`http://localhost:8000/api/cinemas/like/${id}/`);
+      const response = await axios.post(`https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/cinemas/like/${id}/`);
       if (response.status === 200) {
         const updatedLikeCount = response.data.like_cnt;
         console.log(updatedLikeCount);

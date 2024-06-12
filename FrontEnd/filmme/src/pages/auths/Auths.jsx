@@ -4,7 +4,7 @@ import * as S from "./style.jsx";
 import AOS from 'aos';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { authState } from '../../context/authState';
+import { authState, userState } from '../../context/authState';
 import LoginpageImage from "../../assets/images/Login/LoginpageImage.png";
 
 function Auths() {
@@ -13,6 +13,7 @@ function Auths() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [auth, setAuth] = useRecoilState(authState);
+    const [user, setUser] = useRecoilState(userState);
 
     useEffect(() => {
         AOS.init();
@@ -20,7 +21,7 @@ function Auths() {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/accounts/login', { email, password });
+            const response = await axios.post('https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/accounts/login', { email, password });
             if (response.status === 200) {
                 alert("로그인 성공!");
                 // 받은 토큰을 로컬 스토리지에 저장!
@@ -36,6 +37,7 @@ function Auths() {
                     isLoggedIn: true,
                     userInfo: userInfo
                 });
+                setUser(userInfo);
                 navigate('/');
             } else {
                 alert("닉네임 또는 비밀번호를 확인하세요.");
