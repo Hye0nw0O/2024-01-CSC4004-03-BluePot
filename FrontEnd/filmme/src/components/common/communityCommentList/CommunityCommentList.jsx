@@ -1,6 +1,5 @@
 import React from "react";
 import * as S from "./style";
-import Paging from "../paging/Paging";
 import Comment from "../comment/Comment";
 
 const CommunityCommentList = ({

@@ -5,10 +5,10 @@ import Likes from '../../../assets/images/Community/thumb.svg';
 import EyeOutlineIcon from '../../../assets/images/Community/eye_outline.png';
 import CommunitySearch from '../../community/communitySearch/CommunitySearch';
 import Selector from "../selector/Selector";
-import Paging from "../paging/Paging";
+// import Paging from "../paging/Paging";
 import { useRecoilState } from "recoil";
 import { userState } from "../authState/authState";
-import ListView from "../paging/ListView";
+// import ListView from "../paging/ListView";
 import { getCinemas } from "../../../apis/api/community/community";
 import ReactStars from "react-rating-stars-component";
 
@@ -344,12 +344,12 @@ const PostList = ({
         ) : (
           <></>
         )}
-        <Paging
+        {/* <Paging
           page={currentPage}
           count={count}
           postPerPage={itemsPerPage}
           setPage={handlePageChange}
-        />
+        /> */}
       </S.PostListWrap>
     </>
   );
