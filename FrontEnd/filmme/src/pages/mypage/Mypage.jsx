@@ -11,6 +11,7 @@ import Confetti from 'react-confetti'; // 벚꽃 효과
 import Snowfall from 'react-snowfall'; // 눈 효과
 import NicknameChangeModal from "../../components/mypage/nicknameChange/NicknameChangeModal.jsx";
 import PasswordChangeModal from "../../components/mypage/password/PasswordChangeModal.jsx";
+import axios from 'axios';
 
 function Mypage() {
     const navigate = useNavigate();
@@ -18,40 +19,117 @@ function Mypage() {
     const [displayedTitle, setDisplayedTitle] = useState("");
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-    const [nickname, setNickname] = useState("현재 닉네임"); // API 연동 후 수정
-
-    const fullTitle = `${nickname}님의 마이페이지입니다.`;
+    const [nickname, setNickname] = useState("");
+    const [email, setEmail] = useState("");
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
-        let currentCharIndex = 0;
-        const interval = setInterval(() => {
-            setDisplayedTitle(fullTitle.slice(0, currentCharIndex + 1));
-            currentCharIndex++;
-            if (currentCharIndex === fullTitle.length) {
-                clearInterval(interval);
-            }
-        }, 200);
+        const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if (storedUserInfo) {
+            setUserInfo(storedUserInfo);
+            fetchUserData(storedUserInfo.accessToken);
+        } else {
+            navigate("/login");
+        }
+    }, []);
 
-        return () => clearInterval(interval);
-    }, [fullTitle]);
+    const fetchUserData = async (token) => {
+        try {
+            const response = await axios.get("http://127.0.0.1:8000/api/mypage/profile", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 200) {
+                const user = response.data;
+                if (user) {
+                    setNickname(user.nickname);
+                    setEmail(user.email);
+                    setDisplayedTitle(`${user.nickname}님의 마이페이지입니다.`);
+                } else {
+                    throw new Error("유저 정보가 없습니다.");
+                }
+            } else {
+                alert("유저 정보를 가져오는데 실패했습니다.");
+                localStorage.removeItem("userInfo");
+                navigate("/auths");
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            localStorage.removeItem("userInfo");
+            navigate("/auths");
+            alert("유저 정보를 가져오는데 실패했습니다.");
+        }
+    };
+
+    useEffect(() => {
+        if (nickname) {
+            let currentCharIndex = 0;
+            const interval = setInterval(() => {
+                setDisplayedTitle(prev => nickname + "님의 마이페이지입니다.".slice(0, currentCharIndex + 1));
+                currentCharIndex++;
+                if (currentCharIndex === (nickname + "님의 마이페이지입니다.").length) {
+                    clearInterval(interval);
+                }
+            }, 200);
+
+            return () => clearInterval(interval);
+        }
+    }, [nickname]);
 
     const handleNavigate = (path) => {
         navigate(path);
     };
 
-    const handleNicknameChange = (newNickname) => {
-        setNickname(newNickname);
+    const handleNicknameChange = async (newNickname) => {
+        try {
+            const token = userInfo.accessToken;
+            const response = await axios.put("http://127.0.0.1:8000/api/mypage/profile", 
+                { nickname: newNickname }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            if (response.status === 200) {
+                setNickname(newNickname);
+                alert("닉네임이 성공적으로 변경되었습니다.");
+            } else {
+                alert("닉네임 변경에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("Error changing nickname:", error);
+            alert("닉네임 변경 중 오류가 발생했습니다.");
+        }
     };
 
-    const handlePasswordChange = (currentPassword, newPassword) => {
-        console.log("Current Password:", currentPassword);
-        console.log("New Password:", newPassword);
-
+    const handlePasswordChange = async (currentPassword, newPassword) => {
+        try {
+            const token = userInfo.accessToken;
+            const response = await axios.put("http://127.0.0.1:8000/api/mypage/profile", 
+                { current_password: currentPassword, new_password: newPassword }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            if (response.status === 200) {
+                alert("비밀번호가 성공적으로 변경되었습니다.");
+            } else {
+                alert("비밀번호 변경에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("Error changing password:", error);
+            alert("비밀번호 변경 중 오류가 발생했습니다.");
+        }
     };
 
     const handleLogout = () => {
-        console.log("로그아웃");
-
+        localStorage.removeItem("userInfo");
+        navigate("/login");
     };
 
     return (
@@ -67,7 +145,7 @@ function Mypage() {
                 <S.MypageTitle>{displayedTitle}</S.MypageTitle>
                 <S.MypageHeaderWrapper>
                     <S.Profile>
-                        <S.Email>이메일예이일@어쩌구.com</S.Email>
+                        <S.Email>{email}</S.Email>
                         <S.ProfileName>
                             <S.ChangeNameButton onClick={() => setIsNicknameModalOpen(true)}>닉네임 수정</S.ChangeNameButton>
                             <S.ChangeNameButton onClick={() => setIsPasswordModalOpen(true)}>비밀번호 변경</S.ChangeNameButton>
