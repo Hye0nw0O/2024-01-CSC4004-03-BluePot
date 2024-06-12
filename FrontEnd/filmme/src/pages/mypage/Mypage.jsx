@@ -40,7 +40,7 @@ function Mypage() {
 
     const fetchUserData = async (token) => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/mypage/profile", {
+            const response = await axios.get("https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/mypage/profile", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -90,7 +90,7 @@ function Mypage() {
     const handleNicknameChange = async (newNickname) => {
         try {
             const token = userInfo.accessToken;
-            const response = await axios.put("http://127.0.0.1:8000/api/mypage/profile", 
+            const response = await axios.put("https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/mypage/profile", 
                 { nickname: newNickname }, 
                 {
                     headers: {
@@ -117,7 +117,7 @@ function Mypage() {
     const handlePasswordChange = async (currentPassword, newPassword) => {
         try {
             const token = userInfo.accessToken;
-            const response = await axios.post("http://127.0.0.1:8000/api/accounts/password/change", 
+            const response = await axios.post("https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/accounts/password/change", 
                 { origin_password: currentPassword, new_password1: newPassword, new_password2: newPassword }, 
                 {
                     headers: {
@@ -139,7 +139,7 @@ function Mypage() {
     const handleLogout = async () => {
         try {
             const token = userInfo.accessToken;
-            await axios.post("http://127.0.0.1:8000/api/user/logout/", {}, {
+            await axios.post("https://filmme-drf-deploy-932ced3808f2.herokuapp.com/api/user/logout/", {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
