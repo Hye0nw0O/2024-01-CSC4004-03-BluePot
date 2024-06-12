@@ -218,7 +218,9 @@ function Main() {
                 view_url: theater.view_url,
                 cite_url: theater.cite_url,
                 regionColor: regionColors[theater.location] || regionColors.default,
-                movies: movies
+                movies: movies,
+                tel: theater.tel,
+                location: theater.detail_loc
             });
 
             setShowModal(true);

@@ -19,7 +19,9 @@ function Modal({ show, onClose, content, imageUrl, imageAlt, rating, setRating, 
                 <S.NameRegionContainer>
                     <S.ModalName>{content.name}</S.ModalName>
                     <S.ModalRegion color={content.regionColor}>{content.region}</S.ModalRegion>
-                </S.NameRegionContainer><br /><br />
+                </S.NameRegionContainer><br /><br /><br/>
+                <S.tel>☎ Tel. {content.tel}</S.tel><br/><br/>
+                <S.tel>📍 {content.location}</S.tel><br/><br/>
                 <S.ModalDiscription>{content.discription}</S.ModalDiscription><br /><br /><br />
                 <S.ModalURL href={content.cite_url} target="_blank" rel="noopener noreferrer">🎬 영화관 홈페이지 바로가기</S.ModalURL><br/><br/><br/><br/>
                 <S.Movie>📽 현재 상영 중인 영화 📽</S.Movie><br/>
@@ -41,7 +43,7 @@ function Modal({ show, onClose, content, imageUrl, imageAlt, rating, setRating, 
                         isHalf={true}
                     />
                     <S.Starbutton type="button" onClick={handleSaveRating}>저장하기</S.Starbutton>
-                </div>
+                </div><br/>
             </S.ModalContent>
         </S.ModalOverlay>
     );
