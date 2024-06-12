@@ -13,9 +13,12 @@ import NicknameChangeModal from "../../components/mypage/nicknameChange/Nickname
 import PasswordChangeModal from "../../components/mypage/password/PasswordChangeModal.jsx";
 import axios from 'axios';
 import Modal from "../../components/common/modal/Modal.jsx";
+import { useRecoilState } from 'recoil';
+import { authState } from "../../context/authState.js";
 
 function Mypage() {
     const navigate = useNavigate();
+    const [auth, setAuth] = useRecoilState(authState);
 
     const [displayedTitle, setDisplayedTitle] = useState("");
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
@@ -142,6 +145,7 @@ function Mypage() {
                 }
             });
             localStorage.removeItem("userInfo");
+            setAuth({ isLoggedIn: false, userInfo: null });
             navigate("/");
         } catch (error) {
             console.error("Error logging out:", error);
