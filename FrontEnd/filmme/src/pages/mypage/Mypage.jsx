@@ -12,6 +12,7 @@ import Snowfall from 'react-snowfall'; // 눈 효과
 import NicknameChangeModal from "../../components/mypage/nicknameChange/NicknameChangeModal.jsx";
 import PasswordChangeModal from "../../components/mypage/password/PasswordChangeModal.jsx";
 import axios from 'axios';
+import Modal from "../../components/common/modal/Modal.jsx";
 
 function Mypage() {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ function Mypage() {
     const [displayedTitle, setDisplayedTitle] = useState("");
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
     const [userInfo, setUserInfo] = useState(null);
@@ -29,7 +31,7 @@ function Mypage() {
             setUserInfo(storedUserInfo);
             fetchUserData(storedUserInfo.accessToken);
         } else {
-            navigate("/login");
+            navigate("/auths");
         }
     }, []);
 
@@ -53,12 +55,12 @@ function Mypage() {
             } else {
                 alert("유저 정보를 가져오는데 실패했습니다.");
                 localStorage.removeItem("userInfo");
-                navigate("/login");
+                navigate("/auths");
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
             localStorage.removeItem("userInfo");
-            navigate("/login");
+            navigate("/auths");
             alert("유저 정보를 가져오는데 실패했습니다.");
         }
     };
@@ -131,10 +133,22 @@ function Mypage() {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem("userInfo");
-        navigate("/login");
+    const handleLogout = async () => {
+        try {
+            const token = userInfo.accessToken;
+            await axios.post("http://127.0.0.1:8000/api/accounts/logout/", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            localStorage.removeItem("userInfo");
+            navigate("/");
+        } catch (error) {
+            console.error("Error logging out:", error);
+            alert("로그아웃 중 오류가 발생했습니다.");
+        }
     };
+
 
     return (
         <>
@@ -180,7 +194,7 @@ function Mypage() {
                     </S.RecordWrapper>
                 </S.MyFilmmeRecord>
                 <MypageCalendar />
-                <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
+                <S.LogoutButton onClick={() => setIsLogoutModalOpen(true)}>로그아웃</S.LogoutButton>
             </S.MypageWrapper>
             {isNicknameModalOpen && (
                 <NicknameChangeModal
@@ -193,6 +207,14 @@ function Mypage() {
                 <PasswordChangeModal
                     onClose={() => setIsPasswordModalOpen(false)}
                     onSave={handlePasswordChange}
+                />
+            )}
+            {isLogoutModalOpen && (
+                <Modal
+                    isOpen={isLogoutModalOpen}
+                    onClose={() => setIsLogoutModalOpen(false)}
+                    onConfirm={handleLogout}
+                    content="정말 로그아웃하시겠습니까?"
                 />
             )}
         </>
