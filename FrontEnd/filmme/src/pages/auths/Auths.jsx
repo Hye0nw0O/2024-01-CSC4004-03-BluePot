@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import * as S from "./style.jsx";
 import AOS from 'aos';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { authState } from '../../context/authState';
 import LoginpageImage from "../../assets/images/Login/LoginpageImage.png";
 
 function Auths() {
@@ -10,6 +12,7 @@ function Auths() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [auth, setAuth] = useRecoilState(authState);
 
     useEffect(() => {
         AOS.init();
@@ -20,6 +23,19 @@ function Auths() {
             const response = await axios.post('http://localhost:8000/api/accounts/login', { email, password });
             if (response.status === 200) {
                 alert("로그인 성공!");
+                // 받은 토큰을 로컬 스토리지에 저장!
+                const userInfo = {
+                    accessToken: response.data.token.access,
+                    refreshToken: response.data.token.refresh,
+                    nickname: response.data.user.nickname,
+                    email: response.data.user.email
+                };
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                // Recoil 상태 업데이트
+                setAuth({
+                    isLoggedIn: true,
+                    userInfo: userInfo
+                });
                 navigate('/');
             } else {
                 alert("닉네임 또는 비밀번호를 확인하세요.");
