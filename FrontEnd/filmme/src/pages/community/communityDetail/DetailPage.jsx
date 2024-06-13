@@ -16,7 +16,6 @@ import { getComments, addComment as postComment, deleteComment as removeComment 
 
 
 function DetailPage() {
-  // const [user, setUser] = useRecoilState(userState);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [viewCnt, setViewCnt] = useState(0);
@@ -26,103 +25,91 @@ function DetailPage() {
   const [isWriter, setIsWriter] = useState(false);
   const [likeImage, setLikeImage] = useState(ThumbOutlineIcon);
 
-    // // 한 페이지당 보여줄 댓글 수
-    // const itemsPerPage = 10;
-    const navigate = useNavigate();
-    const { type, id } = useParams();
+  const navigate = useNavigate();
+  const { type, id } = useParams();
 
-    // 현재 페이지
-    // const [currentPage, setCurrentPage] = useState(1);
-  
-    // detail 정보 설정
-    const [detail, setDetail] = useState({
-      comments_cnt: 0,
-      view_cnt: 0,
-      is_liked: false,
-      title: "",
-      writer: "",
-      created_at: "",
-      content: "",
-      likes_cnt: 0,
-      comments: []
+  const [detail, setDetail] = useState({
+    comments_cnt: 0,
+    view_cnt: 0,
+    is_liked: false,
+    title: "",
+    writer: "",
+    created_at: "",
+    content: "",
+    likes_cnt: 0,
+    comments: []
   });
 
   useEffect(() => {
     const fetchDetail = async () => {
-        try {
-            const categoryMap = {
-                commons: 'commons',
-                tips: 'tips',
-                suggestions: 'suggestions'
-            };
+      try {
+        const categoryMap = {
+          commons: 'commons',
+          tips: 'tips',
+          suggestions: 'suggestions'
+        };
 
-            const category = categoryMap[type];
-            if (!category) {
-                throw new Error(`Unknown category type: ${type}`);
-            }
-
-            const data = await getDetail(category, id);
-            const commentsData = await getComments(id);
-
-            console.log("Detail data: ", data);
-            console.log("Comments data: ", commentsData);
-
-            setDetail(data);
-            setViewCnt(data.view_cnt);
-            setComments(commentsData);
-        } catch (error) {
-            console.error("Failed to fetch detail: ", error);
-        } finally {
-            setLoading(false);
+        const category = categoryMap[type];
+        if (!category) {
+          throw new Error(`Unknown category type: ${type}`);
         }
+
+        const data = await getDetail(category, id);
+        const commentsData = await getComments(id);
+
+        console.log("Detail data: ", data);
+        console.log("Comments data: ", commentsData);
+
+        setDetail(data);
+        setViewCnt(data.view_cnt);
+        setComments(commentsData);
+      } catch (error) {
+        console.error("Failed to fetch detail: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchDetail();
-}, [type, id]);
+  }, [type, id]);
 
-    const addComment = async (text) => {
-      try {
-        const newComment = await postComment(id, text);
-        setComments(prevComments => [...prevComments, newComment]);
-        setDetail(prevDetail => ({
-          ...prevDetail,
-          comments_cnt: prevDetail.comments_cnt + 1
-        }));
-      } catch (error) {
-        console.error("Failed to add comment: ", error);
-      }
-    };
+  const addComment = async (text) => {
+    try {
+      const newComment = await postComment(id, text);
+      setComments(prevComments => [...prevComments, newComment]);
+      setDetail(prevDetail => ({
+        ...prevDetail,
+        comments_cnt: prevDetail.comments_cnt + 1
+      }));
+    } catch (error) {
+      console.error("Failed to add comment: ", error);
+    }
+  };
 
-    const deleteComment = async (commentId) => {
-      try {
-        await removeComment(id, commentId);
-        setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
-        setDetail(prevDetail => ({
-          ...prevDetail,
-          comments_cnt: prevDetail.comments_cnt - 1
-        }));
-      } catch (error) {
-        console.error("Failed to delete comment: ", error);
-      }
-    };
+  const deleteComment = async (commentId) => {
+    try {
+      await removeComment(id, commentId);
+      setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+      setDetail(prevDetail => ({
+        ...prevDetail,
+        comments_cnt: prevDetail.comments_cnt - 1
+      }));
+    } catch (error) {
+      console.error("Failed to delete comment: ", error);
+    }
+  };
 
-    const handleLikeToggle = async () => {
-      if (!user) {
-        // 로그인 모달창\
-        // 로그인하지 않은 경우 로그인 페이지로 이동
-        navigate("/login");
-        return;
-      }
-
+  const handleLikeToggle = async () => {
+    if (!user) {
+      navigate("/auths");
+      return;
+    }
 
     try {
-      // 좋아요 상태 확인
-
       const accessToken = user.accessToken;
       const headers = {
         Authorization: `Bearer ${accessToken}`
       };
 
-      // isLiked가 true이면 좋아요 취소, delete 요청보내기
       if (likeImage === ThumbIcon) {
         const response = await API.delete(`communities/${type}/${id}`, {
           headers
@@ -143,42 +130,38 @@ function DetailPage() {
     } catch (error) {}
   };
 
+  const renderComment = () => {
+    return comments.length === 0 ? (
+      <>작성된 댓글이 없습니다.</>
+    ) : (
+      <>
+        <CommunityCommentList
+          comments={comments}
+          category={"community"}
+        />
+      </>
+    );
+  };
 
-    // 댓글 렌더링
-    const renderComment = () => {
-      return comments.length === 0 ? (
-        <>작성된 댓글이 없습니다.</>
-      ) : (
-        <>
-          <CommunityCommentList
-            comments={comments}
-            category={"community"}
-          />
-        </>
-      );
-    };
-
-    const renderDetail = () => {
-      return !detail ? (
-        <>
-          <S.DetailTitle>로딩중</S.DetailTitle>
-          <S.DetailDiviner />
-        </>
-      ) : (
-        <>
-          <CommunityDetailContent
-            detail={detail}
-            isWriter={isWriter}
-            id={detail.id}
-            // writer={writer}
-            type={"community"}
-          />
-          <S.DetailDiviner />
-          <S.LikeViewWrapper>
-            <S.Thumbnailimg src={EyeOutlineIcon} alt="조회수" />
-            <S.DetailViewText>{viewCnt}</S.DetailViewText>
-            {/* is_liked 여부에 따라 */}
-            {type !== 'suggestions' && (
+  const renderDetail = () => {
+    return !detail ? (
+      <>
+        <S.DetailTitle>로딩중</S.DetailTitle>
+        <S.DetailDiviner />
+      </>
+    ) : (
+      <>
+        <CommunityDetailContent
+          detail={detail}
+          isWriter={isWriter}
+          id={detail.id}
+          type={"community"}
+        />
+        <S.DetailDiviner />
+        <S.LikeViewWrapper>
+          <S.Thumbnailimg src={EyeOutlineIcon} alt="조회수" />
+          <S.DetailViewText>{viewCnt}</S.DetailViewText>
+          {type !== 'suggestions' && (
             <>
               <S.Thumbnailimg
                 src={likeImage}
@@ -188,38 +171,34 @@ function DetailPage() {
               <S.DetailViewText>{detail.likes_cnt}</S.DetailViewText>
             </>
           )}
-          </S.LikeViewWrapper>
-        </>
-      );
-    };
+        </S.LikeViewWrapper>
+      </>
+    );
+  };
 
-    return (
-      <S.DetailPageWrapper>
-        {/* <S.DetailPageHeaderWrapper>
-          <S.DetailPageTitle>Community</S.DetailPageTitle>
-            <S.DetailPageSubTitle>원하는 카테고리에 자유롭게 이야기해보아요</S.DetailPageSubTitle>
-        </S.DetailPageHeaderWrapper> */}
-
-        <S.DetailContentWrapper>
-          <CommunityDetailPageType
+  return (
+    <S.DetailPageWrapper>
+      <S.DetailContentWrapper>
+        <CommunityDetailPageType
           type={type}
           cinemaName={
-              type === "tips" || type == "suggestions" ? (cinemaName ? cinemaName : null) : null
-            }
-          />
-          <S.DetailDiviner />
+            type === "tips" || type == "suggestions" ? (cinemaName ? cinemaName : null) : null
+          }
+        />
+        <S.DetailDiviner />
 
-          {renderDetail(isWriter)}
+        {renderDetail(isWriter)}
 
-          {/* 댓글 입력 */}
-          <S.DetailCommentHeader>댓글 {detail.comments_cnt}</S.DetailCommentHeader>
-          <CommentWrite
-            addComment={addComment}
-          />
-          {renderComment()}
-        </S.DetailContentWrapper>
-      </S.DetailPageWrapper>
-    );
-  }
-  
-  export default DetailPage;
+        {type !== 'suggestions' && (
+          <>
+            <S.DetailCommentHeader>댓글 {detail.comments_cnt}</S.DetailCommentHeader>
+            <CommentWrite addComment={addComment} />
+            {renderComment()}
+          </>
+        )}
+      </S.DetailContentWrapper>
+    </S.DetailPageWrapper>
+  );
+}
+
+export default DetailPage;
