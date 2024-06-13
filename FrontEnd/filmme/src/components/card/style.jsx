@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const CardWrapper = styled(Link)`
   display: flex;
-  width: 286px;
+  max-width: 286px;
   height: 361px;
   background-color: #fff;
   border: 1px solid #d9d9d9;
@@ -100,27 +100,31 @@ export const CardContentRegion = styled.div`
   align-items: center;
 `;
 
-export const CardContentStar = styled.div `
-  font-size: 17px;
+export const CardContentStar = styled.div`
+  font-size: 20px;
   margin-top: 0.5rem;
 `;
 
-export const CardContentScore = styled.div `
+export const CardContentScore = styled.div`
   margin-left: 0.5rem;
-  margin-top: 0.9rem;
-`;
-
-export const CardLikehart = styled.div `
-  color: red;
-  margin-left: 22rem;
-`;
-
-export const CardContentLike = styled.div `
-  margin-left: 0.5rem;
+  margin-top: 1.2rem;
   font-size: 12px;
 `;
 
-//Modal
+export const CardLikehart = styled.div`
+  color: red;
+  margin-left: 22rem;
+  font-size: 20px;
+`;
+
+export const CardContentLike = styled.div`
+  margin-top: 0.3rem;
+  margin-left: 0.5rem;
+  font-size: 14px;
+`;
+
+// Modal
+
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -136,15 +140,31 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   background: white;
-  border-radius: 8px;
-  width: 80vw;
-  max-width: 750px;
-  height: 80vh;
-  max-height: 550px;
+  border-radius: 10px;
+  width: 90vw;
+  max-width: 800px;
+  height: 90vh;
+  max-height: 600px;
   position: relative;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+export const ModalImage = styled.img`
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
 `;
 
 export const ModalBody = styled.div`
@@ -154,97 +174,118 @@ export const ModalBody = styled.div`
   overflow-y: auto;
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-`;
-
-//모달창
-export const ModalImage = styled.img`
-  width: 750px;
-  height: 250px;
-`;
-
 export const NameRegionContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 export const ModalName = styled.h2`
-  font-size: 35px;
+  font-size: 1.8rem;
+  font-family: 'Pretendard-Medium';
+  font-weight: bold;
+  margin: 0;
+`;
+
+export const ModalRegion = styled.p`
+  background-color: ${props => props.color || '#AEAFB9'};
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: 'Pretendard';
+  margin: 0;
+`;
+
+export const ModalInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 10px;
+`;
+
+export const ModalDetail = styled.div`
+  font-size: 1.5rem;
+  color: #555;
+`;
+
+export const ModalDiscription = styled.p`
+  font-size: 1.5rem;
+  font-family: 'Pretendard-Medium';
+  margin-bottom: 20px;
+`;
+
+export const ModalURL = styled.a`
+  font-size: 1.2rem;
+  color: #6069E4;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const MovieSection = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Movie = styled.h3`
+  font-size: 1.2rem;
+  font-family: 'Pretendard-Medium';
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+export const MovieList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+`;
+
+export const MovieListItem = styled.li`
+  width: 100px;
+  text-align: center;
+  font-size: 0.9rem;
   font-family: 'Pretendard-Medium';
   font-weight: bold;
 `;
 
-export const ModalRegion = styled.p`
-  display: flex;
-  margin-left: 1.3rem;
-  background-color: ${props => props.color || '#AEAFB9'};
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 3.28px;
-  font-size: 11px;
-  font-family: 'Pretendard';
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-`;
-
-export const ModalDiscription = styled.p`
-  font-size: 20px;
-  font-family: 'Pretendard-Medium';
-`;
-
-export const ModalURL = styled.a`
-  font-size: 15px;
-`;
-
-export const Movie = styled.h3`
-    font-size: 20px;
-    font-family: 'Pretendard-Medium';
-    font-weight: bold;
-    width: 700px;
-`;
-
 export const MoviePoster = styled.img`
-    width: 200px;
-    height: 300px;
-    flex-direction: column;
-    padding: 15px;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 5px;
 `;
 
-export const MovieList = styled.ul`
-    display: flex;
-    flex-wrap: wrap; // 필요한 경우 줄 바꿈을 허용
-    list-style: none; // 기본 ul 스타일 제거
-    padding: 0; // 기본 padding 제거
-`;
-
-export const MovieListItem = styled.li`
-    margin-right: 10px; // 각 포스터 사이의 간격 조정
-    margin-bottom: 10px; // 줄 바꿈 시 포스터 사이의 간격 조정
-    text-align: center;
-    font-size: 15px;
-    font-family: 'Pretendard-Medium';
-    font-weight: bold;
+export const RatingSection = styled.div`
+  margin-bottom: 20px;
 `;
 
 export const Star = styled.div`
-  font-size: 18px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+`;
+
+export const RatingContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const Starbutton = styled.button`
-  background: gray;
-  border-radius: 3px;
-  padding: 7px 8px;
-  margin: 7px;
-`;
+  background: ${props => (props.disabled ? '#d3d3d3' : '#161835')};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-left: 10px;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
 
-export const tel = styled.div`
-  font-size: 16px;
+  &:hover {
+    background: ${props => (props.disabled ? '#d3d3d3' : '#1c86ee')};
+  }
 `;

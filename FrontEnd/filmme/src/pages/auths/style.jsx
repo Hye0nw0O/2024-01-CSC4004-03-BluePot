@@ -33,7 +33,7 @@ export const Input = styled.input`
 export const Button = styled.button`
     width: 250px;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #6069E4;
     color: white;
     border: none;
     border-radius: 5px;
@@ -42,14 +42,14 @@ export const Button = styled.button`
     margin-bottom: 10px;
 
     &:hover {
-        background-color: #0056b3;
+        background-color: #8995FF;
     }
 `;
 
 export const SignupButton = styled.button`
     width: 250px;
     padding: 10px;
-    background-color: #28a745;
+    background-color: #161835;
     color: white;
     border: none;
     border-radius: 5px;
@@ -57,6 +57,6 @@ export const SignupButton = styled.button`
     cursor: pointer;
 
     &:hover {
-        background-color: #218838;
+        background-color: #8995FF;
     }
 `;
