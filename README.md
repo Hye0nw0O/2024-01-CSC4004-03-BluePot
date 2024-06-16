@@ -1,4 +1,4 @@
-(https://capsule-render.vercel.app/api?type=transparent&height=300&color=gradient&text=FILM'E&fontColor=6069E4&animation=fadeIn)
+![header] (https://capsule-render.vercel.app/api?type=transparent&height=300&color=gradient&text=FILM'E&fontColor=6069E4&animation=fadeIn)
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCSID-DGU%2F2024-01-CSC4004-03-BluePot&count_bg=%23B2B7FF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=FILM%27E&edge_flat=false)](https://hits.seeyoufarm.com)
 
