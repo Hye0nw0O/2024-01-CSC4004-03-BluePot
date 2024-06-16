@@ -3,24 +3,22 @@ import * as S from "./style";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-import ys from '../../assets/images/About/박영신.png';
-import ch from '../../assets/images/About/박채현.png';
-import hw from '../../assets/images/About/안현우.png';
-import hj from '../../assets/images/About/이형준.png';
-import ws from '../../assets/images/About/최우섭.png';
+import ys from './박영신.png';
+import ch from './박채현.png';
+import hw from './안현우.png';
+import hj from './이형준.png';
+import ws from './최우섭.png';
 
 
 const About = () => {
   
   useEffect(() => {
-    AOS.init({
-      duration : 2000
-    });
+    AOS.init();
   }, []);
 
   return (
-    <>
-      <S.Container>
+<>
+      {<S.Container>
         <S.ContainerTop data-aos="fade-up">
           <S.AboutContainer>
             <S.IntroduceFilmme>
@@ -71,6 +69,7 @@ const About = () => {
           </S.IntroDevsContainerBottom>
         </S.ContainerBottom>
       </S.Container>
+  }
     </>
   );
 };
