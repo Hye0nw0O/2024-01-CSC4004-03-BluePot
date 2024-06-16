@@ -1,4 +1,4 @@
-<div><img src="https://capsule-render.vercel.app/api?type=waving&color=0:99cc99,100:009630&height=200&section=header&text=FILM'E&fontSize=90&fontColor=ffffff&color=161835" /></div>
+(https://capsule-render.vercel.app/api?type=transparent&height=300&color=gradient&text=FILM'E&fontColor=6069E4&animation=fadeIn)
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCSID-DGU%2F2024-01-CSC4004-03-BluePot&count_bg=%23B2B7FF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=FILM%27E&edge_flat=false)](https://hits.seeyoufarm.com)
 
@@ -15,7 +15,6 @@
 
 
 ## 💻 Stack
-- 개발 툴
 ![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white) 
 
 ### FrontEnd
@@ -47,8 +46,7 @@
 |:---:|:---:|:---:|:---:|:---:|
 |Team Leader, FrontEnd|FrontEnd|BackEnd, Infra|BackEnd, DataBase|BackEnd|
 |<img src="https://avatars.githubusercontent.com/u/102219328?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/139209815?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/145957083?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/84591332?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/137453991?v=4" width="150" height="150"/>|
-|:-:|:-:|:-:|:-:|:-:|
-|Youngshin Park<br/>[@dudtlstm](https://github.com/dudtlstm)|[@chaehyeo-n](https://github.com/chaehyeo-n)|[@Hye0nw0O](https://github.com/Hye0nw0O)|lhj010217<br/>[@lhj010217](https://github.com/lhj010217)|[@seop637](https://github.com/seop637)|
+|[@dudtlstm](https://github.com/dudtlstm)|[@chaehyeo-n](https://github.com/chaehyeo-n)|[@Hye0nw0O](https://github.com/Hye0nw0O)|[@lhj010217](https://github.com/lhj010217)|[@seop637](https://github.com/seop637)|
 
 ## LICENSE
 
