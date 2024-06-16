@@ -18,36 +18,29 @@
 - 개발 툴
 ![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white) 
 
-### FrontEnd <br>
-! [HTML]
-(https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)
-! [CSS]
-(https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)
-! [JavaScript]
-(https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
-! [React]
-(https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+### FrontEnd
+![HTML](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-### BackEnd <br>
-! [Python]
-(https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-! [Django]
-(https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
+### BackEnd
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 
-### DataBase <br>
-! [MySQL]
-(https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+### DataBase
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
-### Infra <br>
-! [HEROKU]
-(https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
-! [Netlify]
-(https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
+### Infra
+![HEROKU](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
 ### Cooperation
-![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white) ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white) ![Discord]
-(https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)
-
+![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white) 
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white) 
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) 
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white) 
+![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)
 
 ## 👍🏻 Teams
 |박영신|박채현|안현우|이형준|최우섭|
@@ -88,4 +81,4 @@
 | ⏪     | :rewind                    | 변경 내용 되돌리기       |
 | 🔀     | :twisted_rightwards_arrows | 브랜치 합병              |
 | 💡     | :bulb                      | 주석 추가/수정           |
-| 🗃      | :card_file_box             | 데이버베이스 관련 수정   |
+| 🗃     | :card_file_box             | 데이버베이스 관련 수정   |
