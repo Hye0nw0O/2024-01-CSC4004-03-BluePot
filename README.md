@@ -3,7 +3,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCSID-DGU%2F2024-01-CSC4004-03-BluePot&count_bg=%23B2B7FF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=FILM%27E&edge_flat=false)](https://hits.seeyoufarm.com)
 
 # 2024-01-CSC4004-03-BluePot
-2024년 1학기 공개SW프로젝트 03분반 3조 블루팟
+2024년도 1학기 진행한 FILM'E 웹 페이지 제작 프로젝트입니다.
 
 # FILM'E
 
